@@ -1,4 +1,4 @@
-package com.example.rafael.appetite
+package com.windwarriors.appetite
 
 import org.junit.Test
 

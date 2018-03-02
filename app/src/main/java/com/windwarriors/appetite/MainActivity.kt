@@ -1,4 +1,4 @@
-package com.example.rafael.appetite
+package com.windwarriors.appetite
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

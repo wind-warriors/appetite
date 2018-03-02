@@ -1,4 +1,4 @@
-package com.example.rafael.appetite.YelpService
+package com.windwarriors.appetite.YelpService
 
 import org.junit.After
 import org.junit.Before
@@ -28,7 +28,6 @@ class YelpTest {
 
         val response = yelp.search()
         assertNotNull(response)
-        assertNotNull(response.body())
     }
 
     @Test

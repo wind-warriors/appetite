@@ -1,15 +1,14 @@
-package com.example.rafael.appetite.YelpService
+package com.windwarriors.appetite.YelpService
 
 import com.yelp.fusion.client.connection.YelpFusionApi
 import com.yelp.fusion.client.connection.YelpFusionApiFactory
 import com.yelp.fusion.client.models.Business
 import com.yelp.fusion.client.models.SearchResponse
-import retrofit2.Callback
 import retrofit2.Response
 
 class Yelp {
     private val TAG = "Appetite.Yelp"
-    private lateinit var response: Response<SearchResponse>
+    private lateinit var response: SearchResponse
     private lateinit var business: Business
 
     private val params = HashMap<String, String>()
@@ -20,11 +19,12 @@ class Yelp {
 
     // reviews,
 
-    fun search(): Response<SearchResponse> {
+    fun search(): SearchResponse {
         val call = yelpFusionApi.getBusinessSearch(params)
         // blocking call
-        response = call.execute()
-        printSearchResponse()
+        val searchResponse: Response<SearchResponse> = call.execute()
+        response = searchResponse.body()
+        printResponse()
         return response
     }
 
@@ -42,11 +42,11 @@ class Yelp {
         System.out.println(TAG + " " + business.id)
     }
 
-    private fun printSearchResponse() {
+    private fun printResponse() {
         System.out.println(TAG + " Yelp Response:")
-        System.out.println(TAG + " " + response.body().total)
-        System.out.println(TAG + " " + response.body().businesses.toString())
-        System.out.println(TAG + " First Business:" + response.body().businesses[0].id)
+        System.out.println(TAG + " " + response.total)
+        System.out.println(TAG + " " + response.businesses.toString())
+        System.out.println(TAG + " First Business:" + response.businesses[0].id)
         //Log.d(TAG, response.body().toString())
     }
 
