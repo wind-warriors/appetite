@@ -2,29 +2,47 @@ package com.example.rafael.appetite.YelpService
 
 import com.yelp.fusion.client.connection.YelpFusionApi
 import com.yelp.fusion.client.connection.YelpFusionApiFactory
+import com.yelp.fusion.client.models.Business
 import com.yelp.fusion.client.models.SearchResponse
 import retrofit2.Callback
 import retrofit2.Response
 
 class Yelp {
-    val TAG = "Appetite.Yelp"
+    private val TAG = "Appetite.Yelp"
     private lateinit var response: Response<SearchResponse>
+    private lateinit var business: Business
 
-    val params = HashMap<String, String>()
+    private val params = HashMap<String, String>()
 
-    val apiKey: String = "OSqO95EakOqUFqVniIVRARloq6ayjXnBgyPlbFgdV85RlV_tFcfU-_5cA-p6i0x3cpoQQQ4uhaL1aWX_o0Dom5Hvl7lJt2zYrKAtwUO8EO8c8fLaI2R2iJpKL5mYWnYx"
-    val apiFactory: YelpFusionApiFactory = YelpFusionApiFactory()
-    val yelpFusionApi: YelpFusionApi = apiFactory.createAPI(apiKey)
+    private val apiKey: String = "OSqO95EakOqUFqVniIVRARloq6ayjXnBgyPlbFgdV85RlV_tFcfU-_5cA-p6i0x3cpoQQQ4uhaL1aWX_o0Dom5Hvl7lJt2zYrKAtwUO8EO8c8fLaI2R2iJpKL5mYWnYx"
+    private val apiFactory: YelpFusionApiFactory = YelpFusionApiFactory()
+    private val yelpFusionApi: YelpFusionApi = apiFactory.createAPI(apiKey)
+
+    // reviews,
 
     fun search(): Response<SearchResponse> {
         val call = yelpFusionApi.getBusinessSearch(params)
         // blocking call
         response = call.execute()
-        printResponse()
+        printSearchResponse()
         return response
     }
 
-    private fun printResponse() {
+
+    fun getBusiness(id: String): Business {
+        val call = yelpFusionApi.getBusiness(id)
+        val businessResponse = call.execute()
+        business = businessResponse.body()
+        printBusiness()
+        return business
+    }
+
+    private fun printBusiness() {
+        System.out.println(TAG + " Yelp Business:")
+        System.out.println(TAG + " " + business.id)
+    }
+
+    private fun printSearchResponse() {
         System.out.println(TAG + " Yelp Response:")
         System.out.println(TAG + " " + response.body().total)
         System.out.println(TAG + " " + response.body().businesses.toString())
@@ -32,12 +50,6 @@ class Yelp {
         //Log.d(TAG, response.body().toString())
     }
 
-    /*
-    fun getBusiness(id: String) {
-        val call = yelpFusionApi.getBusiness(id)
-        val response = call.execute()
-    }
-    */
     /*
     fun call() {
         //asynchronous call
