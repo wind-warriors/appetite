@@ -44,8 +44,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         for (String aCreateString: tableCreatorString)
             db.execSQL(aCreateString);
 
-        // Load initial data into database
-        //loadInitialData(db);
+        // Load initial users data into database
+        loadInitialData(db);
     }
 
     //create the database
