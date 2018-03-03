@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btn_top_margin">50px</dimen>
+    <dimen name="btn_text_size">54px</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="text_margin">8dp</dimen>
+    <dimen name="large_text_margin">20dp</dimen>
+    <dimen name="greeting_left_margin">300dp</dimen>
+
+    <dimen name="label_text_size">16dp</dimen>
+
+    <dimen name="businessNameTextSize">25sp</dimen>
+    <dimen name="businessTotalReviewsTextSize">19sp</dimen>
+    <dimen name="foodCategoryTextSize">19sp</dimen>
+    <dimen name="addressTextSize">16sp</dimen>
+    <dimen name="singleProductPriceTextSize">30sp</dimen>
+    <dimen name="distanceTextSize">18sp</dimen>
+
+    <dimen name="singleProductNameTextSize">36sp</dimen>
+
+
+</resources>
