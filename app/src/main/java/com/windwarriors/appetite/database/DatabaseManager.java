@@ -45,7 +45,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             db.execSQL(aCreateString);
 
         // Load initial data into database
-        loadInitialData(db);
+        //loadInitialData(db);
     }
 
     //create the database

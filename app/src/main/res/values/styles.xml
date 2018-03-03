@@ -8,4 +8,97 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Greeting">
+        <item name="android:textSize">@dimen/label_text_size</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:layout_marginRight">@dimen/large_text_margin</item>
+        <item name="android:layout_marginLeft">@dimen/greeting_left_margin</item>
+        <item name="android:layout_marginTop">@dimen/text_margin</item>
+        <item name="android:layout_marginBottom">@dimen/text_margin</item>
+        <item name="android:text">@string/hello_user_sample_text</item>
+
+    </style>
+
+
+    <style name="productImage">
+        <item name="android:layout_width">130dp</item>
+        <item name="android:layout_height">130dp</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:background">#fff</item>
+        <item name="android:padding">1dp</item>
+        <item name="android:src">@drawable/food_example</item>
+        <item name="android:contentDescription">@string/food_image_sample_text</item>
+
+    </style>
+
+    <style name="businessName">
+        <item name="android:textColor">@color/productNameTextColor</item>
+        <item name="android:textSize">@dimen/businessNameTextSize</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">Business Name</item>
+    </style>
+
+    <style name="totalReviews">
+        <item name="android:textColor">@color/productDescriptionTextColor</item>
+        <item name="android:textSize">@dimen/businessTotalReviewsTextSize</item>
+        <item name="android:text">35 Reviews</item>
+        <item name="android:layout_width">180dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="foodCategory">
+        <item name="android:textColor">@color/foodCategoryTextColor</item>
+        <item name="android:textSize">@dimen/foodCategoryTextSize</item>
+        <item name="android:text">Noodles, Chinese</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <style name="address">
+        <item name="android:textColor">@color/addressTextColor</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:text">@string/address_sample_text</item>
+        <item name="android:textSize">@dimen/addressTextSize</item>
+    </style>
+
+    <style name="productCurrency">
+        <item name="android:textColor">@color/addressTextColor</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:text">@string/currency</item>
+        <item name="android:textSize">@dimen/addressTextSize</item>
+    </style>
+
+    <style name="distance">
+        <item name="android:textColor">@color/productAvailableTextColor</item>
+        <item name="android:textSize">@dimen/distanceTextSize</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">12</item>
+
+
+    </style>
+
+    <style name="distanceUnit">
+        <item name="android:textColor">@color/productAvailableTextColor</item>
+        <item name="android:textSize">@dimen/distanceTextSize</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">Km</item>
+
+        <item name="android:layout_marginLeft">5dp</item>
+    </style>
+
 </resources>

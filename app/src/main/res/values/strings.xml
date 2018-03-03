@@ -9,4 +9,16 @@
     <string name="registration_link_text">No account yet? Create one</string>
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
+    <string name="hello_user_sample_text">Hello User</string>
+    <string name="food_image_sample_text">Food Image</string>
+    <string name="product_name_sample_text">Product Name</string>
+    <string name="product_image_sample_text">Product Image</string>
+    <string name="category_sample_text">Category</string>
+    <string name="address_sample_text">5306 Yonge Street, Willowdale</string>
+
+    <string name="description_sample_text">description</string>
+    <string name="currency">$ </string>
+
+    <string name="available_sample_text">25</string>
+    <string name="available_prefix">Available: </string>
 </resources>

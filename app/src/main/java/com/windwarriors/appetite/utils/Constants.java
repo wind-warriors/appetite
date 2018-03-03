@@ -5,7 +5,7 @@ import com.windwarriors.appetite.database.DatabaseContract;
 public final class Constants {
 
     // Constant for greeting the username
-    private static final String GREETING = "Hello, ";
+    public static final String GREETING = "Hello, ";
 
     // Constants for using Shared Preferences
     public static final String SHARED_PREFERENCES_STORE = "OMGASharedPreferences";
