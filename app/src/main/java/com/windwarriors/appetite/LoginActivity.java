@@ -64,9 +64,8 @@ public class LoginActivity extends AppCompatActivity {
         signupLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(this, RegistrationActivity.class);
-                //startActivity(intent);
-
+                Intent intent = new Intent(that, RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }
