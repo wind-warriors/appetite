@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.windwarriors.appetite.model.UserModel;
 import com.windwarriors.appetite.service.SharedPreferencesService;
 import com.windwarriors.appetite.service.UserService;
 
@@ -21,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private UserService userService;
     private SharedPreferencesService sharedPreferences;
-    EditText usernameEditText;
+    EditText emailEditText;
     EditText passwordEditText;
     Button loginButton;
     TextView signupLink;
@@ -43,20 +44,20 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hideKeyboard();
-                usernameEditText = findViewById(R.id.input_username);
+                emailEditText = findViewById(R.id.input_email);
                 passwordEditText = findViewById(R.id.input_password);
-                String username = usernameEditText.getText().toString();
+                String email = emailEditText.getText().toString();
                 String pasword = passwordEditText.getText().toString();
 
-                String userId = userService.getCustomerId(username, pasword);
-                if (userId != null) {
-                    sharedPreferences.saveToSharedPreferences(SHARED_PREFERENCES_USER_KEY, username);
+                UserModel userFound = userService.getUser(email, pasword);
+                if (userFound != null) {
+                    sharedPreferences.saveToSharedPreferences(SHARED_PREFERENCES_USER_KEY, userFound.getUsername());
                     Intent intent = new Intent(that, BusinessListActivity.class);
                     startActivity(intent);
                     //Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "Wrong username or passwordEditText", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Wrong username or password", Toast.LENGTH_SHORT).show();
                 }
             }
         });

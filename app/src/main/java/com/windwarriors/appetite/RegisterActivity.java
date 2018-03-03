@@ -18,14 +18,19 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import  com.google.gson.Gson;
+import com.windwarriors.appetite.service.UserService;
 
 
 public class RegisterActivity extends AppCompatActivity {
+    private UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        // Initialize User Service
+        userService = new UserService(this);
     }
 
     public void btnRegister_OnClick(View view) {
@@ -56,66 +61,13 @@ public class RegisterActivity extends AppCompatActivity {
             return;
 
         }
-        List<UserModel> spUsers = loadUsersFromSharedPreferences(this);
-        
-        if(spUsers == null){
-            // Register User
-            spUsers = new ArrayList<UserModel>();
 
-            UserModel uModel = new UserModel(
-                    etEmail.getText().toString().toLowerCase().trim(),
-                    etPassword.getText().toString().trim());
-
-            spUsers.add(uModel);
-
-        } else {
-
-            for (UserModel _user : spUsers) {
-                if (_user.getEmail().equals(etEmail.getText().toString().trim())) {
-                    Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-
-            // Register User
-            UserModel uModel = new UserModel(
-                    etEmail.getText().toString().toLowerCase().trim(),
-                    etPassword.getText().toString().trim());
-            spUsers.add(uModel);
-
+        // Add new user to database if the email is not already in the user database
+        if( userService.userEmailExists(email)){
+            Toast.makeText(this, "Email already registered", Toast.LENGTH_SHORT).show();
+            return;
         }
-        saveUsersToSharedPreferece(this, spUsers);
+        userService.saveUser(email, password);
         Toast.makeText(this, "User registered successfully", Toast.LENGTH_SHORT).show();
-
     }
-
-    public static void saveUsersToSharedPreferece(Context context, List<UserModel> spUsers) {
-        SharedPreferences mPrefs = context.getSharedPreferences("users", context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(spUsers);
-        prefsEditor.putString("myJson", json);
-        prefsEditor.commit();
-    }
-
-    public static List<UserModel> loadUsersFromSharedPreferences(Context context) {
-        List<UserModel> spUsers = new ArrayList<UserModel>();
-        
-        SharedPreferences mPrefs = context.getSharedPreferences("users", context.MODE_PRIVATE);
-        
-        Gson gson = new Gson();
-        
-        String json = mPrefs.getString("myJson", "");
-        
-        if (json.isEmpty()) {
-            return null;
-        } else {
-            Type type = new TypeToken<List<UserModel>>() {
-                
-            }.getType();
-            spUsers = gson.fromJson(json, type);
-        }
-        return spUsers;
-    }
-
 }

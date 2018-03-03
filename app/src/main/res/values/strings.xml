@@ -7,7 +7,7 @@
     <string name="register_here_label">Sign Up</string>
     <string name="login_button_text">Login</string>
     <string name="registration_link_text">No account yet? Create one</string>
-    <string name="hint_username">Username</string>
+    <string name="hint_username">Email</string>
     <string name="hint_password">Password</string>
     <string name="hello_user_sample_text">Hello User</string>
     <string name="food_image_sample_text">Food Image</string>

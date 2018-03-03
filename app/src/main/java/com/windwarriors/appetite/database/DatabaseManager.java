@@ -12,7 +12,7 @@ import java.util.List;
 public class DatabaseManager extends SQLiteOpenHelper {
     //
     private static final String DATABASE_NAME = "appetite.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     //
 
     private Context context;
@@ -92,7 +92,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Insert the row
-        db.insert(tableName, null, values);
+        long result = db.insert(tableName, null, values);
         db.close(); //close database connection
     }
     // Read all records
