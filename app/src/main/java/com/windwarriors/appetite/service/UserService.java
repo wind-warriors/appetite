@@ -38,4 +38,8 @@ public class UserService {
         return customerId;
     }
 
+    public void close(){
+        dbm.close();
+    }
+
 }
