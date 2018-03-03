@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -58,6 +58,11 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (!etPassword.getText().toString().trim().equals(etConfirmPassword.getText().toString().trim())) {
 
             Toast.makeText(this, "Password and Confirm Password must match", Toast.LENGTH_SHORT).show();
+            return;
+
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString().trim().toLowerCase()).matches()) {
+
+            Toast.makeText(this, "Email format is incorrect", Toast.LENGTH_SHORT).show();
             return;
 
         }
