@@ -20,6 +20,7 @@ class Yelp {
     // reviews,
 
     fun search(): SearchResponse {
+        //"""Yelp Search at https://www.yelp.com/developers/documentation/v3/business_search"""
         val call = yelpFusionApi.getBusinessSearch(params)
         // blocking call
         val searchResponse: Response<SearchResponse> = call.execute()
@@ -35,6 +36,8 @@ class Yelp {
         business = businessResponse.body()
         printBusiness()
         return business
+
+
     }
 
     private fun printBusiness() {
@@ -60,11 +63,24 @@ class Yelp {
     }
     */
 
+    fun mockParameters() {
+        val centennialLatitude = "43.7844571"
+        val centennialLongitude = "-79.2287377"
+        //val radius = "1000" //in meters
+        params.clear()
+        //yelp.put("term", "indian food")
+
+        put("latitude", centennialLatitude)
+        put("longitude", centennialLongitude)
+        //put("radius", radius)
+    }
+
     fun clear() {
         params.clear()
     }
 
     fun put( paramName: String, param: String ) {
+        //"""Parameters available at https://www.yelp.com/developers/documentation/v3/business_search"""
         params.put(paramName, param)
     }
 }

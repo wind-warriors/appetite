@@ -1,5 +1,10 @@
 package com.windwarriors.appetite.model;
 
+import com.yelp.fusion.client.models.Category;
+import com.yelp.fusion.client.models.Location;
+
+import java.util.ArrayList;
+
 public class Business {
         private int id;
         private String name;
@@ -17,6 +22,33 @@ public class Business {
         this.address = address;
         this.distance = distance;
         this.imageLink = imageLink;
+    }
+
+    public Business(com.yelp.fusion.client.models.Business yelpBusiness) {
+        // TODO: convert yelp id(string) to our id(int)
+        this.id = yelpBusiness.getId().hashCode();
+        this.name = yelpBusiness.getName();
+        this.totalReviews = String.valueOf(yelpBusiness.getReviewCount());
+
+        // TODO: change foodCategory to String[] (array)??
+        this.foodCategory = yelpBusiness.getCategories().get(0).getTitle(); //getAlias()
+        this.address = locationToAddress(yelpBusiness.getLocation());
+        this.distance = yelpBusiness.getDistance() + " meters";
+        this.imageLink = yelpBusiness.getImageUrl();
+    }
+
+    private String locationToAddress(Location l) {
+        StringBuilder address;
+        ArrayList<String> displayAddress = l.getDisplayAddress();
+
+        if (displayAddress.isEmpty()) return "Unknown address";
+
+        address = new StringBuilder(displayAddress.get(0));
+        displayAddress.remove(0);
+        for (String line: l.getDisplayAddress()) {
+            address.append("\n").append(line);
+        }
+        return address.toString();
     }
 
     public int getId() {
