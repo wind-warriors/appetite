@@ -1,19 +1,21 @@
 package com.windwarriors.appetite;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.windwarriors.appetite.YelpService.Yelp;
+import com.windwarriors.appetite.YelpService.YelpService;
 import com.windwarriors.appetite.adapter.BusinessAdapter;
 import com.windwarriors.appetite.model.Business;
 import com.yelp.fusion.client.models.SearchResponse;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.windwarriors.appetite.utils.Helper.setUserGreetingTextView;
 
@@ -22,7 +24,9 @@ public class BusinessListActivity extends AppCompatActivity {
     private RecyclerView categoriesRecyclerView;
     private RecyclerView.Adapter categoryAdapter;
     private RecyclerView.LayoutManager categoryLayoutManager;
-    //private YelpService yelp;
+
+    private YelpService yelpService = new YelpService();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +34,12 @@ public class BusinessListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_business_list);
 
         //yelp = new YelpService();
-        //ArrayList<Business> list = yelp.getBusiness();
+        //ArrayList<Business> list = yelp.sync_getBusiness();
 
         // Set greeting for logged in user
         setUserGreetingTextView(this, R.id.greeting);
 
-        ArrayList<Business> list = mockBusinesses();//fetchBusinessesFromYelp();
+        ArrayList<Business> list = fetchBusinessesFromYelp();
 
         categoriesRecyclerView = findViewById(R.id.recycler_view_business_list);
         categoriesRecyclerView.setHasFixedSize(true);
@@ -47,17 +51,33 @@ public class BusinessListActivity extends AppCompatActivity {
 
     }
 
-    private ArrayList fetchBusinessesFromYelp() {
-        Yelp yelpService = new Yelp();
-        ArrayList<Business> businessList = new ArrayList<>();
+    @Override
+    protected void onDestroy() {
+        yelpService.onDestroy();
+        super.onDestroy();
+    }
+
+    private ArrayList<Business> fetchBusinessesFromYelp() {
+        final ArrayList<Business> businessList = new ArrayList<>();
 
         // TODO: apply user filters
+        // using, for example, yelpService.put("radius", 1000);
+        // parameters available at
+        // https://www.yelp.com/developers/documentation/v3/business_search
         yelpService.mockParameters();
 
-        SearchResponse yelpResponse = yelpService.search();
-        for (com.yelp.fusion.client.models.Business yelpBusiness: yelpResponse.getBusinesses()) {
-            businessList.add(new Business(yelpBusiness));
-        }
+        yelpService.search(new Callback<SearchResponse>() {
+            @Override
+            public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
+                businessList.addAll(yelpService.getSearchResults());
+                categoryAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<SearchResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Unable to retrieve businesses: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
         return businessList;
     }

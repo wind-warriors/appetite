@@ -1,8 +1,6 @@
 package com.windwarriors.appetite.model;
 
-import com.yelp.fusion.client.models.Category;
 import com.yelp.fusion.client.models.Location;
-
 import java.util.ArrayList;
 
 public class Business {
@@ -33,7 +31,7 @@ public class Business {
         // TODO: change foodCategory to String[] (array)??
         this.foodCategory = yelpBusiness.getCategories().get(0).getTitle(); //getAlias()
         this.address = locationToAddress(yelpBusiness.getLocation());
-        this.distance = yelpBusiness.getDistance() + " meters";
+        this.distance = String.valueOf((int) Math.ceil(yelpBusiness.getDistance())) + "m";
         this.imageLink = yelpBusiness.getImageUrl();
     }
 
@@ -46,7 +44,7 @@ public class Business {
         address = new StringBuilder(displayAddress.get(0));
         displayAddress.remove(0);
         for (String line: l.getDisplayAddress()) {
-            address.append("\n").append(line);
+            address.append(", ").append(line);
         }
         return address.toString();
     }
