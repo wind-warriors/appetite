@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.windwarriors.appetite.YelpService.YelpService;
 import com.windwarriors.appetite.adapter.BusinessAdapter;
+import com.windwarriors.appetite.adapter.SimpleDividerItemDecoration;
 import com.windwarriors.appetite.model.Business;
 import com.yelp.fusion.client.models.SearchResponse;
 
@@ -49,6 +50,7 @@ public class BusinessListActivity extends AppCompatActivity {
 
         businessRecyclerView.setLayoutManager(businessLayoutManager);
         businessRecyclerView.setAdapter(businessAdapter);
+        businessRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
     }
 
