@@ -90,6 +90,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">right</item>
         <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">7dp</item>
         <item name="android:text">1167m</item>
 
 

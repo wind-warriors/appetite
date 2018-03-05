@@ -3,6 +3,7 @@ package com.windwarriors.appetite;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
@@ -21,9 +22,9 @@ import static com.windwarriors.appetite.utils.Helper.setUserGreetingTextView;
 
 
 public class BusinessListActivity extends AppCompatActivity {
-    private RecyclerView categoriesRecyclerView;
-    private RecyclerView.Adapter categoryAdapter;
-    private RecyclerView.LayoutManager categoryLayoutManager;
+    private RecyclerView businessRecyclerView;
+    private RecyclerView.Adapter businessAdapter;
+    private RecyclerView.LayoutManager businessLayoutManager;
 
     private YelpService yelpService = new YelpService();
 
@@ -41,13 +42,13 @@ public class BusinessListActivity extends AppCompatActivity {
 
         ArrayList<Business> list = fetchBusinessesFromYelp();
 
-        categoriesRecyclerView = findViewById(R.id.recycler_view_business_list);
-        categoriesRecyclerView.setHasFixedSize(true);
-        categoryLayoutManager = new GridLayoutManager(getApplicationContext(),1);
-        categoryAdapter = new BusinessAdapter(this, list);
+        businessRecyclerView = findViewById(R.id.recycler_view_business_list);
+        businessRecyclerView.setHasFixedSize(true);
+        businessLayoutManager = new LinearLayoutManager(getApplicationContext());//new GridLayoutManager(getApplicationContext(),1);
+        businessAdapter = new BusinessAdapter(this, list);
 
-        categoriesRecyclerView.setLayoutManager(categoryLayoutManager);
-        categoriesRecyclerView.setAdapter(categoryAdapter);
+        businessRecyclerView.setLayoutManager(businessLayoutManager);
+        businessRecyclerView.setAdapter(businessAdapter);
 
     }
 
@@ -70,7 +71,7 @@ public class BusinessListActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                 businessList.addAll(yelpService.getSearchResults());
-                categoryAdapter.notifyDataSetChanged();
+                businessAdapter.notifyDataSetChanged();
             }
 
             @Override
