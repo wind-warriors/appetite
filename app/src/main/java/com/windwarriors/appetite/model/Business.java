@@ -12,6 +12,9 @@ public class Business {
         private String distance;
         private String imageLink;
 
+    public Business(){
+    }
+
     public Business(int id, String name, String review, String foodCategory, String address, String distance, String imageLink) {
         this.id = id;
         this.name = name;
