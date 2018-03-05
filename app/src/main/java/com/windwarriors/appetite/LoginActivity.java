@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -47,9 +48,9 @@ public class LoginActivity extends AppCompatActivity {
                 emailEditText = findViewById(R.id.input_email);
                 passwordEditText = findViewById(R.id.input_password);
                 String email = emailEditText.getText().toString();
-                String pasword = passwordEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
 
-                UserModel userFound = userService.getUser(email, pasword);
+                UserModel userFound = userService.getUser(email, password);
                 if (userFound != null) {
                     sharedPreferences.saveToSharedPreferences(SHARED_PREFERENCES_USER_KEY, userFound.getUsername());
                     Intent intent = new Intent(that, BusinessListActivity.class);
@@ -71,6 +72,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(this.getWindow().getDecorView().getRootView().getWindowToken(), 0);
+        return true;
+    }
 
     @Override
     protected void onDestroy() {
@@ -84,8 +91,8 @@ public class LoginActivity extends AppCompatActivity {
     private void hideKeyboard() {
         View view = getCurrentFocus();
         if (view != null) {
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
-                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 
