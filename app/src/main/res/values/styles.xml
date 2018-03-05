@@ -24,8 +24,8 @@
 
 
     <style name="productImage">
-        <item name="android:layout_width">130dp</item>
-        <item name="android:layout_height">130dp</item>
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">115dp</item>
         <item name="android:layout_marginLeft">3dp</item>
         <item name="android:layout_marginRight">3dp</item>
         <item name="android:layout_marginTop">3dp</item>
@@ -40,18 +40,20 @@
     <style name="businessName">
         <item name="android:textColor">@color/productNameTextColor</item>
         <item name="android:textSize">@dimen/businessNameTextSize</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:text">Business Name</item>
+        <item name="android:text">The Real McCoy Burgers and Pizza</item>
     </style>
 
     <style name="totalReviews">
         <item name="android:textColor">@color/productDescriptionTextColor</item>
         <item name="android:textSize">@dimen/businessTotalReviewsTextSize</item>
-        <item name="android:text">35 Reviews</item>
-        <item name="android:layout_width">180dp</item>
+        <item name="android:text">35</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_alignParentLeft">true</item>
     </style>
 
     <style name="foodCategory">
@@ -84,19 +86,21 @@
     <style name="distance">
         <item name="android:textColor">@color/productAvailableTextColor</item>
         <item name="android:textSize">@dimen/distanceTextSize</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:text">12</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:text">1167m</item>
 
 
     </style>
 
-    <style name="distanceUnit">
-        <item name="android:textColor">@color/productAvailableTextColor</item>
+    <style name="reviewsPostfixText">
+        <item name="android:textColor">@color/productDescriptionTextColor</item>
         <item name="android:textSize">@dimen/distanceTextSize</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:text">Km</item>
+        <item name="android:text">reviews</item>
 
         <item name="android:layout_marginLeft">5dp</item>
     </style>

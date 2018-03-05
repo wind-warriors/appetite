@@ -13,12 +13,12 @@
 
     <dimen name="label_text_size">16dp</dimen>
 
-    <dimen name="businessNameTextSize">25sp</dimen>
-    <dimen name="businessTotalReviewsTextSize">19sp</dimen>
-    <dimen name="foodCategoryTextSize">19sp</dimen>
-    <dimen name="addressTextSize">16sp</dimen>
+    <dimen name="businessNameTextSize">19sp</dimen>
+    <dimen name="businessTotalReviewsTextSize">15sp</dimen>
+    <dimen name="foodCategoryTextSize">16sp</dimen>
+    <dimen name="addressTextSize">13sp</dimen>
     <dimen name="singleProductPriceTextSize">30sp</dimen>
-    <dimen name="distanceTextSize">18sp</dimen>
+    <dimen name="distanceTextSize">15sp</dimen>
 
     <dimen name="singleProductNameTextSize">36sp</dimen>
 

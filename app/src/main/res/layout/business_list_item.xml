@@ -16,8 +16,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_marginTop="0dp"
+        android:padding="0dp"
+        android:layout_marginLeft="2dp"
         android:orientation="vertical"
         tools:context="com.windwarriors.appetite.BusinessListActivity">
 
@@ -29,7 +29,6 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
             android:orientation="horizontal"
             tools:context="com.windwarriors.appetite.BusinessListActivity">
 
@@ -37,16 +36,16 @@
                 android:id="@+id/total_reviews"
                 style="@style/totalReviews" />
 
-
+            <TextView
+                android:id="@+id/reviews_postfix_text"
+                style="@style/reviewsPostfixText"/>
 
             <TextView
                 android:id="@+id/distance"
                 style="@style/distance" />
 
 
-            <TextView
-                android:id="@+id/distance_unit"
-                style="@style/distanceUnit"/>
+
 
         </LinearLayout>
 

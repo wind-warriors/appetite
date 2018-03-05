@@ -14,7 +14,7 @@
     <string name="product_name_sample_text">Product Name</string>
     <string name="product_image_sample_text">Product Image</string>
     <string name="category_sample_text">Category</string>
-    <string name="address_sample_text">5306 Yonge Street, Willowdale</string>
+    <string name="address_sample_text">1033 Markham Road, Scarborough, ON M1H 2Y5, Canada</string>
 
     <string name="description_sample_text">description</string>
     <string name="currency">$ </string>
