@@ -10,13 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseManager extends SQLiteOpenHelper {
-    //
+    //parameter to create database
+    private SQLiteDatabase myDatabase;
     private static final String DATABASE_NAME = "appetite.db";
     private static final int DATABASE_VERSION = 3;
-    //
 
-    private Context context;
-    //
+    private Context context; //internal variable to maintain context
     private String tables[]; //table names
     private String tableCreatorString[]; //SQL statements to create tables
 
@@ -45,18 +44,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
             db.execSQL(aCreateString);
 
         // Load initial users data into database
-        loadInitialData(db);
+        loadInitialUserData(db);
     }
 
-    //create the database
-    public void createDatabase(Context context)
-    {
-        SQLiteDatabase mDatabase;
-        mDatabase = context.openOrCreateDatabase(
-                DATABASE_NAME,
-                //SQLiteDatabase.CREATE_IF_NECESSARY,
-                SQLiteDatabase.OPEN_READWRITE,
-                null);
+    @Override
+    public void onOpen(SQLiteDatabase db){
+        this.myDatabase = db;
     }
 
     //delete the database
@@ -143,10 +136,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.close();
     }
 
-
-
     // PRIVATE METHODS
-    private void loadInitialData(SQLiteDatabase db) {
+    private void loadInitialUserData(SQLiteDatabase db) {
         DatabaseDataWorker worker = new DatabaseDataWorker(db);
         worker.insertCustomers();
     }

@@ -10,7 +10,7 @@ public final class Constants {
     // Constants for using Shared Preferences
     public static final String SHARED_PREFERENCES_STORE = "OMGASharedPreferences";
     public static final String SHARED_PREFERENCES_USER_KEY = "UserName";
-
+    public static final String SHARED_PREFERENCES_DEFAULT_USERNAME = "Friend";
 
 
     // Constants for SQLite creation of tables

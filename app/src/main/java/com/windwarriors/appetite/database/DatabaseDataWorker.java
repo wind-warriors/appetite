@@ -31,6 +31,6 @@ class DatabaseDataWorker {
         values.put(DatabaseContract.UserEntry.COLUMN_FIRSTNAME, firstName);
         values.put(DatabaseContract.UserEntry.COLUMN_LASTNAME, lastName);
 
-        mDb.insert(DatabaseContract.UserEntry.TABLE_NAME, null, values);
+        long result = mDb.insert(DatabaseContract.UserEntry.TABLE_NAME, null, values);
     }
 }

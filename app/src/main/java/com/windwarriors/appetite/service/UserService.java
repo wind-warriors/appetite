@@ -28,7 +28,7 @@ public class UserService {
 
         SQLiteDatabase db = dbm.getReadableDatabase();
         String[] params = new String[]{ email, password };
-        String[] columns = new String[]{DatabaseContract.UserEntry._ID, DatabaseContract.UserEntry.COLUMN_EMAIL, DatabaseContract.UserEntry.COLUMN_PASSWORD};
+        String[] columns = new String[]{DatabaseContract.UserEntry._ID, DatabaseContract.UserEntry.COLUMN_EMAIL, DatabaseContract.UserEntry.COLUMN_PASSWORD, DatabaseContract.UserEntry.COLUMN_USERNAME};
         Cursor cursor = db.query(DatabaseContract.UserEntry.TABLE_NAME, columns,
                 DatabaseContract.UserEntry.COLUMN_EMAIL + " = ? AND " +
                         DatabaseContract.UserEntry.COLUMN_PASSWORD + "= ?", params,
@@ -37,6 +37,7 @@ public class UserService {
         if (cursor.moveToFirst()) {
             userInDatabse = new UserModel();
             //userInDatabse.id = cursor.getString(cursor.getColumnIndex(DatabaseContract.UserEntry._ID));
+            userInDatabse.setUsername(cursor.getString(cursor.getColumnIndex(DatabaseContract.UserEntry.COLUMN_USERNAME)));
             userInDatabse.setEmail(cursor.getString(cursor.getColumnIndex(DatabaseContract.UserEntry.COLUMN_EMAIL)));
             userInDatabse.setPassword(cursor.getString(cursor.getColumnIndex(DatabaseContract.UserEntry.COLUMN_PASSWORD)));
         }

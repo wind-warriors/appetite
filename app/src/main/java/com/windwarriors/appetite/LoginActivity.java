@@ -55,10 +55,8 @@ public class LoginActivity extends AppCompatActivity {
                     sharedPreferences.saveToSharedPreferences(SHARED_PREFERENCES_USER_KEY, userFound.getUsername());
                     Intent intent = new Intent(that, BusinessListActivity.class);
                     startActivity(intent);
-                    //Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show();
-
                 } else {
-                    Toast.makeText(LoginActivity.this, "Wrong username or password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Wrong enail or password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
