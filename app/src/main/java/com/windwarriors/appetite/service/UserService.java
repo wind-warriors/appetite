@@ -62,13 +62,18 @@ public class UserService {
         return result;
     }
 
-    public void saveUser(String email, String password){
+    public boolean saveUser(String email, String password){
+        try {
+            ContentValues cv = new ContentValues();
+            cv.put(DatabaseContract.UserEntry.COLUMN_EMAIL, email);
+            cv.put(DatabaseContract.UserEntry.COLUMN_PASSWORD, password);
 
-        ContentValues cv  = new ContentValues();
-        cv.put(DatabaseContract.UserEntry.COLUMN_EMAIL, email);
-        cv.put(DatabaseContract.UserEntry.COLUMN_PASSWORD, password);
+            dbm.addRecordUsingContentValues(cv, DatabaseContract.UserEntry.TABLE_NAME);
 
-        dbm.addRecordUsingContentValues(cv, DatabaseContract.UserEntry.TABLE_NAME);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     public void close(){

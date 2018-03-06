@@ -80,14 +80,23 @@ public class UserServiceTest {
     }
 
     @Test
-    public void userEmailExists() throws Exception {
+    public void registerUser_When_EmailAlreadyExists_Then_ReturnTrue() throws Exception {
+        String email = "preetkamal110@gmail.com";
+        String password = "123";
 
-        assertThat(true, is(false));
+        boolean emailExists = userService.userEmailExists(email);
+
+        assertThat(true, is(emailExists));
     }
 
     @Test
-    public void saveUser() throws Exception {
-        assertThat(true, is(false));
+    public void registerUser_When_RegisteredSuccessfully_Then_ReturnTrue() throws Exception {
+        String email = "test_run@test.com";
+        String password = "123";
+
+        boolean isRegistered = userService.saveUser(email, password);
+
+        assertThat(true, is(isRegistered));
     }
 
 }
