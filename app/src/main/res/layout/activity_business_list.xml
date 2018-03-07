@@ -6,12 +6,13 @@ android:layout_height="fill_parent"
     android:orientation="vertical"
 tools:context="com.windwarriors.appetite.BusinessListActivity">
 
-<TextView
-    android:id="@+id/greeting"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    style="@style/Greeting"
-    android:text="@string/hello_user_sample_text"/>
+    <TextView
+        android:id="@+id/greeting"
+        style="@style/Greeting"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="right|end"
+        android:text="@string/hello_user_sample_text" />
 
 <android.support.v7.widget.RecyclerView
     android:layout_height="wrap_content"

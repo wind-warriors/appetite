@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(that, BusinessListActivity.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(LoginActivity.this, "Wrong enail or password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
