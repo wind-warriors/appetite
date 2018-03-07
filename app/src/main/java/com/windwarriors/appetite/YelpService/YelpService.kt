@@ -15,7 +15,6 @@ class YelpService {
 
     private val params = HashMap<String, String>()
 
-    //TODO: get hold of calls to cancel on onDestroy (so it does not memory-leaks)
     private val calls: ArrayList< Call <*> > = ArrayList()
 
     private val apiKey: String = "OSqO95EakOqUFqVniIVRARloq6ayjXnBgyPlbFgdV85RlV_tFcfU-_5cA-p6i0x3cpoQQQ4uhaL1aWX_o0Dom5Hvl7lJt2zYrKAtwUO8EO8c8fLaI2R2iJpKL5mYWnYx"
