@@ -1,4 +1,4 @@
-package com.windwarriors.appetite.YelpService
+package com.windwarriors.appetite.service
 
 import com.yelp.fusion.client.connection.YelpFusionApi
 import com.yelp.fusion.client.connection.YelpFusionApiFactory

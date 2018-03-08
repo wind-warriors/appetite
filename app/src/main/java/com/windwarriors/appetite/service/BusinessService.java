@@ -1,14 +1,16 @@
 package com.windwarriors.appetite.service;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import com.windwarriors.appetite.YelpService.YelpService;
 import com.windwarriors.appetite.model.Business;
+import com.windwarriors.appetite.utils.Constants;
 import com.yelp.fusion.client.models.SearchResponse;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,49 +20,28 @@ public class BusinessService {
 
     private Context context;
     private YelpService yelpService;
+    private ArrayList<Business> businessList;
 
-    public BusinessService(Context context) {
+    public BusinessService(Context context, ArrayList<Business> businessList) {
         this.yelpService = new YelpService();
         this.context = context;
+        this.businessList = businessList;
     }
 
-    public List<Business> search() {
-        ArrayList<Business> businessList = new ArrayList<>();
-
-        // TODO: Use Yelp logic to get search result and save it into businessList result
-
-        return businessList;
-    }
-
-    public Business getBusinessDetails( int businessId){
-        Business result = new Business();
-
-        //TODO: Use Yelp logic to get whole data for a specific business
-
-        return result;
-    }
-
-    public Business getBusinessList( int businessId, int range){
-        Business result = new Business();
-
-        //TODO: Use Yelp logic to get list of restaurant, providing only data for listing purposes
-
-        return result;
-    }
-
-    public ArrayList<Business> fetchBusinessesFromYelp() {
-        final ArrayList<Business> businessList = new ArrayList<>();
-
+    public void loadBusinessList(int range) {
         // TODO: apply user filters
         // using, for example, yelpService.put("radius", 1000);
         // parameters available at
         // https://www.yelp.com/developers/documentation/v3/business_search
         yelpService.mockParameters();
+        yelpService.put("radius", String.valueOf(range));
 
         yelpService.search(new Callback<SearchResponse>() {
             @Override
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
+                businessList.clear();
                 businessList.addAll(yelpService.getSearchResults());
+                sendBroadcastBusinessListReady();
             }
 
             @Override
@@ -68,10 +49,63 @@ public class BusinessService {
                 Toast.makeText(context.getApplicationContext(), "Unable to retrieve businesses: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
-        return businessList;
     }
 
+    public ArrayList<Business> getBusinessList(){
+        return this.businessList;
+    }
+
+    public void loadBusiness(String id) {
+        yelpService.getBusiness(id, new Callback<com.yelp.fusion.client.models.Business>() {
+            @Override
+            public void onResponse(Call<com.yelp.fusion.client.models.Business> call, Response<com.yelp.fusion.client.models.Business> response) {
+                sendBroadcastBusinessReady();
+            }
+
+            @Override
+            public void onFailure(Call<com.yelp.fusion.client.models.Business> call, Throwable t) {
+                Toast.makeText(context.getApplicationContext(), "Unable to retrieve business: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public Business getBusiness() {
+        return new Business(this.yelpService.business);
+    }
+
+    public void putParameter(String paramName, String param) {
+        yelpService.put(paramName, param);
+    }
+
+    public void clearParameters() {
+        yelpService.clear();
+    }
+
+    private void sendBroadcastBusinessListReady() {
+        //Log.d(TAG, "->(+)<- sending broadcast: BROADCAST_SESSION_TIMEOUT");
+        Intent intent = new Intent();
+        intent.setAction(Constants.BROADCAST_BUSINESS_LIST_READY);
+
+        //Bundle data = new Bundle();
+        //data.putString(Constants.TIMEOUT_MESSAGE, timeoutMessage);
+        //intent.putExtras(data);
+
+        context.sendBroadcast(intent);
+    }
+
+    private void sendBroadcastBusinessReady() {
+        //Log.d(TAG, "->(+)<- sending broadcast: BROADCAST_SESSION_TIMEOUT");
+        Intent intent = new Intent();
+        intent.setAction(Constants.BROADCAST_BUSINESS_READY);
+
+        //Bundle data = new Bundle();
+        //data.putString(Constants.TIMEOUT_MESSAGE, timeoutMessage);
+        //intent.putExtras(data);
+
+        context.sendBroadcast(intent);
+    }
+
+    /*
     public ArrayList mockBusinesses() {
         ArrayList<Business> list = new ArrayList<>();
 
@@ -98,7 +132,7 @@ public class BusinessService {
                 "1571 Sandhurst Circle, Scarborough", "2", mockImageLink4));
 
         return list;
-    }
+    }*/
 
     public void destroy(){
         yelpService.onDestroy();

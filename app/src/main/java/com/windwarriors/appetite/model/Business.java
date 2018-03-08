@@ -4,7 +4,7 @@ import com.yelp.fusion.client.models.Location;
 import java.util.ArrayList;
 
 public class Business {
-        private int id;
+        private String id;
         private String name;
         private String totalReviews;
         private String foodCategory;
@@ -15,7 +15,7 @@ public class Business {
     public Business(){
     }
 
-    public Business(int id, String name, String review, String foodCategory, String address, String distance, String imageLink) {
+    public Business(String id, String name, String review, String foodCategory, String address, String distance, String imageLink) {
         this.id = id;
         this.name = name;
         this.totalReviews = review;
@@ -27,7 +27,7 @@ public class Business {
 
     public Business(com.yelp.fusion.client.models.Business yelpBusiness) {
         // TODO: convert yelp id(string) to our id(int)
-        this.id = yelpBusiness.getId().hashCode();
+        this.id = yelpBusiness.getId();
         this.name = yelpBusiness.getName();
         this.totalReviews = String.valueOf(yelpBusiness.getReviewCount());
 
@@ -52,11 +52,11 @@ public class Business {
         return address.toString();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

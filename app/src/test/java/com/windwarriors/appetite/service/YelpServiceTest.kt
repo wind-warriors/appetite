@@ -1,5 +1,6 @@
-package com.windwarriors.appetite.YelpService
+package com.windwarriors.appetite.service
 
+import com.windwarriors.appetite.service.YelpService
 import com.yelp.fusion.client.models.Business
 import com.yelp.fusion.client.models.SearchResponse
 import org.junit.After

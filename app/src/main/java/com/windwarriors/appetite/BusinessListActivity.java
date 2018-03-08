@@ -1,23 +1,22 @@
 package com.windwarriors.appetite;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
+import android.util.Log;
 
-import com.windwarriors.appetite.YelpService.YelpService;
 import com.windwarriors.appetite.adapter.BusinessAdapter;
 import com.windwarriors.appetite.adapter.SimpleDividerItemDecoration;
 import com.windwarriors.appetite.model.Business;
 import com.windwarriors.appetite.service.BusinessService;
-import com.yelp.fusion.client.models.SearchResponse;
+import com.windwarriors.appetite.utils.Constants;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.windwarriors.appetite.utils.Helper.setUserGreetingTextView;
 
@@ -27,9 +26,26 @@ public class BusinessListActivity extends AppCompatActivity {
     private RecyclerView.Adapter businessAdapter;
     private RecyclerView.LayoutManager businessLayoutManager;
 
-    //private BusinessService businessService;
-    private BusinessService businessService = new BusinessService(this);
-    private YelpService yelpService = new YelpService();
+    private final String TAG = "BusinessListActivity";
+    private ArrayList<Business> businessList = new ArrayList<>();
+    private BusinessService businessService;
+
+    private final BroadcastReceiver businessListReadyReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            //Bundle data = intent.getExtras();
+
+            if (Constants.BROADCAST_BUSINESS_LIST_READY.equals(action)) {
+                businessAdapter.notifyDataSetChanged();
+            //} else if (Constants.BROADCAST_BUSINESS_READY.equals(action)) {
+
+            } else {
+                Log.v(TAG, "Nothing to do for action " + action);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,51 +55,31 @@ public class BusinessListActivity extends AppCompatActivity {
         // Set greeting for logged in user
         setUserGreetingTextView(this, R.id.greeting);
 
-
-        //ArrayList<Business> list = businessService.fetchBusinessesFromYelp();
-        ArrayList<Business> list = fetchBusinessesFromYelp();
+        registerBusinessListReadyBroadcastReceiver();
 
         businessRecyclerView = findViewById(R.id.recycler_view_business_list);
         businessRecyclerView.setHasFixedSize(true);
         businessLayoutManager = new LinearLayoutManager(getApplicationContext());
-        businessAdapter = new BusinessAdapter(this, list);
-        businessAdapter.notifyDataSetChanged();
-
-
-        businessRecyclerView.setLayoutManager(businessLayoutManager);
+        businessAdapter = new BusinessAdapter(this, businessList);
         businessRecyclerView.setAdapter(businessAdapter);
+        businessRecyclerView.setLayoutManager(businessLayoutManager);
         businessRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
+        businessService = new BusinessService(this, businessList);
+        businessService.loadBusinessList(1000);
     }
 
-    private ArrayList<Business> fetchBusinessesFromYelp() {
-        final ArrayList<Business> businessList = new ArrayList<>();
-
-        // TODO: apply user filters
-        // using, for example, yelpService.put("radius", 1000);
-        // parameters available at
-        // https://www.yelp.com/developers/documentation/v3/business_search
-        yelpService.mockParameters();
-
-        yelpService.search(new Callback<SearchResponse>() {
-            @Override
-            public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
-                businessList.addAll(yelpService.getSearchResults());
-                businessAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<SearchResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Unable to retrieve businesses: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        return businessList;
+    private void registerBusinessListReadyBroadcastReceiver() {
+        Log.d(TAG, "registering service state change receiver...");
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.BROADCAST_BUSINESS_LIST_READY);
+        registerReceiver(businessListReadyReceiver, intentFilter);
     }
+
     @Override
     protected void onDestroy() {
         businessService.destroy();
-        yelpService.onDestroy();
         super.onDestroy();
+        unregisterReceiver(businessListReadyReceiver);
     }
 }

@@ -23,4 +23,6 @@ public final class Constants {
     };
 
 
+    public static final String BROADCAST_BUSINESS_LIST_READY = "BUSINESS_LIST_READY";
+    public static final String BROADCAST_BUSINESS_READY = "BUSINESS_READY";
 }
