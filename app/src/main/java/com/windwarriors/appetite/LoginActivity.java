@@ -17,6 +17,7 @@ import com.windwarriors.appetite.service.SharedPreferencesService;
 import com.windwarriors.appetite.service.UserService;
 
 
+import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SEARCH_RANGE;
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_USER_KEY;
 
 public class LoginActivity extends AppCompatActivity {
@@ -54,6 +55,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (userFound != null) {
                     sharedPreferences.saveToSharedPreferences(SHARED_PREFERENCES_USER_KEY, userFound.getUsername());
                     Intent intent = new Intent(that, BusinessListActivity.class);
+
+                    if (sharedPreferences.getFromSharedPreferences(SHARED_PREFERENCES_SEARCH_RANGE).equals("")){
+                        // Set default range to 10 KM
+                        sharedPreferences.saveToSharedPreferences(SHARED_PREFERENCES_SEARCH_RANGE, "10");
+                    }
+
                     startActivity(intent);
                 } else {
                     Toast.makeText(LoginActivity.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
