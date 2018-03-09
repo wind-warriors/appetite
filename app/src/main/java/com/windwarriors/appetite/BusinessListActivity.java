@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.windwarriors.appetite.adapter.BusinessAdapter;
 import com.windwarriors.appetite.adapter.SimpleDividerItemDecoration;
@@ -67,6 +69,33 @@ public class BusinessListActivity extends AppCompatActivity {
 
         businessService = new BusinessService(this, businessList);
         businessService.loadBusinessList(1000);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.business_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+
+            case R.id.id_range:
+
+                OpenRangeDialog();
+
+                break;
+
+        }
+        return true;
+    }
+
+    public void OpenRangeDialog() {
+        BusinessListRangeDialog rangeDialog = new BusinessListRangeDialog();
+        rangeDialog.show(getSupportFragmentManager(), "Range Dialog");
     }
 
     private void registerBusinessListReadyBroadcastReceiver() {

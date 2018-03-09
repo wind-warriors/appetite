@@ -11,6 +11,7 @@ public final class Constants {
     public static final String SHARED_PREFERENCES_STORE = "OMGASharedPreferences";
     public static final String SHARED_PREFERENCES_USER_KEY = "UserName";
     public static final String SHARED_PREFERENCES_DEFAULT_USERNAME = "Friend";
+    public static final String SHARED_PREFERENCES_SEARCH_RANGE = "SP_SEARCH_RANGE";
 
 
     // Constants for SQLite creation of tables
@@ -25,4 +26,5 @@ public final class Constants {
 
     public static final String BROADCAST_BUSINESS_LIST_READY = "BUSINESS_LIST_READY";
     public static final String BROADCAST_BUSINESS_READY = "BUSINESS_READY";
+
 }
