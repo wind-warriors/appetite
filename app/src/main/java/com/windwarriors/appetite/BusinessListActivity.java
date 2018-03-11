@@ -80,15 +80,20 @@ public class BusinessListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Intent next;
 
         switch (id){
-
             case R.id.id_range:
-
                 OpenRangeDialog();
-
                 break;
-
+            case R.id.id_list:
+                break;
+            case R.id.id_map:
+                next = new Intent( BusinessListActivity.this, MapsActivity.class);
+                startActivity(next);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
         return true;
     }

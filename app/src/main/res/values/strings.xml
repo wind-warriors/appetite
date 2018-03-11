@@ -21,4 +21,6 @@
 
     <string name="available_sample_text">25</string>
     <string name="available_prefix">Available: </string>
+    <string name="title_activity_maps">Map</string>
+    <string name="error_connect_to_services">Map Services are now available</string>
 </resources>

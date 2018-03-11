@@ -5,5 +5,13 @@
         android:title="Range"
         android:id="@+id/id_range"
         />
+    <item
+        android:title="Map"
+        android:id="@+id/id_map"
+        />
+    <item
+        android:title="List"
+        android:id="@+id/id_list"
+        />
 
 </menu>
