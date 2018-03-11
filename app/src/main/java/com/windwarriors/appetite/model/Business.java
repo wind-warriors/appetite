@@ -11,11 +11,13 @@ public class Business {
         private String address;
         private String distance;
         private String imageLink;
+        private Boolean isClosed;
+
 
     public Business(){
     }
 
-    public Business(String id, String name, String review, String foodCategory, String address, String distance, String imageLink) {
+    public Business(String id, String name, String review, String foodCategory, String address, String distance, String imageLink, Boolean isClosed) {
         this.id = id;
         this.name = name;
         this.totalReviews = review;
@@ -23,6 +25,7 @@ public class Business {
         this.address = address;
         this.distance = distance;
         this.imageLink = imageLink;
+        this.isClosed = isClosed;
     }
 
     public Business(com.yelp.fusion.client.models.Business yelpBusiness) {
@@ -36,6 +39,7 @@ public class Business {
         this.address = locationToAddress(yelpBusiness.getLocation());
         this.distance = String.valueOf((int) Math.ceil(yelpBusiness.getDistance())) + "m";
         this.imageLink = yelpBusiness.getImageUrl();
+        this.isClosed = yelpBusiness.getIsClosed();
     }
 
     private String locationToAddress(Location l) {
@@ -106,5 +110,13 @@ public class Business {
 
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
+    }
+
+    public boolean getIsClosed() {
+        return isClosed;
+    }
+
+    public void setIsClosed(boolean closed) {
+        isClosed = closed;
     }
 }

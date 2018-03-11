@@ -74,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         userService.saveUser(email, password);
-        Toast.makeText(this, "User registered successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "User registered successfully. Please login now.", Toast.LENGTH_SHORT).show();
 
         Intent loginIntent = new Intent(this, LoginActivity.class);
         startActivity(loginIntent);

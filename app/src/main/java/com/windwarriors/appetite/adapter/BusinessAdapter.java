@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.windwarriors.appetite.R;
 import com.windwarriors.appetite.model.Business;
+import com.windwarriors.appetite.utils.Constants;
 import com.windwarriors.appetite.utils.Helper;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         TextView distance;
         TextView foodCategory;
         TextView address;
+        TextView isClosed;
 
         BusinessViewHolder(View itemView) {
             super(itemView);
@@ -44,6 +47,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             distance = itemView.findViewById(R.id.distance);
             foodCategory = itemView.findViewById(R.id.food_category);
             address = itemView.findViewById(R.id.address);
+            isClosed = itemView.findViewById(R.id.isClosed);
         }
     }
 
@@ -71,6 +75,20 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         holder.foodCategory.setText((currentBusiness.getFoodCategory()));
         holder.address.setText(currentBusiness.getAddress());
 
+        if (currentBusiness.getIsClosed() == true){
+            holder.isClosed.setText(Constants.CLOSED);
+            holder.isClosed.setTextColor(Color.RED);
+
+        }
+        else if(currentBusiness.getIsClosed() == false) {
+            holder.isClosed.setText(Constants.OPEN);
+            holder.isClosed.setTextColor(Color.GREEN);
+        }
+        else {
+            holder.isClosed.setText("");
+        }
+
+
         holder.foodImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +97,10 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
                 //Intent next = new Intent( context, ProductsActivity.class);
                 //next.putExtra(CATEGORY_PARAM, businessList.get(position).getName());
                 //context.startActivity(next);
+
+
+
+
             }
         });
     }

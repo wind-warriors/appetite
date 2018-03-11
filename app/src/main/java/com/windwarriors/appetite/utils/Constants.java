@@ -6,6 +6,9 @@ public final class Constants {
 
     // Constant for greeting the username
     public static final String GREETING = "Hello, ";
+    public static final String OPEN = "Open";
+    public static final String CLOSED = "Closed";
+
 
     // Constants for using Shared Preferences
     public static final String SHARED_PREFERENCES_STORE = "OMGASharedPreferences";

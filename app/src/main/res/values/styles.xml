@@ -88,9 +88,21 @@
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_marginRight">7dp</item>
         <item name="android:text">1167m</item>
+    </style>
 
+
+    <style name="open">
+        <item name="android:textColor">@color/productAvailableTextColor</item>
+        <item name="android:textSize">@dimen/distanceTextSize</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">7dp</item>
+        <item name="android:text">Open</item>
 
     </style>
+
 
     <style name="reviewsPostfixText">
         <item name="android:textColor">@color/productDescriptionTextColor</item>
