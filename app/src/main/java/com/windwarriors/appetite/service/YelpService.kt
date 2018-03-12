@@ -184,6 +184,4 @@ class YelpService {
     }
 }
 
-// TODO: encapsulate yelp's Business class only on this service?
-// Encapsulate callback answer might be here
-// https://stackoverflow.com/questions/46884715/convert-retrofit-callback-value-to-return-enveloped-object
+// TODO Rafael: simplify callbacks with interface (check BusinessListReadyReceiver)
