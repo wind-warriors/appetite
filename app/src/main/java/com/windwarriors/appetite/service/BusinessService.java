@@ -34,7 +34,7 @@ public class BusinessService {
         // parameters available at
         // https://www.yelp.com/developers/documentation/v3/business_search
         yelpService.mockParameters();
-        yelpService.put("radius", String.valueOf(range));
+        yelpService.radius(range);
 
         yelpService.search(new Callback<SearchResponse>() {
             @Override
@@ -71,10 +71,6 @@ public class BusinessService {
 
     public Business getBusiness() {
         return new Business(this.yelpService.business);
-    }
-
-    public void putParameter(String paramName, String param) {
-        yelpService.put(paramName, param);
     }
 
     public void clearParameters() {

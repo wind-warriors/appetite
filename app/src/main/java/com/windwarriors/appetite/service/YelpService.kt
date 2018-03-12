@@ -112,11 +112,70 @@ class YelpService {
         //put("radius", radius)
     }
 
+    fun term(term: String) {
+        //"Ex: food, restaurants, Starbucks"
+
+        params.put("term", term)
+    }
+
+    fun location(location: String) {
+        params.put("location", location)
+    }
+
+    fun latitude(latitude: Double) {
+        params.put("latitude", latitude.toString())
+    }
+
+    fun longitude(longitude: Double) {
+        params.put("longitude", longitude.toString())
+    }
+
+    fun radius(radius: Int) {
+        params.put("radius", radius.toString())
+    }
+
+    fun categories(categories: String) {
+        params.put("categories", categories)
+    }
+
+    fun locale(locale: String) {
+        params.put("locale", locale)
+    }
+
+    fun limit(limit: String) {
+        params.put("limit", limit)
+    }
+
+    fun offset(offset: String) {
+        params.put("offset", offset)
+    }
+
+    fun sort_by(sort_by: String) {
+        //best_match, rating, review_count or distance
+        params.put("sort_by", sort_by)
+    }
+
+    fun price(price: String) {
+        params.put("price", price)
+    }
+
+    fun open_now(open_now: Boolean) {
+        params.put("open_now", open_now.toString())
+    }
+
+    fun open_at(open_at: String) {
+        params.put("open_at", open_at)
+    }
+
+    fun attributes(attributes: String) {
+        params.put("attributes", attributes)
+    }
+
     fun clear() {
         params.clear()
     }
 
-    fun put( paramName: String, param: String ) {
+    private fun put( paramName: String, param: String ) {
         //"""Parameters available at https://www.yelp.com/developers/documentation/v3/business_search"""
         params.put(paramName, param)
     }

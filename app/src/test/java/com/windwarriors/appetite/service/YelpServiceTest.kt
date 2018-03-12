@@ -1,6 +1,5 @@
 package com.windwarriors.appetite.service
 
-import com.windwarriors.appetite.service.YelpService
 import com.yelp.fusion.client.models.Business
 import com.yelp.fusion.client.models.SearchResponse
 import org.junit.After
@@ -17,9 +16,12 @@ import java.util.concurrent.TimeUnit
 
 class YelpServiceTest {
     var yelpService: YelpService = YelpService()
+    val q: BlockingQueue<SearchResponse> = LinkedBlockingQueue(1)
+
     @Before
     fun setUp() {
-        yelpService = YelpService()
+        yelpService.clear()
+        yelpService.mockParameters()
     }
 
     @After
@@ -29,28 +31,9 @@ class YelpServiceTest {
 
     @Test
     fun search() {
-
-        val q: BlockingQueue<SearchResponse> = LinkedBlockingQueue(1)
-        val timeout: Long = 5
-
-        val yelpCallback = object : Callback<SearchResponse> {
-            override fun onResponse(call: Call<SearchResponse>, yelpResponse: Response<SearchResponse>) {
-                q.add(yelpService.response)
-            }
-
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                fail("Yelp.search.callback.onFailure:" + t.message)
-            }
-        }
-
-        yelpService.mockParameters()
-        yelpService.search(yelpCallback)
-
-        try {
-            val response = q.poll(timeout, TimeUnit.SECONDS)
-            assertTrue("Empty Yelp.search response", response.total > 0)
-        } catch (e: InterruptedException) {
-            fail("Yelp.search() did not respond in " + timeout + "s!")
+        val response = runSearch()
+        response?.let {
+            assertTrue("Empty Yelp.search response", it.total > 0)
         }
     }
 
@@ -83,6 +66,18 @@ class YelpServiceTest {
     }
 
     @Test
+    fun test_isClosed() {
+        yelpService.open_now(false)
+        val response = runSearch()
+        response?.let {
+            val closedBusinesses = it.businesses.filter { business -> business.isClosed }
+            val openBusinesses = it.businesses.filter { business -> !business.isClosed }
+            System.out.println("closedBusinesses: " + closedBusinesses.size)
+            System.out.println("openBusinesses: " + openBusinesses.size)
+        }
+    }
+
+    @Test
     fun mockSyncSearch() {
         yelpService.mockParameters()
 
@@ -97,5 +92,32 @@ class YelpServiceTest {
 
         assertNotNull(business)
         assertEquals(businessId, business.id)
+    }
+
+    private fun runSearch(): SearchResponse? {
+        val yelpCallback = object : Callback<SearchResponse> {
+            override fun onResponse(call: Call<SearchResponse>, yelpResponse: Response<SearchResponse>) {
+                q.add(yelpService.response)
+            }
+
+            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                fail("Yelp.search.callback.onFailure:" + t.message)
+            }
+        }
+        yelpService.search(yelpCallback)
+
+        return getSearch()
+    }
+
+    private fun getSearch(): SearchResponse? {
+        val timeout: Long = 5
+        var response: SearchResponse? = null
+        try {
+            response = q.poll(timeout, TimeUnit.SECONDS)
+        } catch (e: InterruptedException) {
+            fail("Yelp.search() did not respond in " + timeout + "s!")
+        }
+
+        return response
     }
 }
