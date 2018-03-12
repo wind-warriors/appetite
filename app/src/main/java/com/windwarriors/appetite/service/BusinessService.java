@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.windwarriors.appetite.broadcast.BusinessListReadyBroadcaster;
+import com.windwarriors.appetite.broadcast.BusinessReadyBroadcaster;
 import com.windwarriors.appetite.model.Business;
 import com.windwarriors.appetite.utils.Constants;
 import com.yelp.fusion.client.models.SearchResponse;
 
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,17 +24,22 @@ public class BusinessService {
     private YelpService yelpService;
     private ArrayList<Business> businessList;
     private SharedPreferencesService spService;
+    private BusinessListReadyBroadcaster businessListReadyBroadcaster;
+    private BusinessReadyBroadcaster businessReadyBroadcaster;
+    private BlockingQueue< ArrayList<Business> > businessQueue;
 
     public BusinessService(Context context, ArrayList<Business> businessList) {
         this.yelpService = new YelpService();
         this.context = context;
         this.businessList = businessList;
         this.spService = new SharedPreferencesService(context);
+        this.businessListReadyBroadcaster = new BusinessListReadyBroadcaster(context);
+        this.businessReadyBroadcaster = new BusinessReadyBroadcaster(context);
+        businessQueue = new LinkedBlockingQueue<>(1);
     }
 
     public void loadBusinessList() {
         // TODO: apply user filters
-        // using, for example, yelpService.put("radius", 1000);
         // parameters available at
         // https://www.yelp.com/developers/documentation/v3/business_search
         yelpService.mockParameters();
@@ -45,7 +54,7 @@ public class BusinessService {
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                 businessList.clear();
                 businessList.addAll(yelpService.getSearchResults());
-                sendBroadcastBusinessListReady();
+                businessListReadyBroadcaster.sendBroadcastBusinessListReady(businessList);
             }
 
             @Override
@@ -56,15 +65,11 @@ public class BusinessService {
         });
     }
 
-    public ArrayList<Business> getBusinessList(){
-        return this.businessList;
-    }
-
     public void loadBusiness(String id) {
         yelpService.getBusiness(id, new Callback<com.yelp.fusion.client.models.Business>() {
             @Override
             public void onResponse(Call<com.yelp.fusion.client.models.Business> call, Response<com.yelp.fusion.client.models.Business> response) {
-                sendBroadcastBusinessReady();
+                businessReadyBroadcaster.sendBroadcastBusinessReady();
             }
 
             @Override
@@ -74,36 +79,22 @@ public class BusinessService {
         });
     }
 
+    /* does not make sense in an async context
+    public ArrayList<Business> getBusinessList(){
+        return this.businessList;
+    }
+
     public Business getBusiness() {
         return new Business(this.yelpService.business);
     }
+    */
 
     public void clearParameters() {
         yelpService.clear();
     }
 
-    private void sendBroadcastBusinessListReady() {
-        //Log.d(TAG, "->(+)<- sending broadcast: BROADCAST_SESSION_TIMEOUT");
-        Intent intent = new Intent();
-        intent.setAction(Constants.BROADCAST_BUSINESS_LIST_READY);
-
-        //Bundle data = new Bundle();
-        //data.putString(Constants.TIMEOUT_MESSAGE, timeoutMessage);
-        //intent.putExtras(data);
-
-        context.sendBroadcast(intent);
-    }
-
-    private void sendBroadcastBusinessReady() {
-        //Log.d(TAG, "->(+)<- sending broadcast: BROADCAST_SESSION_TIMEOUT");
-        Intent intent = new Intent();
-        intent.setAction(Constants.BROADCAST_BUSINESS_READY);
-
-        //Bundle data = new Bundle();
-        //data.putString(Constants.TIMEOUT_MESSAGE, timeoutMessage);
-        //intent.putExtras(data);
-
-        context.sendBroadcast(intent);
+    public void destroy(){
+        yelpService.onDestroy();
     }
 
     /*
@@ -134,8 +125,4 @@ public class BusinessService {
 
         return list;
     }*/
-
-    public void destroy(){
-        yelpService.onDestroy();
-    }
 }
