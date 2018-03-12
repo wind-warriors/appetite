@@ -1,11 +1,14 @@
 package com.windwarriors.appetite.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.yelp.fusion.client.models.Location;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class Business {
+public class Business implements Parcelable {
         private String id;
         private String name;
         private String totalReviews;
@@ -43,6 +46,30 @@ public class Business {
         this.imageLink = yelpBusiness.getImageUrl();
         this.isClosed = yelpBusiness.getIsClosed();
     }
+
+    protected Business(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        totalReviews = in.readString();
+        foodCategory = in.readString();
+        address = in.readString();
+        distance = in.readString();
+        imageLink = in.readString();
+        byte tmpIsClosed = in.readByte();
+        isClosed = tmpIsClosed == 0 ? null : tmpIsClosed == 1;
+    }
+
+    public static final Creator<Business> CREATOR = new Creator<Business>() {
+        @Override
+        public Business createFromParcel(Parcel in) {
+            return new Business(in);
+        }
+
+        @Override
+        public Business[] newArray(int size) {
+            return new Business[size];
+        }
+    };
 
     private String locationToAddress(Location l) {
         StringBuilder address;
@@ -120,5 +147,22 @@ public class Business {
 
     public void setIsClosed(boolean closed) {
         isClosed = closed;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(totalReviews);
+        parcel.writeString(foodCategory);
+        parcel.writeString(address);
+        parcel.writeString(distance);
+        parcel.writeString(imageLink);
+        parcel.writeByte((byte) (isClosed == null ? 0 : isClosed ? 1 : 2));
     }
 }
