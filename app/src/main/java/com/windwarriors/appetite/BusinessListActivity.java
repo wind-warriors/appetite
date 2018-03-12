@@ -68,7 +68,7 @@ public class BusinessListActivity extends AppCompatActivity {
         businessRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         businessService = new BusinessService(this, businessList);
-        businessService.loadBusinessList(1000);
+        businessService.loadBusinessList();
     }
 
     @Override

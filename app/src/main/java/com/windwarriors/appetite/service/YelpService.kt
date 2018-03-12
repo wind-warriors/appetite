@@ -34,7 +34,7 @@ class YelpService {
             }
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                System.out.println(TAG + " " + t.message)
+                System.out.println(TAG + "Error: " + t)
                 callback.onFailure(call, t)
             }
         }
@@ -131,7 +131,9 @@ class YelpService {
     }
 
     fun radius(radius: Int) {
-        params.put("radius", radius.toString())
+        val radiusInMeters: Int = radius * 1000
+        System.out.println(TAG + " setting range to " + radiusInMeters)
+        params.put("radius", radiusInMeters.toString())
     }
 
     fun categories(categories: String) {

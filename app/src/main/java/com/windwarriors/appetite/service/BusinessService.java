@@ -2,8 +2,6 @@ package com.windwarriors.appetite.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.windwarriors.appetite.model.Business;
@@ -21,20 +19,26 @@ public class BusinessService {
     private Context context;
     private YelpService yelpService;
     private ArrayList<Business> businessList;
+    private SharedPreferencesService spService;
 
     public BusinessService(Context context, ArrayList<Business> businessList) {
         this.yelpService = new YelpService();
         this.context = context;
         this.businessList = businessList;
+        this.spService = new SharedPreferencesService(context);
     }
 
-    public void loadBusinessList(int range) {
+    public void loadBusinessList() {
         // TODO: apply user filters
         // using, for example, yelpService.put("radius", 1000);
         // parameters available at
         // https://www.yelp.com/developers/documentation/v3/business_search
         yelpService.mockParameters();
-        yelpService.radius(range);
+
+        String spRange = spService.getFromSharedPreferences(Constants.SHARED_PREFERENCES_SEARCH_RANGE);
+        if (!spRange.equals("")) {
+            yelpService.radius(Integer.valueOf(spRange));
+        }
 
         yelpService.search(new Callback<SearchResponse>() {
             @Override
@@ -46,7 +50,8 @@ public class BusinessService {
 
             @Override
             public void onFailure(Call<SearchResponse> call, Throwable t) {
-                Toast.makeText(context.getApplicationContext(), "Unable to retrieve businesses: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                String errorMessage = t.getMessage();
+                Toast.makeText(context.getApplicationContext(), "Unable to retrieve businesses: " + errorMessage, Toast.LENGTH_LONG).show();
             }
         });
     }
