@@ -11,8 +11,6 @@ import com.windwarriors.appetite.utils.Constants;
 import com.yelp.fusion.client.models.SearchResponse;
 
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +24,6 @@ public class BusinessService {
     private SharedPreferencesService spService;
     private BusinessListReadyBroadcaster businessListReadyBroadcaster;
     private BusinessReadyBroadcaster businessReadyBroadcaster;
-    private BlockingQueue< ArrayList<Business> > businessQueue;
 
     public BusinessService(Context context, ArrayList<Business> businessList) {
         this.yelpService = new YelpService();
@@ -35,7 +32,6 @@ public class BusinessService {
         this.spService = new SharedPreferencesService(context);
         this.businessListReadyBroadcaster = new BusinessListReadyBroadcaster(context);
         this.businessReadyBroadcaster = new BusinessReadyBroadcaster(context);
-        businessQueue = new LinkedBlockingQueue<>(1);
     }
 
     public void loadBusinessList() {
@@ -65,10 +61,12 @@ public class BusinessService {
         });
     }
 
+    //TODO Rafael: Not tested or used
     public void loadBusiness(String id) {
         yelpService.getBusiness(id, new Callback<com.yelp.fusion.client.models.Business>() {
             @Override
             public void onResponse(Call<com.yelp.fusion.client.models.Business> call, Response<com.yelp.fusion.client.models.Business> response) {
+                //TODO Rafael: pass Business as parameter
                 businessReadyBroadcaster.sendBroadcastBusinessReady();
             }
 

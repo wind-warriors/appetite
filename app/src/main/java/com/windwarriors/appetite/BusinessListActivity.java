@@ -24,7 +24,7 @@ public class BusinessListActivity extends AppCompatActivity {
     private RecyclerView.Adapter businessAdapter;
     private RecyclerView.LayoutManager businessLayoutManager;
 
-    private final String TAG = "BusinessListActivity";
+    private final String TAG = "Appetite.BusinessListActivity";
     private ArrayList<Business> businessList = new ArrayList<>();
     private BusinessService businessService;
 
@@ -46,7 +46,13 @@ public class BusinessListActivity extends AppCompatActivity {
         businessRecyclerView.setLayoutManager(businessLayoutManager);
         businessRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
-        businessListReadyReceiver = new BusinessListReadyReceiver(businessAdapter);
+        businessListReadyReceiver = new BusinessListReadyReceiver(new BusinessListReadyReceiver.OnReceive() {
+            @Override
+            public void onReceive(ArrayList<Business> businessList) {
+                businessAdapter.notifyDataSetChanged();
+            }
+        });
+
         registerBusinessListReadyBroadcastReceiver();
 
         businessService = new BusinessService(this, businessList);
