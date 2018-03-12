@@ -101,14 +101,14 @@ class YelpService {
     }
 
     fun mockParameters() {
-        val centennialLatitude = "43.7844571"
-        val centennialLongitude = "-79.2287377"
+        val centennialLatitude = 43.7844571
+        val centennialLongitude = -79.2287377
         //val radius = "1000" //in meters
         params.clear()
         //yelp.put("term", "indian food")
 
-        put("latitude", centennialLatitude)
-        put("longitude", centennialLongitude)
+        latitude(centennialLatitude)
+        longitude(centennialLongitude)
         //put("radius", radius)
     }
 
@@ -173,11 +173,6 @@ class YelpService {
 
     fun clear() {
         params.clear()
-    }
-
-    private fun put( paramName: String, param: String ) {
-        //"""Parameters available at https://www.yelp.com/developers/documentation/v3/business_search"""
-        params.put(paramName, param)
     }
 
     fun onDestroy() {
