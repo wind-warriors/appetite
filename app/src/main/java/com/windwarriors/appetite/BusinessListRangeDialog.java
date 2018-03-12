@@ -56,13 +56,17 @@ public class BusinessListRangeDialog extends AppCompatDialogFragment {
         tvRangeValue = view.findViewById(R.id.tvRangeValue);
         rangeSeekBar = view.findViewById(R.id.range_seekbar);
 
+        rangeSeekBar.setMax(40);
+
         String spSearchRange = spService.getFromSharedPreferences(SHARED_PREFERENCES_SEARCH_RANGE);
-        rangeSeekBar.setProgress(Integer.parseInt(spSearchRange.equals("") ? "0" : spSearchRange));
-        setValueLabel(Integer.parseInt(spSearchRange.equals("") ? "0" : spSearchRange));
+        rangeSeekBar.setProgress(Integer.parseInt(spSearchRange.equals("") ? "1" : spSearchRange));
+        setValueLabel(Integer.parseInt(spSearchRange.equals("") ? "1" : spSearchRange));
 
         rangeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                i = i == 0 ? 1 : i;
+
                 setValueLabel(i);
                 selectedRange = i;
             }
