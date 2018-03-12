@@ -31,7 +31,6 @@ public class Business {
     }
 
     public Business(com.yelp.fusion.client.models.Business yelpBusiness) {
-        // TODO: convert yelp id(string) to our id(int)
         this.id = yelpBusiness.getId();
         this.name = yelpBusiness.getName();
         this.totalReviews = String.valueOf(yelpBusiness.getReviewCount());
