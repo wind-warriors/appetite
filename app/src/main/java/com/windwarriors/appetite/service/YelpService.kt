@@ -1,5 +1,6 @@
 package com.windwarriors.appetite.service
 
+import com.windwarriors.appetite.utils.Constants
 import com.yelp.fusion.client.connection.YelpFusionApi
 import com.yelp.fusion.client.connection.YelpFusionApiFactory
 import com.yelp.fusion.client.models.Business
@@ -101,8 +102,8 @@ class YelpService {
     }
 
     fun mockParameters() {
-        val centennialLatitude = 43.7844571
-        val centennialLongitude = -79.2287377
+        val centennialLatitude = Constants.CENTENNIAL_LATITUDE
+        val centennialLongitude = Constants.CENTENNIAL_LONGITUDE
         //val radius = "1000" //in meters
         params.clear()
         //yelp.put("term", "indian food")

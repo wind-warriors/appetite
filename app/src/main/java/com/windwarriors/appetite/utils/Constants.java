@@ -26,10 +26,12 @@ public final class Constants {
             DatabaseContract.UserEntry.SQL_CREATE_TABLE
     };
 
-
     public static final String BROADCAST_BUSINESS_LIST_READY = "BUSINESS_LIST_READY";
     public static final String BROADCAST_BUSINESS_READY = "BUSINESS_READY";
 
     // Used on BusinessListReadyBroadcaster intents
     public static final String BUSINESS_LIST = "businessList";
+
+    public static final Double CENTENNIAL_LATITUDE = 43.7844571;
+    public static final Double CENTENNIAL_LONGITUDE = -79.2287377;
 }
