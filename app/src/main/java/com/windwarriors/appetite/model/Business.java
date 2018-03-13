@@ -209,4 +209,21 @@ public class Business implements Parcelable {
     public int describeContents() {
         return 0;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj.getClass() == Business.class)) return super.equals(obj);
+
+        Business b2 = (Business) obj;
+        return this.id.equals(b2.id) &&
+               this.name.equals(b2.name) &&
+               this.totalReviews.equals(b2.totalReviews) &&
+               this.foodCategory.equals(b2.foodCategory) &&
+               this.address.equals(b2.address) &&
+               this.distance.equals(b2.distance) &&
+               this.imageLink.equals(b2.imageLink) &&
+               this.isClosed.equals(b2.isClosed) &&
+               this.latitude.equals(b2.latitude) &&
+               this.longitude.equals(b2.longitude);
+    }
 }
