@@ -46,10 +46,11 @@ public class BusinessServiceTest {
             @Override
             public void onReceive(ArrayList<Business> businessList) {
 
-                assertTrue("businessList returned empty",businessList.size() > 0);
-                synchronized(syncObject) {
-                    syncObject.notify();
-                }
+            assertTrue("businessList returned empty",businessList.size() > 0);
+            assertEquals(businessService.businessList , businessList);
+            synchronized(syncObject) {
+                syncObject.notify();
+            }
             }
         });
         this.context.registerReceiver(businessListReadyReceiver, businessListReadyReceiver.getIntentFilter());

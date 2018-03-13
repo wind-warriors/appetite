@@ -20,7 +20,7 @@ public class BusinessService {
 
     private Context context;
     private YelpService yelpService;
-    private ArrayList<Business> businessList;
+    ArrayList<Business> businessList;
     private SharedPreferencesService spService;
     private BusinessListReadyBroadcaster businessListReadyBroadcaster;
     private BusinessReadyBroadcaster businessReadyBroadcaster;
