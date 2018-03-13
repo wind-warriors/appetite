@@ -17,12 +17,14 @@ public class Business implements Parcelable {
         private String distance;
         private String imageLink;
         private Boolean isClosed;
-
+        private Double latitude;
+        private Double longitude;
 
     public Business(){
     }
 
-    public Business(String id, String name, String review, String foodCategory, String address, String distance, String imageLink, Boolean isClosed) {
+    public Business(String id, String name, String review, String foodCategory, String address,
+                    String distance, String imageLink, Boolean isClosed, Double latitude, Double longitude) {
         this.id = id;
         this.name = name;
         this.totalReviews = review;
@@ -31,6 +33,8 @@ public class Business implements Parcelable {
         this.distance = distance;
         this.imageLink = imageLink;
         this.isClosed = isClosed;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Business(com.yelp.fusion.client.models.Business yelpBusiness) {
@@ -45,6 +49,8 @@ public class Business implements Parcelable {
         this.distance = (f.format(yelpBusiness.getDistance() / 1000.0)) + " km";
         this.imageLink = yelpBusiness.getImageUrl();
         this.isClosed = yelpBusiness.getIsClosed();
+        this.latitude = yelpBusiness.getCoordinates().getLatitude();
+        this.longitude = yelpBusiness.getCoordinates().getLongitude();
     }
 
     protected Business(Parcel in) {
@@ -57,6 +63,40 @@ public class Business implements Parcelable {
         imageLink = in.readString();
         byte tmpIsClosed = in.readByte();
         isClosed = tmpIsClosed == 0 ? null : tmpIsClosed == 1;
+        if (in.readByte() == 0) {
+            latitude = null;
+        } else {
+            latitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            longitude = null;
+        } else {
+            longitude = in.readDouble();
+        }
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(totalReviews);
+        dest.writeString(foodCategory);
+        dest.writeString(address);
+        dest.writeString(distance);
+        dest.writeString(imageLink);
+        dest.writeByte((byte) (isClosed == null ? 0 : isClosed ? 1 : 2));
+        if (latitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(latitude);
+        }
+        if (longitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(longitude);
+        }
     }
 
     public static final Creator<Business> CREATOR = new Creator<Business>() {
@@ -149,20 +189,24 @@ public class Business implements Parcelable {
         isClosed = closed;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
-        parcel.writeString(name);
-        parcel.writeString(totalReviews);
-        parcel.writeString(foodCategory);
-        parcel.writeString(address);
-        parcel.writeString(distance);
-        parcel.writeString(imageLink);
-        parcel.writeByte((byte) (isClosed == null ? 0 : isClosed ? 1 : 2));
+    public int describeContents() {
+        return 0;
     }
 }
