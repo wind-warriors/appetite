@@ -37,7 +37,8 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         TextView distance;
         TextView foodCategory;
         TextView address;
-        TextView isClosed;
+//        TextView isClosed;
+        TextView rating;
 
         BusinessViewHolder(View itemView) {
             super(itemView);
@@ -47,7 +48,9 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             distance = itemView.findViewById(R.id.distance);
             foodCategory = itemView.findViewById(R.id.food_category);
             address = itemView.findViewById(R.id.address);
-            isClosed = itemView.findViewById(R.id.isClosed);
+//            isClosed = itemView.findViewById(R.id.isClosed);
+            rating = itemView.findViewById(R.id.isClosed);
+
         }
     }
 
@@ -74,19 +77,22 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         holder.distance.setText(currentBusiness.getDistance());
         holder.foodCategory.setText((currentBusiness.getFoodCategory()));
         holder.address.setText(currentBusiness.getAddress());
+        holder.rating.setText(Double.toString(currentBusiness.getRating()));
 
-        if (currentBusiness.getIsClosed() == true){
-            holder.isClosed.setText(Constants.CLOSED);
-            holder.isClosed.setTextColor(Color.RED);
-
-        }
-        else if(currentBusiness.getIsClosed() == false) {
-            holder.isClosed.setText(Constants.OPEN);
-            holder.isClosed.setTextColor(Color.GREEN);
-        }
-        else {
-            holder.isClosed.setText("");
-        }
+//        if (currentBusiness.getIsClosed() == true){
+//            holder.isClosed.setText(Constants.CLOSED);
+//            holder.isClosed.setTextColor(Color.RED);
+//
+//        }
+//        else if(currentBusiness.getIsClosed() == false) {
+//            holder.isClosed.setText(Constants.OPEN);
+//            holder.isClosed.setTextColor(Color.GREEN);
+//        }
+//        else {
+//            holder.isClosed.setText("");
+//        }
+//
+//
 
 
         holder.foodImage.setOnClickListener(new View.OnClickListener() {

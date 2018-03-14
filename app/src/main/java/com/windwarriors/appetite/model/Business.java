@@ -16,7 +16,8 @@ public class Business implements Parcelable {
         private String address;
         private String distance;
         private String imageLink;
-        private Boolean isClosed;
+//        private Boolean isClosed;
+        private Double rating;
         private Double latitude;
         private Double longitude;
 
@@ -24,7 +25,9 @@ public class Business implements Parcelable {
     }
 
     public Business(String id, String name, String review, String foodCategory, String address,
-                    String distance, String imageLink, Boolean isClosed, Double latitude, Double longitude) {
+                    String distance, String imageLink
+            //, Boolean isClosed
+            , Double rating, Double latitude, Double longitude) {
         this.id = id;
         this.name = name;
         this.totalReviews = review;
@@ -32,7 +35,8 @@ public class Business implements Parcelable {
         this.address = address;
         this.distance = distance;
         this.imageLink = imageLink;
-        this.isClosed = isClosed;
+//        this.isClosed = isClosed;
+        this.rating = rating;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -48,10 +52,14 @@ public class Business implements Parcelable {
         DecimalFormat f = new DecimalFormat("0.00");
         this.distance = (f.format(yelpBusiness.getDistance() / 1000.0)) + " km";
         this.imageLink = yelpBusiness.getImageUrl();
-        this.isClosed = yelpBusiness.getIsClosed();
+
+//        this.isClosed = yelpBusiness.getIsClosed();
+        this.rating = yelpBusiness.getRating();
+
         this.latitude = yelpBusiness.getCoordinates().getLatitude();
         this.longitude = yelpBusiness.getCoordinates().getLongitude();
     }
+
 
     protected Business(Parcel in) {
         id = in.readString();
@@ -61,8 +69,11 @@ public class Business implements Parcelable {
         address = in.readString();
         distance = in.readString();
         imageLink = in.readString();
-        byte tmpIsClosed = in.readByte();
-        isClosed = tmpIsClosed == 0 ? null : tmpIsClosed == 1;
+        if (in.readByte() == 0) {
+            rating = null;
+        } else {
+            rating = in.readDouble();
+        }
         if (in.readByte() == 0) {
             latitude = null;
         } else {
@@ -84,7 +95,12 @@ public class Business implements Parcelable {
         dest.writeString(address);
         dest.writeString(distance);
         dest.writeString(imageLink);
-        dest.writeByte((byte) (isClosed == null ? 0 : isClosed ? 1 : 2));
+        if (rating == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(rating);
+        }
         if (latitude == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -181,12 +197,13 @@ public class Business implements Parcelable {
         this.imageLink = imageLink;
     }
 
-    public boolean getIsClosed() {
-        return isClosed;
+
+    public Double getRating() {
+        return rating;
     }
 
-    public void setIsClosed(boolean closed) {
-        isClosed = closed;
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 
     public Double getLatitude() {
@@ -222,7 +239,7 @@ public class Business implements Parcelable {
                this.address.equals(b2.address) &&
                this.distance.equals(b2.distance) &&
                this.imageLink.equals(b2.imageLink) &&
-               this.isClosed.equals(b2.isClosed) &&
+                this.rating.equals(b2.rating) &&
                this.latitude.equals(b2.latitude) &&
                this.longitude.equals(b2.longitude);
     }
