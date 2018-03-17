@@ -25,6 +25,7 @@ import com.windwarriors.appetite.utils.Constants;
 
 import java.util.ArrayList;
 
+import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
 import static com.windwarriors.appetite.utils.Helper.setUserGreetingTextView;
 
 
@@ -111,7 +112,7 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
 
         switch (id){
             case R.id.id_range:
-                OpenRangeDialog();
+                OpenRangeDialog(this);
                 break;
             case R.id.id_list:
                 break;
@@ -123,11 +124,6 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
                 return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    public void OpenRangeDialog() {
-        BusinessListRangeDialog rangeDialog = new BusinessListRangeDialog();
-        rangeDialog.show(getSupportFragmentManager(), "Range Dialog");
     }
 
     private void registerBusinessListReadyBroadcastReceiver() {

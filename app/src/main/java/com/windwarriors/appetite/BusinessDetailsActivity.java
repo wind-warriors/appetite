@@ -1,8 +1,11 @@
 package com.windwarriors.appetite;
 
+import android.content.Intent;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +25,7 @@ import com.windwarriors.appetite.utils.Helper;
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
 import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LATITUDE;
 import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LONGITUDE;
+import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
 
 public class BusinessDetailsActivity extends AppCompatActivity implements OnMapReadyCallback{
 
@@ -58,7 +62,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
             businessName.setText(currentBusiness.getName());
 
             foodCategory = findViewById(R.id.food_category);
-            foodCategory.setText(currentBusiness.getFoodCategory());
+            foodCategory.setText(currentBusiness.listFoodCategories());
 
             rating = findViewById(R.id.rating);
             rating.setText(String.valueOf(currentBusiness.getRating()));
@@ -97,6 +101,34 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.business_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        Intent next;
+
+        switch (id){
+            case R.id.id_range:
+                OpenRangeDialog(this);
+                break;
+            case R.id.id_list:
+                next = new Intent( BusinessDetailsActivity.this, BusinessListActivity.class);
+                startActivity(next);
+                break;
+            case R.id.id_map:
+                next = new Intent( BusinessDetailsActivity.this, MapsActivity.class);
+                startActivity(next);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 
     // Method to Mock data from a specific business
     private Business mockBusinessDetails(String businessId) {
@@ -104,7 +136,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         mock.setName("The Real McCoy Burgers and Pizza!");
         mock.setDistance("11 Km");
         mock.setAddress("11033 Markham Road, Scarborough, ON M1H 2Y5, Canada");
-        mock.setFoodCategory("Chinese, Noodles");
+        mock.setFoodCategory(new String[]{"Chinese, Noodles"});
         mock.setRating(4.3);
         mock.setImageLink("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/healthy-snacks-1520621791.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*");
         mock.setLatitude(MOCK_DETAIL_LATITUDE);
