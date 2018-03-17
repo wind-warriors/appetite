@@ -22,21 +22,26 @@ class YelpService {
     private val apiFactory: YelpFusionApiFactory = YelpFusionApiFactory()
     private val yelpFusionApi: YelpFusionApi = apiFactory.createAPI(apiKey)
 
-    fun search(callback: Callback<SearchResponse>) {
+    interface Callback<T> {
+        fun onResponse(response: T)
+        fun onFailure(t: Throwable)
+    }
+
+    fun search(callback: YelpService.Callback<SearchResponse>) {
         val yelpCall = yelpFusionApi.getBusinessSearch(params)
         //val response = call.execute()
 
-        val yelpCallback = object : Callback<SearchResponse> {
+        val yelpCallback = object : retrofit2.Callback<SearchResponse> {
             override fun onResponse(call: Call<SearchResponse>, yelpResponse: Response<SearchResponse>) {
                 response = yelpResponse.body()
                 printResponse()
 
-                callback.onResponse(call, yelpResponse)
+                callback.onResponse(response)
             }
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
                 System.out.println(TAG + "Error: " + t)
-                callback.onFailure(call, t)
+                callback.onFailure(t)
             }
         }
 
@@ -54,19 +59,18 @@ class YelpService {
         return response
     }
 
-    fun getBusiness(id: String, callback: Callback<Business>) {
+    fun getBusiness(id: String, callback: YelpService.Callback< com.windwarriors.appetite.model.Business >) {
         val yelpCall = yelpFusionApi.getBusiness(id)
 
-        val yelpCallback = object : Callback<Business> {
+        val yelpCallback = object : retrofit2.Callback<Business> {
             override fun onResponse(call: Call<Business>?, yelpResponse: Response<Business>?) {
                 business = yelpResponse?.body()!!
-
-                callback.onResponse(call, yelpResponse)
+                callback.onResponse( com.windwarriors.appetite.model.Business(business))
             }
 
             override fun onFailure(call: Call<Business>?, t: Throwable?) {
                 System.out.println(TAG + " " + t?.message)
-                callback.onFailure(call, t)
+                callback.onFailure(t!!)
             }
         }
 

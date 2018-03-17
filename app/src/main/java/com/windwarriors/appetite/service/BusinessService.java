@@ -1,7 +1,7 @@
 package com.windwarriors.appetite.service;
 
 import android.content.Context;
-import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.windwarriors.appetite.broadcast.BusinessListReadyBroadcaster;
@@ -11,10 +11,6 @@ import com.windwarriors.appetite.utils.Constants;
 import com.yelp.fusion.client.models.SearchResponse;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class BusinessService {
 
@@ -44,16 +40,16 @@ public class BusinessService {
             yelpService.radius(Integer.valueOf(spRange));
         }
 
-        yelpService.search(new Callback<SearchResponse>() {
+        yelpService.search(new YelpService.Callback<SearchResponse>() {
             @Override
-            public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
+            public void onResponse(SearchResponse response) {
                 businessList.clear();
                 businessList.addAll(yelpService.getSearchResults());
                 businessListReadyBroadcaster.sendBroadcastBusinessListReady(businessList);
             }
 
             @Override
-            public void onFailure(Call<SearchResponse> call, Throwable t) {
+            public void onFailure(Throwable t) {
                 String errorMessage = t.getMessage();
                 Toast.makeText(context.getApplicationContext(), "Unable to retrieve businesses: " + errorMessage, Toast.LENGTH_LONG).show();
             }
@@ -62,15 +58,15 @@ public class BusinessService {
 
     //TODO Rafael: Not tested or used
     public void loadBusiness(String id) {
-        yelpService.getBusiness(id, new Callback<com.yelp.fusion.client.models.Business>() {
+        yelpService.getBusiness(id, new YelpService.Callback<Business>() {
             @Override
-            public void onResponse(Call<com.yelp.fusion.client.models.Business> call, Response<com.yelp.fusion.client.models.Business> response) {
+            public void onResponse(Business business) {
                 //TODO Rafael: pass Business as parameter
                 businessReadyBroadcaster.sendBroadcastBusinessReady();
             }
 
             @Override
-            public void onFailure(Call<com.yelp.fusion.client.models.Business> call, Throwable t) {
+            public void onFailure(@NonNull Throwable t) {
                 Toast.makeText(context.getApplicationContext(), "Unable to retrieve business: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
