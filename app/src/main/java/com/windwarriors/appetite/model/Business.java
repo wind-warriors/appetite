@@ -3,16 +3,18 @@ package com.windwarriors.appetite.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.yelp.fusion.client.models.Category;
 import com.yelp.fusion.client.models.Location;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Business implements Parcelable {
         private String id;
         private String name;
         private String totalReviews;
-        private String foodCategory;
+        private String[] foodCategory;
         private String address;
         private String distance;
         private String imageLink;
@@ -24,7 +26,7 @@ public class Business implements Parcelable {
     public Business(){
     }
 
-    public Business(String id, String name, String review, String foodCategory, String address,
+    public Business(String id, String name, String review, String[] foodCategory, String address,
                     String distance, String imageLink
             //, Boolean isClosed
             , Double rating, Double latitude, Double longitude) {
@@ -46,8 +48,15 @@ public class Business implements Parcelable {
         this.name = yelpBusiness.getName();
         this.totalReviews = String.valueOf(yelpBusiness.getReviewCount());
 
-        // TODO: change foodCategory to String[] (array)??
-        this.foodCategory = yelpBusiness.getCategories().get(0).getTitle(); //getAlias()
+        //FoodCategories
+        ArrayList<Category> yelpCategories = yelpBusiness.getCategories();
+        this.foodCategory = new String[yelpCategories.size()];
+        ArrayList<String> foodCategory = new ArrayList<>();
+        for (Category category: yelpCategories) {
+            foodCategory.add( category.getTitle() );
+        }
+        foodCategory.toArray(this.foodCategory);
+
         this.address = locationToAddress(yelpBusiness.getLocation());
         DecimalFormat f = new DecimalFormat("0.00");
         this.distance = (f.format(yelpBusiness.getDistance() / 1000.0)) + " km";
@@ -65,7 +74,7 @@ public class Business implements Parcelable {
         id = in.readString();
         name = in.readString();
         totalReviews = in.readString();
-        foodCategory = in.readString();
+        foodCategory = in.createStringArray();
         address = in.readString();
         distance = in.readString();
         imageLink = in.readString();
@@ -91,7 +100,7 @@ public class Business implements Parcelable {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeString(totalReviews);
-        dest.writeString(foodCategory);
+        dest.writeStringArray(foodCategory);
         dest.writeString(address);
         dest.writeString(distance);
         dest.writeString(imageLink);
@@ -141,6 +150,22 @@ public class Business implements Parcelable {
         return address.toString();
     }
 
+    public String listFoodCategories() {
+        String s = "";
+        if (foodCategory.length > 0) {
+            s += foodCategory[0];
+            for (int i = 1; i < foodCategory.length; i++) {
+                s = ", " + foodCategory[i];
+            }
+        }
+        return s;
+    }
+
+    public String getFirstFoodCategory() {
+        if (foodCategory.length == 0) return "";
+        else return foodCategory[0];
+    }
+
     public String getId() {
         return id;
     }
@@ -165,11 +190,11 @@ public class Business implements Parcelable {
         this.totalReviews = totalReviews;
     }
 
-    public String getFoodCategory() {
+    public String[] getFoodCategory() {
         return foodCategory;
     }
 
-    public void setFoodCategory(String foodCategory) {
+    public void setFoodCategory(String[] foodCategory) {
         this.foodCategory = foodCategory;
     }
 
@@ -235,7 +260,7 @@ public class Business implements Parcelable {
         return this.id.equals(b2.id) &&
                this.name.equals(b2.name) &&
                this.totalReviews.equals(b2.totalReviews) &&
-               this.foodCategory.equals(b2.foodCategory) &&
+               Arrays.equals(this.foodCategory, b2.foodCategory) &&
                this.address.equals(b2.address) &&
                this.distance.equals(b2.distance) &&
                this.imageLink.equals(b2.imageLink) &&

@@ -75,7 +75,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         holder.businessName.setText(currentBusiness.getName());
         holder.totalReviews.setText(currentBusiness.getTotalReviews());
         holder.distance.setText(currentBusiness.getDistance());
-        holder.foodCategory.setText((currentBusiness.getFoodCategory()));
+        holder.foodCategory.setText(currentBusiness.getFirstFoodCategory());
         holder.address.setText(currentBusiness.getAddress());
         holder.rating.setText(Double.toString(currentBusiness.getRating()));
 

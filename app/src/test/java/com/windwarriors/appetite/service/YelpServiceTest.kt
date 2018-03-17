@@ -33,6 +33,9 @@ class YelpServiceTest {
     fun search() {
         val response = runSearch()
         response?.let {
+            for (c in it.businesses[0].categories) {
+                println("category: " + c.title)
+            }
             assertTrue("Empty Yelp.search response", it.total > 0)
         }
     }
