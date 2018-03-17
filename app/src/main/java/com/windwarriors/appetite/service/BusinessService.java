@@ -34,11 +34,10 @@ public class BusinessService {
         this.businessReadyBroadcaster = new BusinessReadyBroadcaster(context);
     }
 
-    public void loadBusinessList(double Lattitude, double Longitude) {
-        // TODO: apply user filters
-        // parameters available at
-        // https://www.yelp.com/developers/documentation/v3/business_search
-        yelpService.mockParameters(Lattitude, Longitude);
+    public void loadBusinessList(double latitude, double longitude) {
+        //yelpService.mockParameters();
+        yelpService.latitude(latitude);
+        yelpService.longitude(longitude);
 
         String spRange = spService.getFromSharedPreferences(Constants.SHARED_PREFERENCES_SEARCH_RANGE);
         if (!spRange.equals("")) {
