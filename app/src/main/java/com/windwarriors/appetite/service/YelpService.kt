@@ -101,9 +101,9 @@ class YelpService {
         //Log.d(TAG, response.body().toString())
     }
 
-    fun mockParameters() {
-        val centennialLatitude = Constants.CENTENNIAL_LATITUDE
-        val centennialLongitude = Constants.CENTENNIAL_LONGITUDE
+    fun mockParameters(Lattitude: Double, Longitude: Double) {
+        val centennialLatitude = Lattitude
+        val centennialLongitude = Longitude
         //val radius = "1000" //in meters
         params.clear()
         //yelp.put("term", "indian food")

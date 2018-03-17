@@ -1,8 +1,15 @@
 package com.windwarriors.appetite;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,24 +30,53 @@ import com.windwarriors.appetite.utils.Constants;
 
 import java.util.ArrayList;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
     private static final int DIALOG_REQUEST = 9001;
     private GoogleMap mMap;
     private BusinessListReadyReceiver businessListReadyReceiver;
     private BusinessService businessService;
     private ArrayList<Business> businessList;
+    private LocationManager locationManager;
+
+    private double currentLong = Constants.CENTENNIAL_LONGITUDE;
+    private double currentLat = Constants.CENTENNIAL_LATITUDE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        handleLocationPermissions();
+
         if (mapServicesAvailable() ) {
             initMap();
         }
     }
 
+    public void handleLocationPermissions() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    Constants.MY_PERMISSIONS_ACCESS_FINE_LOCATION);
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    Constants.MY_PERMISSIONS_ACCESS_COARSE_LOCATION);
+
+            handleLocationPermissions();
+
+        } else {
+
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            locationManager.requestLocationUpdates("gps", 1000, 1, this);
+
+        }
+    }
 
     /**
      * Manipulates the map once available.
@@ -133,12 +169,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
         registerReceiver(businessListReadyReceiver, businessListReadyReceiver.getIntentFilter());
 
-        businessService.loadBusinessList();
+        businessService.loadBusinessList(currentLat, currentLong);
 
         // Add an initial marker in Centennial College and move camera to that point
-        LatLng centennialCollege = new LatLng(Constants.CENTENNIAL_LATITUDE, Constants.CENTENNIAL_LONGITUDE);
-        mMap.addMarker(new MarkerOptions().position(centennialCollege).title("Centennial College"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(centennialCollege));
+        LatLng currentLatLong = new LatLng(currentLat, currentLong);
+        mMap.addMarker(new MarkerOptions().position(currentLatLong)); //.title("Centennial College"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLong));
     }
 
     private void drawRestaurants(GoogleMap googleMap, ArrayList<Business> businessList) {
@@ -156,6 +192,39 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .anchor(0.5f, 0.5f);
 
         googleMap.addMarker(markerOptions);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+//        Toast.makeText(this,  location.getLatitude()+",\n"+location.getLongitude(),
+//                Toast.LENGTH_SHORT).show();
+
+        if(mMap != null){
+
+            Toast.makeText(this,  location.getLatitude()+",\n"+location.getLongitude(),
+                    Toast.LENGTH_SHORT).show();
+
+            currentLat = location.getLatitude();
+            currentLong = location.getLongitude();
+
+            loadRestaurants(mMap);
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 
     /*

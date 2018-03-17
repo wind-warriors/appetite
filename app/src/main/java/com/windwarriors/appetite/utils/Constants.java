@@ -34,4 +34,9 @@ public final class Constants {
 
     public static final Double CENTENNIAL_LATITUDE = 43.7844571;
     public static final Double CENTENNIAL_LONGITUDE = -79.2287377;
+
+    // Permissions
+    public static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1001;
+    public static final int MY_PERMISSIONS_ACCESS_COARSE_LOCATION = 1002;
+
 }
