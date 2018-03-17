@@ -2,8 +2,12 @@ package com.windwarriors.appetite.utils;
 
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.windwarriors.appetite.service.SharedPreferencesService;
@@ -17,6 +21,7 @@ import static com.windwarriors.appetite.utils.Constants.GREETING;
 
 public final class Helper {
 
+    // Set user greetings in the view indicated by textViewID. This might be used by many screens
     public static String setUserGreetingTextView(Activity context, int textViewId) {
         SharedPreferencesService preferences = new SharedPreferencesService(context);
         String username = preferences.getFromSharedPreferences(SHARED_PREFERENCES_USER_KEY);
@@ -29,6 +34,5 @@ public final class Helper {
         loggedInUserGreeting.setTypeface(Typeface.DEFAULT_BOLD);
         return username;
     }
-
 
 }

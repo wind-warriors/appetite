@@ -9,13 +9,15 @@ public final class Constants {
     public static final String OPEN = "Open";
     public static final String CLOSED = "Closed";
 
+    // Key names for passing data among Activities by using Bundle and Intents
+    public static final String BUSINESS_ID = "BusinessId";
+
 
     // Constants for using Shared Preferences
     public static final String SHARED_PREFERENCES_STORE = "OMGASharedPreferences";
     public static final String SHARED_PREFERENCES_USER_KEY = "UserName";
     public static final String SHARED_PREFERENCES_DEFAULT_USERNAME = "Friend";
     public static final String SHARED_PREFERENCES_SEARCH_RANGE = "SP_SEARCH_RANGE";
-
 
     // Constants for SQLite creation of tables
     public static final String tables[] = {
@@ -34,4 +36,8 @@ public final class Constants {
 
     public static final Double CENTENNIAL_LATITUDE = 43.7844571;
     public static final Double CENTENNIAL_LONGITUDE = -79.2287377;
+
+    public static final Double MOCK_DETAIL_LATITUDE = 43.7740605;
+    public static final Double MOCK_DETAIL_LONGITUDE = -79.2325777;
+
 }

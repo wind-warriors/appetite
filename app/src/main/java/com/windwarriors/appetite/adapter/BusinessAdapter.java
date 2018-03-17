@@ -14,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.windwarriors.appetite.BusinessDetailsActivity;
 import com.windwarriors.appetite.R;
 import com.windwarriors.appetite.model.Business;
 import com.windwarriors.appetite.utils.Constants;
+import com.windwarriors.appetite.utils.DownloadImageTask;
 import com.windwarriors.appetite.utils.Helper;
 
 import java.io.IOException;
@@ -25,10 +27,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
+
 public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.BusinessViewHolder> {
 
     private ArrayList<Business> businessList;
-    private Context context;
+    private static Context context;
 
     static class BusinessViewHolder extends RecyclerView.ViewHolder {
         ImageView foodImage;
@@ -52,6 +56,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             rating = itemView.findViewById(R.id.isClosed);
 
         }
+
     }
 
     public BusinessAdapter(Context context, ArrayList<Business> businessList) {
@@ -94,19 +99,14 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
 //
 //
 
-
         holder.foodImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, businessList.get(position).getName(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, businessList.get(position).getName(), Toast.LENGTH_SHORT).show();
 
-                //Intent next = new Intent( context, ProductsActivity.class);
-                //next.putExtra(CATEGORY_PARAM, businessList.get(position).getName());
-                //context.startActivity(next);
-
-
-
-
+            Intent next = new Intent( context, BusinessDetailsActivity.class);
+            next.putExtra(BUSINESS_ID, businessList.get(position).getId());
+            context.startActivity(next);
             }
         });
     }
@@ -116,26 +116,4 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         return businessList.size();
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
 }
