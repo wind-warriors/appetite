@@ -19,6 +19,7 @@ public final class Constants {
     public static final String SHARED_PREFERENCES_DEFAULT_USERNAME = "Friend";
     public static final String SHARED_PREFERENCES_SEARCH_RANGE = "SP_SEARCH_RANGE";
 
+
     // Constants for SQLite creation of tables
     public static final String tables[] = {
             DatabaseContract.UserEntry.TABLE_NAME
@@ -39,5 +40,10 @@ public final class Constants {
 
     public static final Double MOCK_DETAIL_LATITUDE = 43.7740605;
     public static final Double MOCK_DETAIL_LONGITUDE = -79.2325777;
+
+
+    // Permissions
+    public static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1001;
+    public static final int MY_PERMISSIONS_ACCESS_COARSE_LOCATION = 1002;
 
 }

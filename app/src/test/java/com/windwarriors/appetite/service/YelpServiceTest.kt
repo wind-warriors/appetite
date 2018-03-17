@@ -1,15 +1,12 @@
 package com.windwarriors.appetite.service
 
-import com.yelp.fusion.client.models.Business
+import com.windwarriors.appetite.model.Business
 import com.yelp.fusion.client.models.SearchResponse
 import org.junit.After
 import org.junit.Before
 
 import org.junit.Assert.*
 import org.junit.Test
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
@@ -33,6 +30,9 @@ class YelpServiceTest {
     fun search() {
         val response = runSearch()
         response?.let {
+            for (c in it.businesses[0].categories) {
+                println("category: " + c.title)
+            }
             assertTrue("Empty Yelp.search response", it.total > 0)
         }
     }
@@ -42,14 +42,14 @@ class YelpServiceTest {
         val businessId = "the-real-mccoy-burgers-and-pizza-scarborough"
         val syncObject = Object()
 
-        val yelpCallback = object : Callback<Business> {
-            override fun onResponse(call: Call<Business>, yelpResponse: Response<Business>) {
+        val yelpCallback = object : YelpService.Callback<Business> {
+            override fun onResponse(response: Business) {
                 synchronized(syncObject) {
                     syncObject.notify()
                 }
             }
 
-            override fun onFailure(call: Call<Business>, t: Throwable) {
+            override fun onFailure(t: Throwable) {
                 synchronized(syncObject) {
                     syncObject.notify()
                 }
@@ -95,12 +95,12 @@ class YelpServiceTest {
     }
 
     private fun runSearch(): SearchResponse? {
-        val yelpCallback = object : Callback<SearchResponse> {
-            override fun onResponse(call: Call<SearchResponse>, yelpResponse: Response<SearchResponse>) {
+        val yelpCallback = object : YelpService.Callback<SearchResponse> {
+            override fun onResponse(response: SearchResponse) {
                 q.add(yelpService.response)
             }
 
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+            override fun onFailure(t: Throwable) {
                 fail("Yelp.search.callback.onFailure:" + t.message)
             }
         }
