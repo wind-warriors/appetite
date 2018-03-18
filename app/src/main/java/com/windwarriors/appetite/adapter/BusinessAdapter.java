@@ -2,29 +2,18 @@ package com.windwarriors.appetite.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.windwarriors.appetite.BusinessDetailsActivity;
 import com.windwarriors.appetite.R;
 import com.windwarriors.appetite.model.Business;
-import com.windwarriors.appetite.utils.Constants;
 import com.windwarriors.appetite.utils.DownloadImageTask;
-import com.windwarriors.appetite.utils.Helper;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
@@ -42,7 +31,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         TextView foodCategory;
         TextView address;
 //        TextView isClosed;
-        TextView rating;
+        ImageView ratingStar;
 
         BusinessViewHolder(View itemView) {
             super(itemView);
@@ -53,7 +42,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             foodCategory = itemView.findViewById(R.id.food_category);
             address = itemView.findViewById(R.id.address);
 //            isClosed = itemView.findViewById(R.id.isClosed);
-            rating = itemView.findViewById(R.id.isClosed);
+            ratingStar = itemView.findViewById(R.id.imageStar);
 
         }
 
@@ -82,7 +71,26 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         holder.distance.setText(currentBusiness.getDistance());
         holder.foodCategory.setText(currentBusiness.getFirstFoodCategory());
         holder.address.setText(currentBusiness.getAddress());
-        holder.rating.setText(Double.toString(currentBusiness.getRating()));
+        if (currentBusiness.getRating().equals(5.0)) {
+            holder.ratingStar.setImageResource(R.drawable.stars_regular_5);
+        } else if (currentBusiness.getRating().equals(4.5)) {
+            holder.ratingStar.setImageResource(R.drawable.stars_regular_4_half);
+        } else if (currentBusiness.getRating().equals(4.0)) {
+            holder.ratingStar.setImageResource(R.drawable.stars_regular_4);
+        } else if (currentBusiness.getRating().equals(3.5)) {
+            holder.ratingStar.setImageResource(R.drawable.stars_regular_3_half);
+        } else if (currentBusiness.getRating().equals(3.0)) {
+            holder.ratingStar.setImageResource(R.drawable.stars_regular_3);
+        } else if (currentBusiness.getRating().equals(2.5)) {
+            holder.ratingStar.setImageResource(R.drawable.stars_regular_2_half);
+        } else if (currentBusiness.getRating().equals(2.0)) {
+            holder.ratingStar.setImageResource(R.drawable.stars_regular_2);
+        } else if (currentBusiness.getRating().equals(1.5)) {
+            holder.ratingStar.setImageResource(R.drawable.stars_regular_1_half);
+        } else if (currentBusiness.getRating().equals(1.0)) {
+            holder.ratingStar.setImageResource(R.drawable.stars_regular_1);
+        } else {
+            holder.ratingStar.setImageResource(R.drawable.stars_regular_0);}
 
 //        if (currentBusiness.getIsClosed() == true){
 //            holder.isClosed.setText(Constants.CLOSED);
