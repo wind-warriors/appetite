@@ -151,14 +151,14 @@ public class Business implements Parcelable {
     }
 
     public String listFoodCategories() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         if (foodCategory.length > 0) {
-            s += foodCategory[0];
+            s.append(foodCategory[0]);
             for (int i = 1; i < foodCategory.length; i++) {
-                s = ", " + foodCategory[i];
+                s.append(", ").append(foodCategory[i]);
             }
         }
-        return s;
+        return s.toString();
     }
 
     public String getFirstFoodCategory() {
