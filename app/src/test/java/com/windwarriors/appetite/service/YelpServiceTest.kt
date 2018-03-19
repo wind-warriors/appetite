@@ -77,6 +77,8 @@ class YelpServiceTest {
         }
     }
 
+
+    /*
     @Test
     fun mockSyncSearch() {
         yelpService.mockParameters()
@@ -93,6 +95,7 @@ class YelpServiceTest {
         assertNotNull(business)
         assertEquals(businessId, business.id)
     }
+    */
 
     private fun runSearch(): SearchResponse? {
         val yelpCallback = object : YelpService.Callback<SearchResponse> {

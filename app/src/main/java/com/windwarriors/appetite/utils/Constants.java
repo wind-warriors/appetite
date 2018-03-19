@@ -34,6 +34,7 @@ public final class Constants {
 
     // Used on BusinessListReadyBroadcaster intents
     public static final String BUSINESS_LIST = "businessList";
+    public static final String BUSINESS = "business";
 
     public static final Double CENTENNIAL_LATITUDE = 43.7844571;
     public static final Double CENTENNIAL_LONGITUDE = -79.2287377;
@@ -45,5 +46,4 @@ public final class Constants {
     // Permissions
     public static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1001;
     public static final int MY_PERMISSIONS_ACCESS_COARSE_LOCATION = 1002;
-
 }

@@ -49,20 +49,18 @@ public class BusinessService {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(@NonNull Throwable t) {
                 String errorMessage = t.getMessage();
                 Toast.makeText(context.getApplicationContext(), "Unable to retrieve businesses: " + errorMessage, Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    //TODO Rafael: Not tested or used
     public void loadBusiness(String id) {
         yelpService.getBusiness(id, new YelpService.Callback<Business>() {
             @Override
             public void onResponse(Business business) {
-                //TODO Rafael: pass Business as parameter
-                businessReadyBroadcaster.sendBroadcastBusinessReady();
+                businessReadyBroadcaster.sendBroadcastBusinessReady(business);
             }
 
             @Override
@@ -71,16 +69,6 @@ public class BusinessService {
             }
         });
     }
-
-    /* does not make sense in an async context
-    public ArrayList<Business> getBusinessList(){
-        return this.businessList;
-    }
-
-    public Business getBusiness() {
-        return new Business(this.yelpService.business);
-    }
-    */
 
     public void clearParameters() {
         yelpService.clear();
