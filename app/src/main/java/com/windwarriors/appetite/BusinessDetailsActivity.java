@@ -17,10 +17,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.windwarriors.appetite.adapter.BusinessAdapter;
+import com.windwarriors.appetite.broadcast.BusinessReadyReceiver;
 import com.windwarriors.appetite.model.Business;
+import com.windwarriors.appetite.service.BusinessService;
 import com.windwarriors.appetite.utils.Constants;
 import com.windwarriors.appetite.utils.DownloadImageTask;
 import com.windwarriors.appetite.utils.Helper;
+
+import java.util.ArrayList;
 
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
 import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LATITUDE;
@@ -30,6 +34,9 @@ import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
 public class BusinessDetailsActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     MapView mMapView;
+    BusinessService businessService;
+    BusinessReadyReceiver businessReadyReceiver;
+    ArrayList<Business> businessList;
     Business currentBusiness;
 
     TextView businessName;
@@ -48,37 +55,24 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         if( data != null ){
             String businessId = data.getString(BUSINESS_ID);
 
-            // TODO: load data for the corresponding Business using service
-            currentBusiness = mockBusinessDetails(businessId);
+            businessList = new ArrayList<>();
+            businessService = new BusinessService(this, businessList);
+            businessReadyReceiver = new BusinessReadyReceiver(new BusinessReadyReceiver.OnReceive() {
+                @Override
+                public void onReceive(Business business) {
+                    displayBusiness(business);
+                }
+            });
+            registerReceiver(businessReadyReceiver, businessReadyReceiver.getIntentFilter());
 
-            mMapView = (MapView)findViewById(R.id.businness_map);
-            if( mMapView != null){
-                mMapView.onCreate(null);
-                mMapView.onResume();
-                mMapView.getMapAsync(this);
-            }
-
-            businessName = findViewById(R.id.business_name);
-            businessName.setText(currentBusiness.getName());
-
-            foodCategory = findViewById(R.id.food_category);
-            foodCategory.setText(currentBusiness.listFoodCategories());
-
-            rating = findViewById(R.id.rating);
-            rating.setText(String.valueOf(currentBusiness.getRating()));
-
-            reviews = findViewById(R.id.total_reviews);
-            reviews.setText(currentBusiness.getTotalReviews());
-
-            address = findViewById(R.id.address);
-            address.setText(currentBusiness.getAddress());
-
-            distance = findViewById(R.id.distance);
-            distance.setText(currentBusiness.getDistance());
-
-            foodImage = (ImageView)findViewById(R.id.image);
-            new DownloadImageTask(foodImage).execute(currentBusiness.getImageLink());
+            businessService.loadBusiness(businessId);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(businessReadyReceiver);
+        super.onDestroy();
     }
 
     @Override
@@ -87,10 +81,10 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.setMinZoomPreference(14.0f);
 
-        LatLng mockLatLng = new LatLng(Constants.MOCK_DETAIL_LATITUDE, Constants.MOCK_DETAIL_LONGITUDE);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(mockLatLng));
-
         LatLng latLng = new LatLng(currentBusiness.getLatitude(), currentBusiness.getLongitude());
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+
         MarkerOptions markerOptions = new MarkerOptions()
                 .position( latLng )
                 .title(currentBusiness.getName())
@@ -128,6 +122,41 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void loadMap() {
+        mMapView = findViewById(R.id.businness_map);
+        if( mMapView != null){
+            mMapView.onCreate(null);
+            mMapView.onResume();
+            mMapView.getMapAsync(this);
+        }
+    }
+
+    private void displayBusiness(Business business) {
+        currentBusiness = business;
+        loadMap();
+
+        businessName = findViewById(R.id.business_name);
+        businessName.setText(currentBusiness.getName());
+
+        foodCategory = findViewById(R.id.food_category);
+        foodCategory.setText(currentBusiness.listFoodCategories());
+
+        rating = findViewById(R.id.rating);
+        rating.setText(String.valueOf(currentBusiness.getRating()));
+
+        reviews = findViewById(R.id.total_reviews);
+        reviews.setText(currentBusiness.getTotalReviews());
+
+        address = findViewById(R.id.address);
+        address.setText(currentBusiness.getAddress());
+
+        distance = findViewById(R.id.distance);
+        distance.setText(currentBusiness.getDistance());
+
+        foodImage = findViewById(R.id.image);
+        new DownloadImageTask(foodImage).execute(currentBusiness.getImageLink());
     }
 
     // Method to Mock data from a specific business
