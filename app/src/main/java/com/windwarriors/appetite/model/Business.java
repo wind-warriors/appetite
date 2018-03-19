@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.yelp.fusion.client.models.Category;
 import com.yelp.fusion.client.models.Location;
 
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -267,5 +268,22 @@ public class Business implements Parcelable {
                 this.rating.equals(b2.rating) &&
                this.latitude.equals(b2.latitude) &&
                this.longitude.equals(b2.longitude);
+    }
+
+    @Override
+    public String toString() {
+        Field[] fields = Business.class.getDeclaredFields();
+        System.out.printf("%d fields:%n", fields.length);
+        for (Field field : fields) {
+            try {
+                System.out.printf("%s: %s%n",
+                        field.getName(),
+                        field.get(this)
+                );
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return name;
     }
 }
