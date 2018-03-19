@@ -12,7 +12,7 @@ import retrofit2.Response
 class YelpService {
     private val TAG = "Appetite.YelpService"
     lateinit var response: SearchResponse
-    lateinit var business: Business
+    lateinit var business: com.windwarriors.appetite.model.Business
 
     private val params = HashMap<String, String>()
 
@@ -64,8 +64,9 @@ class YelpService {
 
         val yelpCallback = object : retrofit2.Callback<Business> {
             override fun onResponse(call: Call<Business>?, yelpResponse: Response<Business>?) {
-                business = yelpResponse?.body()!!
-                callback.onResponse( com.windwarriors.appetite.model.Business(business))
+                business = com.windwarriors.appetite.model.Business( yelpResponse?.body()!! )
+                printBusiness()
+                callback.onResponse( business )
             }
 
             override fun onFailure(call: Call<Business>?, t: Throwable?) {
@@ -81,9 +82,9 @@ class YelpService {
     fun sync_getBusiness(id: String): Business {
         val call = yelpFusionApi.getBusiness(id)
         val businessResponse = call.execute()
-        business = businessResponse.body()
+        business = com.windwarriors.appetite.model.Business( businessResponse.body() )
         printBusiness()
-        return business
+        return businessResponse.body()
     }
 
     fun getSearchResults(): ArrayList<com.windwarriors.appetite.model.Business> {
@@ -93,14 +94,16 @@ class YelpService {
     }
 
     private fun printBusiness() {
-        System.out.println(TAG + " YelpService Business:")
-        System.out.println(TAG + " " + business.id)
+        System.out.println(TAG + " Business:")
+        System.out.println("  id: " + business.id)
+        System.out.println("  name: " + business.name)
+        System.out.println("  foodCategories: " + business.listFoodCategories())
     }
 
     private fun printResponse() {
-        System.out.println(TAG + " YelpService Response:")
+        System.out.println(TAG + " Response:")
         System.out.println(TAG + " " + response.total)
-        System.out.println(TAG + " " + response.businesses.toString())
+        //System.out.println(TAG + " " + response.businesses.toString())
         System.out.println(TAG + " First Business:" + response.businesses[0].id)
         //Log.d(TAG, response.body().toString())
     }
