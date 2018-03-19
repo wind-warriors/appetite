@@ -23,7 +23,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
     private ArrayList<Business> businessList;
     private static Context context;
 
-    static class BusinessViewHolder extends RecyclerView.ViewHolder {
+    class BusinessViewHolder extends RecyclerView.ViewHolder {
         ImageView foodImage;
         TextView businessName;
         TextView totalReviews;
@@ -43,6 +43,24 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             address = itemView.findViewById(R.id.address);
 //            isClosed = itemView.findViewById(R.id.isClosed);
             ratingStar = itemView.findViewById(R.id.imageStar);
+
+            // on item click
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    // get position
+                    int position = getAdapterPosition();
+
+                    // check if item still exists
+                    if(position != RecyclerView.NO_POSITION){
+                        String businessId = businessList.get(position).getId();
+                        //Toast.makeText(v.getContext(), "You clicked "+position+":"+businessId, Toast.LENGTH_SHORT).show();
+                        Intent next = new Intent( context, BusinessDetailsActivity.class);
+                        next.putExtra(BUSINESS_ID, businessId);
+                        context.startActivity(next);
+                    }
+                }
+            });
 
         }
 
@@ -107,16 +125,16 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
 //
 //
 
-        holder.foodImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            //Toast.makeText(context, businessList.get(position).getName(), Toast.LENGTH_SHORT).show();
-
-            Intent next = new Intent( context, BusinessDetailsActivity.class);
-            next.putExtra(BUSINESS_ID, businessList.get(position).getId());
-            context.startActivity(next);
-            }
-        });
+//        holder.foodImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//            //Toast.makeText(context, businessList.get(position).getName(), Toast.LENGTH_SHORT).show();
+//
+//            Intent next = new Intent( context, BusinessDetailsActivity.class);
+//            next.putExtra(BUSINESS_ID, businessList.get(position).getId());
+//            context.startActivity(next);
+//            }
+//        });
     }
 
     @Override
