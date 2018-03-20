@@ -21,10 +21,12 @@ import com.windwarriors.appetite.adapter.SimpleDividerItemDecoration;
 import com.windwarriors.appetite.model.Business;
 import com.windwarriors.appetite.broadcast.BusinessListReadyReceiver;
 import com.windwarriors.appetite.service.BusinessService;
+import com.windwarriors.appetite.service.SharedPreferencesService;
 import com.windwarriors.appetite.utils.Constants;
 
 import java.util.ArrayList;
 
+import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SEARCH_RANGE;
 import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
 import static com.windwarriors.appetite.utils.Helper.setUserGreetingTextView;
 
@@ -43,11 +45,14 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
 
     private double currentLong = Constants.CENTENNIAL_LONGITUDE;
     private double currentLat = Constants.CENTENNIAL_LATITUDE;
+    private SharedPreferencesService sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_list);
+
+        sharedPreferences = new SharedPreferencesService(this);
 
         // Set greeting for logged in user
         setUserGreetingTextView(this, R.id.greeting);
@@ -70,7 +75,14 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
         registerBusinessListReadyBroadcastReceiver();
 
         handleLocationPermissions();
-        
+
+
+        if (sharedPreferences.getFromSharedPreferences(SHARED_PREFERENCES_SEARCH_RANGE).equals("")){
+            // Set default range to 10 KM
+            sharedPreferences.saveToSharedPreferences(SHARED_PREFERENCES_SEARCH_RANGE, "10");
+        }
+
+
         BusinessService businessService = new BusinessService(this, businessList);
         businessService.loadBusinessList(currentLat, currentLong);
     }
