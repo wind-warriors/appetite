@@ -11,6 +11,7 @@ public final class Constants {
 
     // Key names for passing data among Activities by using Bundle and Intents
     public static final String BUSINESS_ID = "BusinessId";
+    public static final String BUSINESS_DISTANCE = "BusinessDistance";
 
 
     // Constants for using Shared Preferences

@@ -16,6 +16,7 @@ import com.windwarriors.appetite.utils.DownloadImageTask;
 
 import java.util.ArrayList;
 
+import static com.windwarriors.appetite.utils.Constants.BUSINESS_DISTANCE;
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
 
 public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.BusinessViewHolder> {
@@ -54,9 +55,11 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
                     // check if item still exists
                     if(position != RecyclerView.NO_POSITION){
                         String businessId = businessList.get(position).getId();
+                        String businessDistance = businessList.get(position).getDistance();
                         //Toast.makeText(v.getContext(), "You clicked "+position+":"+businessId, Toast.LENGTH_SHORT).show();
                         Intent next = new Intent( context, BusinessDetailsActivity.class);
                         next.putExtra(BUSINESS_ID, businessId);
+                        next.putExtra(BUSINESS_DISTANCE, businessDistance);
                         context.startActivity(next);
                     }
                 }

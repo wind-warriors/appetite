@@ -26,6 +26,7 @@ import com.windwarriors.appetite.utils.Helper;
 
 import java.util.ArrayList;
 
+import static com.windwarriors.appetite.utils.Constants.BUSINESS_DISTANCE;
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
 import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LATITUDE;
 import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LONGITUDE;
@@ -38,6 +39,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
     BusinessReadyReceiver businessReadyReceiver;
     ArrayList<Business> businessList;
     Business currentBusiness;
+    String businessDistance;
 
     TextView businessName;
     TextView foodCategory;
@@ -54,6 +56,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         Bundle data = getIntent().getExtras();
         if( data != null ){
             String businessId = data.getString(BUSINESS_ID);
+            businessDistance = data.getString(BUSINESS_DISTANCE);
 
             businessList = new ArrayList<>();
             businessService = new BusinessService(this, businessList);
@@ -152,8 +155,8 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         address = findViewById(R.id.address);
         address.setText(currentBusiness.getAddress());
 
-        distance = findViewById(R.id.distance);
-        distance.setText(currentBusiness.getDistance());
+        distance = findViewById(R.id.details_distance);
+        distance.setText(businessDistance);
 
         foodImage = findViewById(R.id.image);
         new DownloadImageTask(foodImage).execute(currentBusiness.getImageLink());

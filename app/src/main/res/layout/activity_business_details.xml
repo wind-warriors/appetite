@@ -84,7 +84,7 @@
                 android:textColor="@color/foodCategoryTextColor"/>\
 
             <TextView
-                android:id="@+id/distance"
+                android:id="@+id/details_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="12 km"
