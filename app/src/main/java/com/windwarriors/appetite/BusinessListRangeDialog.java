@@ -26,7 +26,7 @@ import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SEARC
 public class BusinessListRangeDialog extends AppCompatDialogFragment {
     private SeekBar rangeSeekBar;
     private TextView tvRangeValue;
-    private int selectedRange = 0;
+    private int selectedRange = 1;
     private SharedPreferencesService spService;
 
     @Override
@@ -86,6 +86,6 @@ public class BusinessListRangeDialog extends AppCompatDialogFragment {
     }
 
     protected void setValueLabel(int valueRange){
-        tvRangeValue.setText("Value: " + valueRange + " km");
+        tvRangeValue.setText(valueRange + " km");
     }
 }
