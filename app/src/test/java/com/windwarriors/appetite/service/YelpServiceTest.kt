@@ -60,6 +60,8 @@ class YelpServiceTest {
 
         synchronized (syncObject){
             syncObject.wait()
+            //System.out.println("business:")
+            //yelpService.business.toString()
             val responseBusinessId = yelpService.business.id
             assertEquals(businessId, responseBusinessId)
         }

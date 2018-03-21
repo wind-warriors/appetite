@@ -94,15 +94,18 @@ class YelpService {
     }
 
     private fun printBusiness() {
+        business.toString()
+        /*
         System.out.println(TAG + " Business:")
         System.out.println("  id: " + business.id)
         System.out.println("  name: " + business.name)
         System.out.println("  foodCategories: " + business.listFoodCategories())
+        */
     }
 
     private fun printResponse() {
         System.out.println(TAG + " Response:")
-        System.out.println(TAG + " " + response.total)
+        System.out.println(TAG + " " + response.total + " businesses found")
         //System.out.println(TAG + " " + response.businesses.toString())
         System.out.println(TAG + " First Business:" + response.businesses[0].id)
         //Log.d(TAG, response.body().toString())

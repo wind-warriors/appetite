@@ -58,6 +58,10 @@ public class Business implements Parcelable {
         }
         foodCategory.toArray(this.foodCategory);
 
+        if (yelpBusiness.getDistance() == 0.0) {
+            System.out.println("Appetite.Business: WARNING: distance 0 for " + this.name);
+        }
+
         this.address = locationToAddress(yelpBusiness.getLocation());
         DecimalFormat f = new DecimalFormat("0.00");
         this.distance = (f.format(yelpBusiness.getDistance() / 1000.0)) + " km";
@@ -273,7 +277,7 @@ public class Business implements Parcelable {
     @Override
     public String toString() {
         Field[] fields = Business.class.getDeclaredFields();
-        System.out.printf("%d fields:%n", fields.length);
+        //System.out.printf("%d fields:%n", fields.length);
         for (Field field : fields) {
             try {
                 System.out.printf("%s: %s%n",

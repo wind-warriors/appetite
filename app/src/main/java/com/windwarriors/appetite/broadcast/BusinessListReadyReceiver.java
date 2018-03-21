@@ -47,7 +47,7 @@ public class BusinessListReadyReceiver extends BroadcastReceiver {
     }
 
     public IntentFilter getIntentFilter() {
-        System.out.println(TAG + " registering service state change receiver...");
+        System.out.println(TAG + " registering...");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.BROADCAST_BUSINESS_LIST_READY);
         return intentFilter;
