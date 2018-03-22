@@ -21,6 +21,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.windwarriors.appetite.broadcast.BusinessListReadyReceiver;
@@ -173,7 +175,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Add an initial marker in Centennial College and move camera to that point
         LatLng currentLatLong = new LatLng(currentLat, currentLong);
-        mMap.addMarker(new MarkerOptions().position(currentLatLong)); //.title("Centennial College"));
+        BitmapDescriptor bluePin = BitmapDescriptorFactory.fromResource(R.drawable.pin_fork_spoon_cross_blue);
+        mMap.addMarker(new MarkerOptions().position(currentLatLong).icon(bluePin)); //.title("Centennial College"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLong));
     }
 
@@ -185,10 +188,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void drawRestaurant(GoogleMap googleMap, Business business) {
         LatLng latLng = new LatLng(business.getLatitude(), business.getLongitude());
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.pin_fork_spoon_cross);
         MarkerOptions markerOptions = new MarkerOptions()
                 .position( latLng )
                 .title(business.getName())
                 .snippet(business.getName())
+                .icon(icon)
                 .anchor(0.5f, 0.5f);
 
         googleMap.addMarker(markerOptions);
