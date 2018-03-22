@@ -40,7 +40,7 @@ class YelpService {
             }
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                System.out.println(TAG + "Error: " + t)
+                System.out.println(TAG + " Error: " + t.message)
                 callback.onFailure(t)
             }
         }
@@ -70,7 +70,7 @@ class YelpService {
             }
 
             override fun onFailure(call: Call<Business>?, t: Throwable?) {
-                System.out.println(TAG + " " + t?.message)
+                System.out.println(TAG + " Error: " + t?.message)
                 callback.onFailure(t!!)
             }
         }
@@ -107,7 +107,8 @@ class YelpService {
         System.out.println(TAG + " Response:")
         System.out.println(TAG + " " + response.total + " businesses found")
         //System.out.println(TAG + " " + response.businesses.toString())
-        System.out.println(TAG + " First Business:" + response.businesses[0].id)
+        System.out.println(TAG + " First Business:" + response.businesses[0].id + ", " +
+            response.businesses[0].name)
         //Log.d(TAG, response.body().toString())
     }
 

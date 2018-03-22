@@ -12,6 +12,11 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
 
 class YelpServiceTest {
+    val CITY_HALL_LATITUDE: Double = 43.652568
+    val CITY_HALL_LONGITUDE: Double = -79.3835223
+    val ISLINGTON_STATION_LATITUDE: Double = 43.6450701
+    val ISLINGTON_STATION_LONGITUDE: Double = -79.5267515
+
     var yelpService: YelpService = YelpService()
     val q: BlockingQueue<SearchResponse> = LinkedBlockingQueue(1)
 
@@ -23,18 +28,68 @@ class YelpServiceTest {
 
     @After
     fun tearDown() {
+        yelpService.onDestroy()
     }
-
 
     @Test
     fun search() {
+        println("====== business search on Centennial College ======")
+        yelpService.mockParameters()
         val response = runSearch()
         response?.let {
-            for (c in it.businesses[0].categories) {
-                println("category: " + c.title)
-            }
             assertTrue("Empty Yelp.search response", it.total > 0)
         }
+    }
+
+    @Test
+    fun searchTimHortons() {
+        println("====== business search of Tim Hortons ======")
+        yelpService.term("Tim Hortons")
+        val response = runSearch()
+        response?.let {
+            assertTrue("No Tim Hortons on response",
+                it.businesses[0].id.contains("tim-hortons"))
+        }
+    }
+
+    @Test
+    fun searchToronto() {
+        yelpService.term("Toronto")
+        val response = runSearch()
+        response?.let {
+            for (business: Business in yelpService.getSearchResults() ) {
+                println(business.id)
+                //assertTrue(business.id.contains("toronto")) FALSE
+            }
+        }
+    }
+
+    @Test
+    fun searchTermCoffee() {
+        yelpService.term("Coffee")
+        val response = runSearch()
+    }
+
+    @Test
+    fun searchCategoryCoffee() {
+        yelpService.categories("Coffee")
+        val response = runSearch()
+    }
+
+    @Test
+    fun searchCityHall() {
+        println("====== business search on City Hall ======")
+        yelpService.latitude(CITY_HALL_LATITUDE)
+        yelpService.longitude(CITY_HALL_LONGITUDE)
+        val response = runSearch()
+    }
+
+    @Test
+    fun searchIslingtonStation() {
+        println("====== business search on Islington Station ======")
+        yelpService.latitude(ISLINGTON_STATION_LATITUDE)
+        yelpService.longitude(ISLINGTON_STATION_LONGITUDE)
+        val response = runSearch()
     }
 
     @Test
@@ -79,26 +134,6 @@ class YelpServiceTest {
         }
     }
 
-
-    /*
-    @Test
-    fun mockSyncSearch() {
-        yelpService.mockParameters()
-
-        val response = yelpService.sync_search()
-        assertNotNull(response)
-    }
-
-    @Test
-    fun syncGetBusiness() {
-        val businessId = "the-real-mccoy-burgers-and-pizza-scarborough"
-        val business = yelpService.sync_getBusiness(businessId)
-
-        assertNotNull(business)
-        assertEquals(businessId, business.id)
-    }
-    */
-
     private fun runSearch(): SearchResponse? {
         val yelpCallback = object : YelpService.Callback<SearchResponse> {
             override fun onResponse(response: SearchResponse) {
@@ -106,7 +141,7 @@ class YelpServiceTest {
             }
 
             override fun onFailure(t: Throwable) {
-                fail("Yelp.search.callback.onFailure:" + t.message)
+                fail("YelpServiceTest.runSearch.callback.onFailure: " + t.message)
             }
         }
         yelpService.search(yelpCallback)
@@ -122,7 +157,9 @@ class YelpServiceTest {
         } catch (e: InterruptedException) {
             fail("Yelp.search() did not respond in " + timeout + "s!")
         }
-
+        response?.let {
+            assertTrue("Empty Yelp response", it.total > 0)
+        }
         return response
     }
 }
