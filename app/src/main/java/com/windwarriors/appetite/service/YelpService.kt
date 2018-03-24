@@ -104,12 +104,14 @@ class YelpService {
     }
 
     private fun printResponse() {
-        System.out.println(TAG + " Response:")
-        System.out.println(TAG + " " + response.total + " businesses found")
-        //System.out.println(TAG + " " + response.businesses.toString())
-        System.out.println(TAG + " First Business:" + response.businesses[0].id + ", " +
-            response.businesses[0].name)
-        //Log.d(TAG, response.body().toString())
+        if( response != null && response.total != null && response.businesses != null && !response.businesses.isNotEmpty() ){
+            System.out.println(TAG + " Response:")
+            System.out.println(TAG + " " + response.total + " businesses found")
+            //System.out.println(TAG + " " + response.businesses.toString())
+            System.out.println(TAG + " First Business:" + response.businesses[0].id + ", " +
+                    response.businesses[0].name)
+            //Log.d(TAG, response.body().toString())
+        }
     }
 
     fun mockParameters() {
