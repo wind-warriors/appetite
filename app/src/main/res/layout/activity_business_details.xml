@@ -105,6 +105,35 @@
                 android:text="@string/address_sample_text"
                 android:textSize="17sp"/>
 
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:background="@color/photos_background">
+
+                <TextView
+                    android:id="@+id/photo_section_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Photos"
+                    android:textSize="20sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="3dp"
+                    android:textColor="@color/black"/>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/photos_viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
         </LinearLayout>
     </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

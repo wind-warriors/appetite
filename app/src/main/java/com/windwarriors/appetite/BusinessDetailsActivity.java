@@ -2,6 +2,7 @@ package com.windwarriors.appetite;
 
 import android.content.Intent;
 import android.media.Image;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.windwarriors.appetite.adapter.BusinessAdapter;
+import com.windwarriors.appetite.adapter.PhotoAdapter;
 import com.windwarriors.appetite.broadcast.BusinessReadyReceiver;
 import com.windwarriors.appetite.model.Business;
 import com.windwarriors.appetite.service.BusinessService;
@@ -25,6 +27,8 @@ import com.windwarriors.appetite.utils.DownloadImageTask;
 import com.windwarriors.appetite.utils.Helper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_DISTANCE;
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
@@ -69,6 +73,11 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
             registerReceiver(businessReadyReceiver, businessReadyReceiver.getIntentFilter());
 
             businessService.loadBusiness(businessId);
+
+            // Set photos from Photo adapter to the viewPager so we can scroll horizontally photos
+            ViewPager viewPager = findViewById(R.id.photos_viewpager);
+            PhotoAdapter adapter = new PhotoAdapter(this, mockBusinessPhotos());
+            viewPager.setAdapter(adapter);
         }
     }
 
@@ -175,6 +184,16 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         mock.setLongitude(MOCK_DETAIL_LONGITUDE);
 
         return mock;
+    }
+    private List<String> mockBusinessPhotos(){
+        return Arrays.asList(
+                "https://images.pexels.com/photos/239975/pexels-photo-239975.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                "http://s3.amazonaws.com/Boomeon/posts/heros/000/007/570/original/Bobby_Gujral.jpg?1495688026",
+                "https://www.mtl.org/sites/default/files/2017-07/20671H.jpg",
+                "https://www.stclouds.com/wp-content/uploads/2017/11/cropped-night4.jpg",
+                "https://www.prague.eu/object/1693/10608592-724315724290937-1028515969827308394-o.jpg",
+                "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/lead-restaurants-1508259029.jpg?crop=1.00xw:1.00xh;0,0&resize=1600:*",
+                "http://www.appareilarchitecture.com/wp-content/uploads/z_APPAREILarchitecture_Restaurant-BATTUTO_Qu%C3%A9bec_2016_%C2%A9F%C3%A9lix-Michaud_HR_006-2cover.jpg");
     }
 
 }

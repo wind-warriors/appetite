@@ -12,6 +12,7 @@
     <color name="divider">#DDDDDD</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="black">#000</color>
+    <color name="photos_background">#DDDDDD</color>
     <color name="white">#fff</color>
     <color name="addressTextColor">#888888</color>
     <color name="productNameTextColor">#757575</color>
