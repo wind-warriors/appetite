@@ -24,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.windwarriors.appetite.broadcast.BusinessListReadyReceiver;
 import com.windwarriors.appetite.model.Business;
@@ -32,7 +33,10 @@ import com.windwarriors.appetite.utils.Constants;
 
 import java.util.ArrayList;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
+import static com.windwarriors.appetite.utils.Constants.BUSINESS_DISTANCE;
+import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnInfoWindowClickListener {
 
     private static final int DIALOG_REQUEST = 9001;
     private GoogleMap mMap;
@@ -196,7 +200,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .icon(icon)
                 .anchor(0.5f, 0.5f);
 
-        googleMap.addMarker(markerOptions);
+        googleMap
+                .addMarker(markerOptions)
+                .setTag(business.getId() + ";" + business.getDistance());
+
+        googleMap.setOnInfoWindowClickListener(this);
     }
 
     @Override
@@ -207,8 +215,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if(mMap != null){
 
-            Toast.makeText(this,  location.getLatitude()+",\n"+location.getLongitude(),
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,  location.getLatitude()+",\n"+location.getLongitude(),
+            // Toast.LENGTH_SHORT).show();
 
             currentLat = location.getLatitude();
             currentLong = location.getLongitude();
@@ -230,6 +238,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        String[] tags = marker.getTag().toString().split(";");
+
+        Intent detailsIntent = new Intent(this,BusinessDetailsActivity.class);
+        detailsIntent.putExtra(BUSINESS_ID, tags[0]);
+        detailsIntent.putExtra(BUSINESS_DISTANCE, tags[1]);
+
+        startActivity(detailsIntent);
     }
 
     /*
