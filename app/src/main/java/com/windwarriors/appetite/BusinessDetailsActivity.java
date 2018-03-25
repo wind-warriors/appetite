@@ -47,11 +47,13 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
 
     TextView businessName;
     TextView foodCategory;
-    TextView rating;
+//    TextView rating;
     TextView reviews;
     TextView address;
     TextView distance;
     ImageView foodImage;
+    ImageView ratingStar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,26 +150,52 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
     private void displayBusiness(Business business) {
         currentBusiness = business;
         loadMap();
+        ratingStar =  findViewById(R.id.details_imageStar);
 
-        businessName = findViewById(R.id.business_name);
+        businessName = findViewById(R.id.details_business_name);
         businessName.setText(currentBusiness.getName());
 
-        foodCategory = findViewById(R.id.food_category);
+        foodCategory = findViewById(R.id.details_food_category);
         foodCategory.setText(currentBusiness.listFoodCategories());
 
-        rating = findViewById(R.id.rating);
-        rating.setText(String.valueOf(currentBusiness.getRating()));
+//        rating = findViewById(R.id.details_rating);
+//        rating.setText(String.valueOf(currentBusiness.getRating()));
 
-        reviews = findViewById(R.id.total_reviews);
+        reviews = findViewById(R.id.details_total_reviews);
         reviews.setText(currentBusiness.getTotalReviews());
 
-        address = findViewById(R.id.address);
+        address = findViewById(R.id.details_address);
         address.setText(currentBusiness.getAddress());
 
         distance = findViewById(R.id.details_distance);
         distance.setText(businessDistance);
 
-        foodImage = findViewById(R.id.image);
+
+        if (currentBusiness.getRating().equals(5.0)) {
+            ratingStar.setImageResource(R.drawable.stars_regular_5);
+        } else if (currentBusiness.getRating().equals(4.5)) {
+            ratingStar.setImageResource(R.drawable.stars_regular_4_half);
+        } else if (currentBusiness.getRating().equals(4.0)) {
+            ratingStar.setImageResource(R.drawable.stars_regular_4);
+        } else if (currentBusiness.getRating().equals(3.5)) {
+            ratingStar.setImageResource(R.drawable.stars_regular_3_half);
+        } else if (currentBusiness.getRating().equals(3.0)) {
+            ratingStar.setImageResource(R.drawable.stars_regular_3);
+        } else if (currentBusiness.getRating().equals(2.5)) {
+            ratingStar.setImageResource(R.drawable.stars_regular_2_half);
+        } else if (currentBusiness.getRating().equals(2.0)) {
+            ratingStar.setImageResource(R.drawable.stars_regular_2);
+        } else if (currentBusiness.getRating().equals(1.5)) {
+            ratingStar.setImageResource(R.drawable.stars_regular_1_half);
+        } else if (currentBusiness.getRating().equals(1.0)) {
+            ratingStar.setImageResource(R.drawable.stars_regular_1);
+        } else {
+            ratingStar.setImageResource(R.drawable.stars_regular_0);}
+
+
+
+
+        foodImage = findViewById(R.id.details_image);
         new DownloadImageTask(foodImage).execute(currentBusiness.getImageLink());
     }
 

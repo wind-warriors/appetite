@@ -19,7 +19,6 @@ public class Business implements Parcelable {
         private String address;
         private String distance;
         private String imageLink;
-//        private Boolean isClosed;
         private Double rating;
         private Double latitude;
         private Double longitude;
@@ -29,7 +28,6 @@ public class Business implements Parcelable {
 
     public Business(String id, String name, String review, String[] foodCategory, String address,
                     String distance, String imageLink
-            //, Boolean isClosed
             , Double rating, Double latitude, Double longitude) {
         this.id = id;
         this.name = name;
@@ -38,7 +36,6 @@ public class Business implements Parcelable {
         this.address = address;
         this.distance = distance;
         this.imageLink = imageLink;
-//        this.isClosed = isClosed;
         this.rating = rating;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -67,7 +64,6 @@ public class Business implements Parcelable {
         this.distance = (f.format(yelpBusiness.getDistance() / 1000.0)) + " km";
         this.imageLink = yelpBusiness.getImageUrl();
 
-//        this.isClosed = yelpBusiness.getIsClosed();
         this.rating = yelpBusiness.getRating();
 
         this.latitude = yelpBusiness.getCoordinates().getLatitude();

@@ -31,7 +31,6 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         TextView distance;
         TextView foodCategory;
         TextView address;
-//        TextView isClosed;
         ImageView ratingStar;
 
         BusinessViewHolder(View itemView) {
@@ -42,7 +41,6 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             distance = itemView.findViewById(R.id.distance);
             foodCategory = itemView.findViewById(R.id.food_category);
             address = itemView.findViewById(R.id.address);
-//            isClosed = itemView.findViewById(R.id.isClosed);
             ratingStar = itemView.findViewById(R.id.imageStar);
 
             // on item click
@@ -113,20 +111,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         } else {
             holder.ratingStar.setImageResource(R.drawable.stars_regular_0);}
 
-//        if (currentBusiness.getIsClosed() == true){
-//            holder.isClosed.setText(Constants.CLOSED);
-//            holder.isClosed.setTextColor(Color.RED);
-//
-//        }
-//        else if(currentBusiness.getIsClosed() == false) {
-//            holder.isClosed.setText(Constants.OPEN);
-//            holder.isClosed.setTextColor(Color.GREEN);
-//        }
-//        else {
-//            holder.isClosed.setText("");
-//        }
-//
-//
+
 
 //        holder.foodImage.setOnClickListener(new View.OnClickListener() {
 //            @Override

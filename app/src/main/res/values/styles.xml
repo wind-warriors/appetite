@@ -42,6 +42,18 @@
         <item name="android:text">The Real McCoy Burgers and Pizza</item>
     </style>
 
+    <style name="details_businessName">
+        <item name="android:textColor">@color/productNameTextColor</item>
+        <item name="android:textSize">@dimen/businessNameTextSize</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:text">The Real McCoy Burgers and Pizza</item>
+    </style>
+
+
     <style name="totalReviews">
         <item name="android:textColor">@color/productDescriptionTextColor</item>
         <item name="android:textSize">@dimen/businessTotalReviewsTextSize</item>
@@ -68,6 +80,15 @@
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:text">@string/address_sample_text</item>
         <item name="android:textSize">@dimen/addressTextSize</item>
+    </style>
+
+    <style name="details_address">
+        <item name="android:textColor">@color/addressTextColor</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:text">@string/address_sample_text</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="productCurrency">
