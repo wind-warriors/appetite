@@ -23,6 +23,7 @@ public class Business implements Parcelable {
         private Double latitude;
         private Double longitude;
         private String price;
+        private String[] photos;
 
 
     public Business(){
@@ -30,7 +31,7 @@ public class Business implements Parcelable {
 
     public Business(String id, String name, String review, String[] foodCategory, String address,
                     String distance, String imageLink
-            , Double rating, Double latitude, Double longitude, String price) {
+            , Double rating, Double latitude, Double longitude, String price, String[] photos) {
         this.id = id;
         this.name = name;
         this.totalReviews = review;
@@ -42,6 +43,7 @@ public class Business implements Parcelable {
         this.latitude = latitude;
         this.longitude = longitude;
         this.price = price;
+        this.photos = photos;
     }
 
     public Business(com.yelp.fusion.client.models.Business yelpBusiness) {
@@ -68,17 +70,24 @@ public class Business implements Parcelable {
         this.distance = (f.format(yelpBusiness.getDistance() / 1000.0)) + " km";
         this.imageLink = yelpBusiness.getImageUrl();
 
+        ArrayList<String> yelpPhotos = yelpBusiness.getPhotos();
+        if (yelpPhotos != null) {
+            this.photos = new String[yelpPhotos.size()];
+            yelpPhotos.toArray(this.photos);
+        } else {
+            this.photos = new String[0];
+            //this.photos[0] = this.imageLink;
+        }
+
         this.rating = yelpBusiness.getRating();
 
         this.latitude = yelpBusiness.getCoordinates().getLatitude();
         this.longitude = yelpBusiness.getCoordinates().getLongitude();
     }
 
-
     protected Business(Parcel in) {
         id = in.readString();
         name = in.readString();
-        price = in.readString();
         totalReviews = in.readString();
         foodCategory = in.createStringArray();
         address = in.readString();
@@ -99,14 +108,14 @@ public class Business implements Parcelable {
         } else {
             longitude = in.readDouble();
         }
+        price = in.readString();
+        photos = in.createStringArray();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
-        dest.writeString(price);
-
         dest.writeString(totalReviews);
         dest.writeStringArray(foodCategory);
         dest.writeString(address);
@@ -130,6 +139,8 @@ public class Business implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeDouble(longitude);
         }
+        dest.writeString(price);
+        dest.writeStringArray(photos);
     }
 
     public static final Creator<Business> CREATOR = new Creator<Business>() {
@@ -194,7 +205,7 @@ public class Business implements Parcelable {
         return price;
     }
 
-    public void setPrice(String name) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -261,6 +272,14 @@ public class Business implements Parcelable {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public String[] getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(String[] photos) {
+        this.photos = photos;
     }
 
     @Override

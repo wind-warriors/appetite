@@ -76,11 +76,6 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
             registerReceiver(businessReadyReceiver, businessReadyReceiver.getIntentFilter());
 
             businessService.loadBusiness(businessId);
-
-            // Set photos from Photo adapter to the viewPager so we can scroll horizontally photos
-            ViewPager viewPager = findViewById(R.id.photos_viewpager);
-            PhotoAdapter adapter = new PhotoAdapter(this, mockBusinessPhotos());
-            viewPager.setAdapter(adapter);
         }
     }
 
@@ -193,8 +188,10 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         } else {
             ratingStar.setImageResource(R.drawable.stars_regular_0);}
 
-
-
+        // Set photos from Photo adapter to the viewPager so we can scroll horizontally photos
+        ViewPager viewPager = findViewById(R.id.photos_viewpager);
+        PhotoAdapter adapter = new PhotoAdapter(this, Arrays.asList(currentBusiness.getPhotos()) );//mockBusinessPhotos());
+        viewPager.setAdapter(adapter);
 
         foodImage = findViewById(R.id.details_image);
         new DownloadImageTask(foodImage).execute(currentBusiness.getImageLink());
