@@ -34,12 +34,9 @@
             tools:context="com.windwarriors.appetite.BusinessListActivity">
 
             <TextView
-                android:id="@+id/total_reviews"
-                style="@style/totalReviews" />
+                android:id="@+id/food_category"
+                style="@style/foodCategory"/>
 
-            <TextView
-                android:id="@+id/reviews_postfix_text"
-                style="@style/reviewsPostfixText"/>
 
             <TextView
                 android:id="@+id/distance"
@@ -53,9 +50,13 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/food_category"
+                android:id="@+id/total_reviews"
+                style="@style/totalReviews" />
+
+            <TextView
+                android:id="@+id/reviews_postfix_text"
                 android:layout_weight="1"
-                style="@style/foodCategory"/>
+                style="@style/reviewsPostfixText"/>
 
             <ImageView
                 android:id="@+id/imageStar"

@@ -88,7 +88,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         holder.businessName.setText(currentBusiness.getName());
         holder.totalReviews.setText(currentBusiness.getTotalReviews());
         holder.distance.setText(currentBusiness.getDistance());
-        holder.foodCategory.setText(currentBusiness.getFirstFoodCategory());
+        holder.foodCategory.setText(currentBusiness.getPrice() + " - " +currentBusiness.getFirstFoodCategory());
         holder.address.setText(currentBusiness.getAddress());
         if (currentBusiness.getRating().equals(5.0)) {
             holder.ratingStar.setImageResource(R.drawable.stars_regular_5);

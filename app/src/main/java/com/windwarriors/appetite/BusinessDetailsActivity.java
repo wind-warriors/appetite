@@ -49,6 +49,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
     TextView foodCategory;
 //    TextView rating;
     TextView reviews;
+
     TextView address;
     TextView distance;
     ImageView foodImage;
@@ -156,13 +157,13 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         businessName.setText(currentBusiness.getName());
 
         foodCategory = findViewById(R.id.details_food_category);
-        foodCategory.setText(currentBusiness.listFoodCategories());
+        foodCategory.setText(currentBusiness.getPrice() + "  -  " + currentBusiness.listFoodCategories());
 
 //        rating = findViewById(R.id.details_rating);
 //        rating.setText(String.valueOf(currentBusiness.getRating()));
 
         reviews = findViewById(R.id.details_total_reviews);
-        reviews.setText(currentBusiness.getTotalReviews());
+        reviews.setText( currentBusiness.getTotalReviews());
 
         address = findViewById(R.id.details_address);
         address.setText(currentBusiness.getAddress());

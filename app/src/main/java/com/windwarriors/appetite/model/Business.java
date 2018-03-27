@@ -22,13 +22,15 @@ public class Business implements Parcelable {
         private Double rating;
         private Double latitude;
         private Double longitude;
+        private String price;
+
 
     public Business(){
     }
 
     public Business(String id, String name, String review, String[] foodCategory, String address,
                     String distance, String imageLink
-            , Double rating, Double latitude, Double longitude) {
+            , Double rating, Double latitude, Double longitude, String price) {
         this.id = id;
         this.name = name;
         this.totalReviews = review;
@@ -39,10 +41,12 @@ public class Business implements Parcelable {
         this.rating = rating;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.price = price;
     }
 
     public Business(com.yelp.fusion.client.models.Business yelpBusiness) {
         this.id = yelpBusiness.getId();
+        this.price = yelpBusiness.getPrice();
         this.name = yelpBusiness.getName();
         this.totalReviews = String.valueOf(yelpBusiness.getReviewCount());
 
@@ -74,6 +78,7 @@ public class Business implements Parcelable {
     protected Business(Parcel in) {
         id = in.readString();
         name = in.readString();
+        price = in.readString();
         totalReviews = in.readString();
         foodCategory = in.createStringArray();
         address = in.readString();
@@ -100,6 +105,8 @@ public class Business implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
+        dest.writeString(price);
+
         dest.writeString(totalReviews);
         dest.writeStringArray(foodCategory);
         dest.writeString(address);
@@ -183,6 +190,14 @@ public class Business implements Parcelable {
         this.name = name;
     }
 
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String name) {
+        this.price = price;
+    }
+
     public String getTotalReviews() {
         return totalReviews;
     }
@@ -260,7 +275,9 @@ public class Business implements Parcelable {
         Business b2 = (Business) obj;
         return this.id.equals(b2.id) &&
                this.name.equals(b2.name) &&
-               this.totalReviews.equals(b2.totalReviews) &&
+                this.price.equals(b2.price) &&
+
+                this.totalReviews.equals(b2.totalReviews) &&
                Arrays.equals(this.foodCategory, b2.foodCategory) &&
                this.address.equals(b2.address) &&
                this.distance.equals(b2.distance) &&
