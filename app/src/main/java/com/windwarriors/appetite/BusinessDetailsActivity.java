@@ -152,7 +152,17 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         businessName.setText(currentBusiness.getName());
 
         foodCategory = findViewById(R.id.details_food_category);
-        foodCategory.setText(currentBusiness.getPrice() + "  -  " + currentBusiness.listFoodCategories());
+        String priceAndCategory;
+        if (currentBusiness.getPrice() == null)
+        {
+            priceAndCategory = currentBusiness.listFoodCategories();
+        }
+        else
+        {
+            priceAndCategory = currentBusiness.getPrice() + "  -  " + currentBusiness.listFoodCategories();
+        }
+
+        foodCategory.setText(priceAndCategory);
 
 //        rating = findViewById(R.id.details_rating);
 //        rating.setText(String.valueOf(currentBusiness.getRating()));
