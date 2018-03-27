@@ -55,7 +55,7 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
         sharedPreferences = new SharedPreferencesService(this);
 
         // Set greeting for logged in user
-        setUserGreetingTextView(this, R.id.greeting);
+        //setUserGreetingTextView(this, R.id.greeting);
 
         businessRecyclerView = findViewById(R.id.recycler_view_business_list);
         businessRecyclerView.setHasFixedSize(true);
