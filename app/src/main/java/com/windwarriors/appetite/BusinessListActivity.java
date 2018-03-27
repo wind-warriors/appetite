@@ -82,8 +82,7 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
             sharedPreferences.saveToSharedPreferences(SHARED_PREFERENCES_SEARCH_RANGE, "10");
         }
 
-
-        BusinessService businessService = new BusinessService(this, businessList);
+        businessService = new BusinessService(this, businessList);
         businessService.loadBusinessList(currentLat, currentLong);
     }
 
