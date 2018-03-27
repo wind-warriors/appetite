@@ -41,7 +41,6 @@
 
             <TextView
                 android:id="@+id/distance"
-                android:layout_weight="1"
                 style="@style/distance" />
 
         </LinearLayout>
