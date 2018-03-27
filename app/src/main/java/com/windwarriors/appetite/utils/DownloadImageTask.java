@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 // Download an image from a url link asynchronously, and load it into the ImageView received
@@ -16,13 +17,26 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected Bitmap doInBackground(String... urls) {
+        // Setup Bitmap factory options to reduce memory required for an image
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        // Resamples the photo to one quarter of its original size
+        options.inSampleSize = 4;
+
         String urldisplay = urls[0];
         Bitmap mIcon11 = null;
+        InputStream in = null;
         try {
-            InputStream in = new java.net.URL(urldisplay).openStream();
-            mIcon11 = BitmapFactory.decodeStream(in);
+            in = new java.net.URL(urldisplay).openStream();
+            mIcon11 = BitmapFactory.decodeStream(in, null, options);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        finally{
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return mIcon11;
     }
