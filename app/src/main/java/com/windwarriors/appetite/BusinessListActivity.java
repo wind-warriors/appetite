@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -71,6 +72,10 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
                 businessAdapter.notifyDataSetChanged();
             }
         });
+
+//
+//        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(myToolbar);
 
         registerBusinessListReadyBroadcastReceiver();
 
