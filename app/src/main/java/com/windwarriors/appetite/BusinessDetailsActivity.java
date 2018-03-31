@@ -108,7 +108,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.business_list_menu, menu);
+        getMenuInflater().inflate(R.menu.business_list_details_menu, menu);
         return true;
     }
 
@@ -128,9 +128,6 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
             case R.id.id_map:
                 next = new Intent( BusinessDetailsActivity.this, MapsActivity.class);
                 startActivity(next);
-                break;
-            case R.id.action_filter:
-                OpenFilterDialog(this);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
