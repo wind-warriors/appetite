@@ -28,6 +28,7 @@ import com.windwarriors.appetite.utils.Constants;
 import java.util.ArrayList;
 
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SEARCH_RANGE;
+import static com.windwarriors.appetite.utils.Helper.OpenFilterDialog;
 import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
 import static com.windwarriors.appetite.utils.Helper.setUserGreetingTextView;
 
@@ -135,6 +136,9 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
             case R.id.id_map:
                 next = new Intent( BusinessListActivity.this, MapsActivity.class);
                 startActivity(next);
+                break;
+            case R.id.action_filter:
+                OpenFilterDialog(this);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

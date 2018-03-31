@@ -36,6 +36,7 @@ import java.util.ArrayList;
 
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_DISTANCE;
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
+import static com.windwarriors.appetite.utils.Helper.OpenFilterDialog;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnInfoWindowClickListener {
 
@@ -122,6 +123,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(next);
                 break;
             case R.id.id_map:
+                break;
+            case R.id.action_filter:
+                OpenFilterDialog(this);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

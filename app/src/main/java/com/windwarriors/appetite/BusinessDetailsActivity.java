@@ -34,6 +34,7 @@ import static com.windwarriors.appetite.utils.Constants.BUSINESS_DISTANCE;
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
 import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LATITUDE;
 import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LONGITUDE;
+import static com.windwarriors.appetite.utils.Helper.OpenFilterDialog;
 import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
 
 public class BusinessDetailsActivity extends AppCompatActivity implements OnMapReadyCallback{
@@ -127,6 +128,9 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
             case R.id.id_map:
                 next = new Intent( BusinessDetailsActivity.this, MapsActivity.class);
                 startActivity(next);
+                break;
+            case R.id.action_filter:
+                OpenFilterDialog(this);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

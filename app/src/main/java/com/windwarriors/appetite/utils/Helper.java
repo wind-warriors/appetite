@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.windwarriors.appetite.BusinessListFilterDialog;
 import com.windwarriors.appetite.BusinessListRangeDialog;
 import com.windwarriors.appetite.service.SharedPreferencesService;
 
@@ -43,4 +44,8 @@ public final class Helper {
         rangeDialog.show(context.getSupportFragmentManager(), "Range Dialog");
     }
 
+    public static void OpenFilterDialog(AppCompatActivity context) {
+        BusinessListFilterDialog filterDialog = new BusinessListFilterDialog();
+        filterDialog.show(context.getSupportFragmentManager(), "Filter Dialog");
+    }
 }

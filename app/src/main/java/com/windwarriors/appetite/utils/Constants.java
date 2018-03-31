@@ -19,6 +19,7 @@ public final class Constants {
     public static final String SHARED_PREFERENCES_USER_KEY = "UserName";
     public static final String SHARED_PREFERENCES_DEFAULT_USERNAME = "Friend";
     public static final String SHARED_PREFERENCES_SEARCH_RANGE = "SP_SEARCH_RANGE";
+    public static final String SHARED_PREFERENCES_FILTER_PRICE = "SP_FILTER_PRICE";
 
 
     // Constants for SQLite creation of tables
