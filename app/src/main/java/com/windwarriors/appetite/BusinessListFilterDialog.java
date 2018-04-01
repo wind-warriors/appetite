@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.nex3z.togglebuttongroup.MultiSelectToggleGroup;
@@ -19,10 +21,13 @@ import java.util.Arrays;
 
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_FILTER_PRICE;
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SEARCH_RANGE;
+import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SORTBY;
 
 public class BusinessListFilterDialog extends AppCompatDialogFragment {
     private SharedPreferencesService spService;
     private MultiSelectToggleGroup multipleToggleSwitch;
+    private Spinner sorbySpinner;
+    ArrayAdapter<String> sortByAdapter;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -35,6 +40,13 @@ public class BusinessListFilterDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.filter_dialog, null);
 
         multipleToggleSwitch = (MultiSelectToggleGroup)view.findViewById(R.id.multiple_toggle_price);
+
+        // Setup spinner drop down for sort by criteria
+        sorbySpinner = (Spinner)view.findViewById(R.id.spinner_sortby);
+        sortByAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.sortby_options_array));
+        sortByAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sorbySpinner.setAdapter(sortByAdapter);
 
         Initialize_Controls_From_SharedPref();
 
@@ -51,6 +63,7 @@ public class BusinessListFilterDialog extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         SavePrice();
+                        saveSortByCriteria();
                     }
                 });
 
@@ -76,6 +89,13 @@ public class BusinessListFilterDialog extends AppCompatDialogFragment {
                     multipleToggleSwitch.check(R.id.PriceLevel_4);
                     break;
             }
+        }
+
+        // Initialize Sortby dropdown
+        String savedSortBy = spService.getFromSharedPreferences(SHARED_PREFERENCES_SORTBY);
+        if (savedSortBy != null) {
+            int spinnerPosition = sortByAdapter.getPosition(savedSortBy);
+            sorbySpinner.setSelection(spinnerPosition);
         }
 
     }
@@ -106,5 +126,11 @@ public class BusinessListFilterDialog extends AppCompatDialogFragment {
         //Toast.makeText(getContext(),price,Toast.LENGTH_LONG).show();
 
         spService.saveToSharedPreferences(SHARED_PREFERENCES_FILTER_PRICE, price);
+    }
+
+    public void saveSortByCriteria() {
+
+        String sortByCriteria = sortByAdapter.getItem(sorbySpinner.getSelectedItemPosition());
+        spService.saveToSharedPreferences(SHARED_PREFERENCES_SORTBY, sortByCriteria);
     }
 }
