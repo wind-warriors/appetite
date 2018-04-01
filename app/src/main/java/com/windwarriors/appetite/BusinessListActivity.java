@@ -14,7 +14,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.windwarriors.appetite.adapter.BusinessAdapter;
@@ -25,8 +27,11 @@ import com.windwarriors.appetite.service.BusinessService;
 import com.windwarriors.appetite.service.SharedPreferencesService;
 import com.windwarriors.appetite.utils.Constants;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LATITUDE;
+import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LONGITUDE;
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SEARCH_RANGE;
 import static com.windwarriors.appetite.utils.Helper.OpenFilterDialog;
 import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
@@ -118,7 +123,29 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.business_list_menu, menu);
+        //getMenuInflater().inflate(R.menu.business_list_menu, menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.business_list_menu, menu);
+
+        MenuItem item = menu.findItem(R.id.menu_search);  //findViewById(R.id.menu_search);
+        SearchView searchView = (SearchView)item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+
+            @Override
+            public boolean onQueryTextSubmit(String term) {
+                //Toast.makeText(getApplicationContext(), "onQueryTextSubmit: "+s, Toast.LENGTH_SHORT).show();
+                mockBusinessServiceloadSearchByTermResult(term);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String term) {
+                //Toast.makeText(getApplicationContext(), "onQueryTextChange: "+s, Toast.LENGTH_SHORT).show();
+                mockBusinessServiceloadSearchByTermResult(term);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -184,5 +211,25 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    private void mockBusinessServiceloadSearchByTermResult(String term) {
+        businessList.clear();
+        businessList.add(mockBusinessDetails());
+        businessAdapter.notifyDataSetChanged();
+    }
+
+    private Business mockBusinessDetails() {
+        Business mock = new Business();
+        mock.setName("The Real McCoy Burgers and Pizza!");
+        mock.setDistance("11 Km");
+        mock.setAddress("11033 Markham Road, Scarborough, ON M1H 2Y5, Canada");
+        mock.setFoodCategory(new String[]{"Chinese, Noodles"});
+        mock.setRating(4.3);
+        mock.setImageLink("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/healthy-snacks-1520621791.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*");
+        mock.setLatitude(MOCK_DETAIL_LATITUDE);
+        mock.setLongitude(MOCK_DETAIL_LONGITUDE);
+
+        return mock;
     }
 }
