@@ -5,7 +5,7 @@ import com.windwarriors.appetite.database.DatabaseContract;
 public final class Constants {
 
     // Constant for greeting the username
-    public static final String GREETING = "Hello, ";
+    static final String GREETING = "Hello, ";
     public static final String OPEN = "Open";
     public static final String CLOSED = "Closed";
 
@@ -17,7 +17,7 @@ public final class Constants {
     // Constants for using Shared Preferences
     public static final String SHARED_PREFERENCES_STORE = "OMGASharedPreferences";
     public static final String SHARED_PREFERENCES_USER_KEY = "UserName";
-    public static final String SHARED_PREFERENCES_DEFAULT_USERNAME = "Friend";
+    static final String SHARED_PREFERENCES_DEFAULT_USERNAME = "Friend";
     public static final String SHARED_PREFERENCES_SEARCH_RANGE = "SP_SEARCH_RANGE";
     public static final String SHARED_PREFERENCES_FILTER_PRICE = "SP_FILTER_PRICE";
     public static final String SHARED_PREFERENCES_SORTBY= "SORT_BY";
@@ -32,8 +32,20 @@ public final class Constants {
             DatabaseContract.UserEntry.SQL_CREATE_TABLE
     };
 
-    public static final String BROADCAST_BUSINESS_LIST_READY = "BUSINESS_LIST_READY";
-    public static final String BROADCAST_BUSINESS_READY = "BUSINESS_READY";
+    public static final String BROADCAST_BUSINESS_LIST_READY      = "BUSINESS_LIST_READY";
+    public static final String BROADCAST_BUSINESS_READY           = "BUSINESS_READY";
+    public static final String BROADCAST_BUSINESS_SERVICE         = "BUSINESS_SERVICE";
+    public static final String BROADCAST_TERM                     = "BROADCAST_TERM";
+    public static final String BROADCAST_LATITUDE                 = "BROADCAST_LATITUDE";
+    public static final String BROADCAST_LONGITUDE                = "BROADCAST_LONGITUDE";
+    public static final String BROADCAST_ID                       = "BROADCAST_ID";
+
+    // BUSINESS SERVICE CMDS
+    public static final int    BROADCAST_REFRESH_BUSINESS_LIST    = 100;
+    public static final int    BROADCAST_UPDATE_LOCATION          = 102;
+    public static final int    BROADCAST_UPDATE_TERM              = 103;
+    public static final int    BROADCAST_LOAD_BUSINESS            = 104;
+    public static final int    BROADCAST_DESTROY_BUSINESS_SERVICE = 99;
 
     // Used on BusinessListReadyBroadcaster intents
     public static final String BUSINESS_LIST = "businessList";

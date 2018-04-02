@@ -11,7 +11,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -29,7 +28,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.windwarriors.appetite.broadcast.BusinessListReadyReceiver;
 import com.windwarriors.appetite.model.Business;
-import com.windwarriors.appetite.service.BusinessService;
+import com.windwarriors.appetite.service.BusinessServiceClient;
 import com.windwarriors.appetite.utils.Constants;
 
 import java.util.ArrayList;
@@ -43,8 +42,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int DIALOG_REQUEST = 9001;
     private GoogleMap mMap;
     private BusinessListReadyReceiver businessListReadyReceiver;
-    private BusinessService businessService;
-    private ArrayList<Business> businessList;
+    private BusinessServiceClient businessServiceClient;
+    //private ArrayList<Business> businessList;
     private LocationManager locationManager;
 
     private double currentLong = Constants.CENTENNIAL_LONGITUDE;
@@ -54,6 +53,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        businessServiceClient = new BusinessServiceClient(this);
 
         handleLocationPermissions();
 
@@ -170,8 +171,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void loadRestaurants(final GoogleMap googleMap) {
-        businessList = new ArrayList<>();
-        businessService = new BusinessService(this, businessList);
+        //businessList = new ArrayList<>();
+        //businessService = new BusinessService(this, businessList);
         businessListReadyReceiver = new BusinessListReadyReceiver(new BusinessListReadyReceiver.OnReceive() {
             @Override
             public void onReceive(ArrayList<Business> businessList) {
@@ -180,7 +181,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
         registerReceiver(businessListReadyReceiver, businessListReadyReceiver.getIntentFilter());
 
-        businessService.loadBusinessList(currentLat, currentLong);
+        businessServiceClient.updateLocation(currentLat, currentLong);
+        businessServiceClient.refreshBusinessList();
 
         // Add an initial marker in Centennial College and move camera to that point
         LatLng currentLatLong = new LatLng(currentLat, currentLong);

@@ -1,10 +1,9 @@
 package com.windwarriors.appetite;
 
 import android.content.Intent;
-import android.media.Image;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -17,16 +16,12 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.windwarriors.appetite.adapter.BusinessAdapter;
 import com.windwarriors.appetite.adapter.PhotoAdapter;
 import com.windwarriors.appetite.broadcast.BusinessReadyReceiver;
 import com.windwarriors.appetite.model.Business;
-import com.windwarriors.appetite.service.BusinessService;
-import com.windwarriors.appetite.utils.Constants;
+import com.windwarriors.appetite.service.BusinessServiceClient;
 import com.windwarriors.appetite.utils.DownloadImageTask;
-import com.windwarriors.appetite.utils.Helper;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,15 +29,13 @@ import static com.windwarriors.appetite.utils.Constants.BUSINESS_DISTANCE;
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
 import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LATITUDE;
 import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LONGITUDE;
-import static com.windwarriors.appetite.utils.Helper.OpenFilterDialog;
 import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
 
 public class BusinessDetailsActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     MapView mMapView;
-    BusinessService businessService;
     BusinessReadyReceiver businessReadyReceiver;
-    ArrayList<Business> businessList;
+    BusinessServiceClient businessServiceClient;
     Business currentBusiness;
     String businessDistance;
 
@@ -66,8 +59,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
             String businessId = data.getString(BUSINESS_ID);
             businessDistance = data.getString(BUSINESS_DISTANCE);
 
-            businessList = new ArrayList<>();
-            businessService = new BusinessService(this, businessList);
+            businessServiceClient = new BusinessServiceClient(this);
             businessReadyReceiver = new BusinessReadyReceiver(new BusinessReadyReceiver.OnReceive() {
                 @Override
                 public void onReceive(Business business) {
@@ -76,7 +68,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
             });
             registerReceiver(businessReadyReceiver, businessReadyReceiver.getIntentFilter());
 
-            businessService.loadBusiness(businessId);
+            businessServiceClient.loadBusiness(businessId);
         }
     }
 

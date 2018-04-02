@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,14 +22,12 @@ import com.windwarriors.appetite.adapter.BusinessAdapter;
 import com.windwarriors.appetite.adapter.SimpleDividerItemDecoration;
 import com.windwarriors.appetite.broadcast.BusinessListReadyReceiver;
 import com.windwarriors.appetite.model.Business;
-import com.windwarriors.appetite.service.BusinessService;
+import com.windwarriors.appetite.service.BusinessServiceClient;
 import com.windwarriors.appetite.service.SharedPreferencesService;
 import com.windwarriors.appetite.utils.Constants;
 
 import java.util.ArrayList;
 
-import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LATITUDE;
-import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LONGITUDE;
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SEARCH_RANGE;
 import static com.windwarriors.appetite.utils.Helper.OpenFilterDialog;
 import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
@@ -39,11 +38,12 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
     private RecyclerView.Adapter businessAdapter;
     private RecyclerView.LayoutManager businessLayoutManager;
 
-    private final String TAG = "Appetite.BusinessListActivity";
-    private ArrayList<Business> businessList = new ArrayList<>();
-    private BusinessService businessService;
+    private final String TAG = "Appetite.ListActivity";
 
+    //private ArrayList<Business> businessList;
     private BusinessListReadyReceiver businessListReadyReceiver;
+    private BusinessServiceClient businessServiceClient;
+
     private LocationManager locationManager;
 
     private double currentLong = Constants.CENTENNIAL_LONGITUDE;
@@ -63,14 +63,20 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
         businessRecyclerView = findViewById(R.id.recycler_view_business_list);
         businessRecyclerView.setHasFixedSize(true);
         businessLayoutManager = new LinearLayoutManager(getApplicationContext());
-        businessAdapter = new BusinessAdapter(this, businessList);
-        businessRecyclerView.setAdapter(businessAdapter);
+
         businessRecyclerView.setLayoutManager(businessLayoutManager);
         businessRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
+        businessServiceClient = new BusinessServiceClient(this);
         businessListReadyReceiver = new BusinessListReadyReceiver(new BusinessListReadyReceiver.OnReceive() {
             @Override
-            public void onReceive(ArrayList<Business> businessList) {
+            public void onReceive(ArrayList<Business> updatedBusinessList) {
+                Log.v(TAG, "ListReadyReceiver" + updatedBusinessList.size() + " " + businessAdapter);
+                if (businessAdapter == null) {
+                    //businessList = updatedBusinessList;
+                    businessAdapter = new BusinessAdapter(BusinessListActivity.this, updatedBusinessList);
+                    businessRecyclerView.setAdapter(businessAdapter);
+                }
                 businessAdapter.notifyDataSetChanged();
             }
         });
@@ -89,14 +95,11 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
             sharedPreferences.saveToSharedPreferences(SHARED_PREFERENCES_SEARCH_RANGE, "10");
         }
 
-        businessService = new BusinessService(this, businessList);
-        updateBusinessList();
+        businessServiceClient.updateLocation(Constants.CENTENNIAL_LATITUDE, Constants.CENTENNIAL_LONGITUDE);
+        businessServiceClient.refreshBusinessList();
     }
 
-    public void updateBusinessList() {
-        businessService.loadBusinessList(currentLat, currentLong);
-    }
-
+    // TODO: remove LocationListener from this class
     public void handleLocationPermissions() {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -136,8 +139,8 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
             public boolean onQueryTextSubmit(String term) {
                 //Toast.makeText(getApplicationContext(), "onQueryTextSubmit: "+s, Toast.LENGTH_SHORT).show();
 
-                businessService.term(term);
-                updateBusinessList();
+                businessServiceClient.updateTerm(term);
+                businessServiceClient.refreshBusinessList();
                 //mockBusinessServiceloadSearchByTermResult(term);
                 return true;
             }
@@ -145,8 +148,9 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
             @Override
             public boolean onQueryTextChange(String term) {
                 //Toast.makeText(getApplicationContext(), "onQueryTextChange: "+s, Toast.LENGTH_SHORT).show();
-                businessService.term(term);
-                updateBusinessList();
+
+                businessServiceClient.updateTerm(term);
+                businessServiceClient.refreshBusinessList();
                 //mockBusinessServiceloadSearchByTermResult(term);
                 return false;
             }
@@ -184,7 +188,7 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
 
     @Override
     protected void onDestroy() {
-        businessService.destroy();
+        businessServiceClient.destroy();
         super.onDestroy();
         unregisterReceiver(businessListReadyReceiver);
     }
@@ -198,8 +202,8 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
         currentLat = location.getLatitude();
         currentLong = location.getLongitude();
 
-        businessService.loadBusinessList(currentLat, currentLong);
-
+        businessServiceClient.updateLocation(currentLat, currentLong);
+        //businessServiceClient.refreshBusinessList();
     }
 
     @Override
@@ -217,6 +221,7 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
 
     }
 
+    /*
     private void mockBusinessServiceloadSearchByTermResult(String term) {
         businessList.clear();
         businessList.add(mockBusinessDetails());
@@ -236,4 +241,5 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
 
         return mock;
     }
+    */
 }

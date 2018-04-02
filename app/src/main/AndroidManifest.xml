@@ -47,6 +47,7 @@
         <activity android:name=".BusinessDetailsActivity" />
         <activity android:name=".BusinessListFilterDialog" />
 
+        <service android:name=".service.BusinessService" />
     </application>
 
 </manifest>

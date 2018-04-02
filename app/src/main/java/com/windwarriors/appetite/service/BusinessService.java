@@ -1,7 +1,12 @@
 package com.windwarriors.appetite.service;
 
-import android.content.Context;
+import android.app.Service;
+import android.content.Intent;
+import android.os.Binder;
+import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.windwarriors.appetite.R;
@@ -17,28 +22,137 @@ import java.util.Arrays;
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_FILTER_PRICE;
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SORTBY;
 
-public class BusinessService {
+public class BusinessService extends Service { //implements LocationListener {
 
-    private Context context;
+    private final String TAG = "AppetiteBusinessService";
+
+    //private Context context;
     private YelpService yelpService;
     ArrayList<Business> businessList;
     private SharedPreferencesService spService;
     private BusinessListReadyBroadcaster businessListReadyBroadcaster;
     private BusinessReadyBroadcaster businessReadyBroadcaster;
+    //private LocationManager locationManager;
 
+    /*
     public BusinessService(Context context, ArrayList<Business> businessList) {
         this.yelpService = new YelpService();
-        this.context = context;
+        //this.context = context;
         this.businessList = businessList;
         this.spService = new SharedPreferencesService(context);
         this.businessListReadyBroadcaster = new BusinessListReadyBroadcaster(context);
         this.businessReadyBroadcaster = new BusinessReadyBroadcaster(context);
     }
 
-    public void loadBusinessList(double latitude, double longitude) {
+    public BusinessService() {
+    }
+    */
+
+    @Override
+    public void onCreate() {
+        Log.v(TAG, "onCreate()");
+        super.onCreate();
+
+        this.yelpService = new YelpService();
+        //this.context = context;
+        this.businessList = new ArrayList<>();
+        this.spService = new SharedPreferencesService(this);
+        this.businessListReadyBroadcaster = new BusinessListReadyBroadcaster(this);
+        this.businessReadyBroadcaster = new BusinessReadyBroadcaster(this);
+
+        //handleLocationPermissions();
+
+        //notificationMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        //NotificationDecorator notificationDecorator = new NotificationDecorator(this, notificationMgr);
+        //ChatEventHandler chatEventHandler = new ChatEventHandler(new BroadcastSender(this),
+        //        new ChatMessageStore(this), notificationDecorator);
+        //connectionManager = new ConnectionManager(this, chatEventHandler);
+
+        //PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        //wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.v(TAG, "onStartCommand()");
+        super.onStartCommand(intent, flags, startId);
+        if (intent != null) {
+            Bundle data = intent.getExtras();
+            handleData(data);
+            //if (!wakeLock.isHeld()) {
+            //    Log.v(TAG, "acquiring wake lock");
+            //    wakeLock.acquire();
+            //}
+        }
+        return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.v(TAG, "onDestroy()");
+        //notificationMgr.cancelAll();
+        //Log.v(TAG, "releasing wake lock");
+        //wakeLock.release();
+        super.onDestroy();
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    public int getResponseCode() {
+        return 0;
+    }
+
+    public class BusinessServiceBinder extends Binder {
+        public BusinessService getService() {
+            return BusinessService.this;
+        }
+    }
+
+
+    private void handleData(Bundle data) {
+        int command = data.getInt(Constants.BROADCAST_BUSINESS_SERVICE);
+        Log.d(TAG, "command=" + command);
+        if (command == Constants.BROADCAST_REFRESH_BUSINESS_LIST) {
+            loadBusinessList();
+        /*
+            if(connectionManager.isConnected()){ // reconnect if already connected
+                connectionManager.disconnectFromServer();
+            }
+            connectionManager.connectToServer(serverUri, myName);
+        } else if (command == CMD_LEAVE_CHAT) {
+            connectionManager.leaveChat(myName);
+            connectionManager.disconnectFromServer();
+            stopSelf();
+        } else if (command == CMD_SEND_MESSAGE) {
+            String message = (String) data.get(KEY_MESSAGE_TEXT);
+            connectionManager.attemptSend(myName, message);
+        */
+        } else if (command == Constants.BROADCAST_UPDATE_TERM) {
+            String term = (String) data.get(Constants.BROADCAST_TERM);
+            this.term(term);
+        } else if (command == Constants.BROADCAST_UPDATE_LOCATION) {
+            Double lat = (Double) data.get(Constants.BROADCAST_LATITUDE);
+            Double lng = (Double) data.get(Constants.BROADCAST_LONGITUDE);
+            this.latitude(lat);
+            this.longitude(lng);
+            this.search();
+        } else if (command == Constants.BROADCAST_LOAD_BUSINESS) {
+            String id = (String) data.get(Constants.BROADCAST_ID);
+            this.loadBusiness(id);
+        } else if (command == Constants.BROADCAST_DESTROY_BUSINESS_SERVICE) {
+            stopSelf();
+        } else {
+            Log.w(TAG, "Ignoring Unknown Command! cmd=" + command);
+        }
+    }
+
+    public void loadBusinessList() {
         //yelpService.mockParameters();
-        this.latitude(latitude);
-        this.longitude(longitude);
+        //this.latitude(latitude);
+        //this.longitude(longitude);
         this.radius();
         this.price();
         this.sort_by();
@@ -54,7 +168,7 @@ public class BusinessService {
 
             @Override
             public void onFailure(@NonNull Throwable t) {
-                Toast.makeText(context.getApplicationContext(), "Unable to retrieve business: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Unable to retrieve business: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -71,10 +185,66 @@ public class BusinessService {
             @Override
             public void onFailure(@NonNull Throwable t) {
                 String errorMessage = t.getMessage();
-                Toast.makeText(context.getApplicationContext(), "Unable to retrieve businesses: " + errorMessage, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Unable to retrieve businesses: " + errorMessage, Toast.LENGTH_LONG).show();
             }
         });
     }
+
+    // Location Listener related functions
+
+    /*
+    public void handleLocationPermissions() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    Constants.MY_PERMISSIONS_ACCESS_FINE_LOCATION);
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    Constants.MY_PERMISSIONS_ACCESS_COARSE_LOCATION);
+
+            handleLocationPermissions();
+
+        } else {
+
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            locationManager.requestLocationUpdates("gps", 1000, 1, this);
+
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        //Toast.makeText(this,  location.getLatitude()+",\n"+location.getLongitude(),
+        //        Toast.LENGTH_SHORT).show();
+
+        this.latitude(location.getLatitude());
+        this.longitude(location.getLongitude());
+        this.search();
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+    */
+
+    // YelpService-related functions
 
     public void clearParameters() {
         yelpService.clear();
@@ -127,8 +297,8 @@ public class BusinessService {
         String sortBy = spService.getFromSharedPreferences(SHARED_PREFERENCES_SORTBY);
 
         if (!sortBy.equals("")) {
-            String[] appetiteSortBy = context.getResources().getStringArray(R.array.sortby_options_array);
-            String[] yelpSortBy = context.getResources().getStringArray(R.array.sortby_options_array_yelp);
+            String[] appetiteSortBy  = getResources().getStringArray(R.array.sortby_options_array);
+            String[] yelpSortBy = getResources().getStringArray(R.array.sortby_options_array_yelp);
             Integer idx = Arrays.asList(appetiteSortBy).indexOf(sortBy);
             String yelp_sort_by = yelpSortBy[idx];
 
