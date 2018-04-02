@@ -121,4 +121,11 @@
         <item>Rating</item>
         <item>MostReviewed</item>
     </string-array>
+
+    <string-array name="sortby_options_array_yelp">
+        <item>best_match</item>
+        <item>distance</item>
+        <item>rating</item>
+        <item>review_count</item>
+    </string-array>
 </resources>

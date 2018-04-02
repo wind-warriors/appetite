@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.windwarriors.appetite.R;
 import com.windwarriors.appetite.broadcast.BusinessListReadyBroadcaster;
 import com.windwarriors.appetite.broadcast.BusinessReadyBroadcaster;
 import com.windwarriors.appetite.model.Business;
@@ -11,6 +12,10 @@ import com.windwarriors.appetite.utils.Constants;
 import com.yelp.fusion.client.models.SearchResponse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_FILTER_PRICE;
+import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SORTBY;
 
 public class BusinessService {
 
@@ -32,28 +37,12 @@ public class BusinessService {
 
     public void loadBusinessList(double latitude, double longitude) {
         //yelpService.mockParameters();
-        yelpService.latitude(latitude);
-        yelpService.longitude(longitude);
-
-        String spRange = spService.getFromSharedPreferences(Constants.SHARED_PREFERENCES_SEARCH_RANGE);
-        if (!spRange.equals("")) {
-            yelpService.radius(Integer.valueOf(spRange));
-        }
-
-        yelpService.search(new YelpService.Callback<SearchResponse>() {
-            @Override
-            public void onResponse(SearchResponse response) {
-                businessList.clear();
-                businessList.addAll(yelpService.getSearchResults());
-                businessListReadyBroadcaster.sendBroadcastBusinessListReady(businessList);
-            }
-
-            @Override
-            public void onFailure(@NonNull Throwable t) {
-                String errorMessage = t.getMessage();
-                Toast.makeText(context.getApplicationContext(), "Unable to retrieve businesses: " + errorMessage, Toast.LENGTH_LONG).show();
-            }
-        });
+        this.latitude(latitude);
+        this.longitude(longitude);
+        this.radius();
+        this.price();
+        this.sort_by();
+        this.search();
     }
 
     public void loadBusiness(String id) {
@@ -70,12 +59,101 @@ public class BusinessService {
         });
     }
 
+    private void search() {
+        yelpService.search(new YelpService.Callback<SearchResponse>() {
+            @Override
+            public void onResponse(SearchResponse response) {
+                businessList.clear();
+                businessList.addAll(yelpService.getSearchResults());
+                businessListReadyBroadcaster.sendBroadcastBusinessListReady(businessList);
+            }
+
+            @Override
+            public void onFailure(@NonNull Throwable t) {
+                String errorMessage = t.getMessage();
+                Toast.makeText(context.getApplicationContext(), "Unable to retrieve businesses: " + errorMessage, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     public void clearParameters() {
         yelpService.clear();
     }
 
     public void destroy(){
         yelpService.onDestroy();
+    }
+
+    public void term(String term) {
+        yelpService.term(term);
+    }
+
+    public void location( String location) {
+        yelpService.location(location);
+    }
+
+    public void latitude(Double latitude) {
+        yelpService.latitude(latitude);
+    }
+
+    public void longitude(Double longitude) {
+        yelpService.longitude(longitude);
+    }
+
+    private void radius() {
+        String spRange = spService.getFromSharedPreferences(Constants.SHARED_PREFERENCES_SEARCH_RANGE);
+        if (!spRange.equals("")) {
+            yelpService.radius(Integer.valueOf(spRange));
+        }
+    }
+
+    public void categories(String categories) {
+        yelpService.categories(categories);
+    }
+
+    public void locale(String locale) {
+        yelpService.locale(locale);
+    }
+
+    public void limit(String limit) {
+        yelpService.limit(limit);
+    }
+
+    public void offset(String offset) {
+        yelpService.offset(offset);
+    }
+
+    private void sort_by() {
+        String sortBy = spService.getFromSharedPreferences(SHARED_PREFERENCES_SORTBY);
+
+        if (!sortBy.equals("")) {
+            String[] appetiteSortBy = context.getResources().getStringArray(R.array.sortby_options_array);
+            String[] yelpSortBy = context.getResources().getStringArray(R.array.sortby_options_array_yelp);
+            Integer idx = Arrays.asList(appetiteSortBy).indexOf(sortBy);
+            String yelp_sort_by = yelpSortBy[idx];
+
+            yelpService.sort_by(yelp_sort_by);
+        }
+    }
+
+    private void price() {
+        String price = spService.getFromSharedPreferences(SHARED_PREFERENCES_FILTER_PRICE);
+
+        if (!price.equals("")) {
+            yelpService.price(price);
+        }
+    }
+
+    public void open_now(Boolean open_now) {
+        yelpService.open_now(open_now);
+    }
+
+    public void open_at(String open_at) {
+        yelpService.open_at(open_at);
+    }
+
+    public void attributes(String attributes) {
+        yelpService.attributes(attributes);
     }
 
     /*

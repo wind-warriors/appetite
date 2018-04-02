@@ -45,7 +45,8 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".BusinessDetailsActivity" />
-        <activity android:name=".BusinessListFilterDialog"></activity>
+        <activity android:name=".BusinessListFilterDialog" />
+
     </application>
 
 </manifest>
