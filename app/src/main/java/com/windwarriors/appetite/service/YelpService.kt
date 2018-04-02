@@ -104,7 +104,7 @@ class YelpService {
     }
 
     private fun printResponse() {
-        if( response != null && response.total != null && response.businesses != null && response.businesses.isNotEmpty() ){
+        if( response.businesses != null && response.businesses.isNotEmpty() ){
             System.out.println(TAG + " Response:")
             System.out.println(TAG + " " + response.total + " businesses found")
             //System.out.println(TAG + " " + response.businesses.toString())
