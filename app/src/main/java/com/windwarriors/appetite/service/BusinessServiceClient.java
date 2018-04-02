@@ -37,6 +37,7 @@ public class BusinessServiceClient {
         context.startService(intent);
     }
 
+    //TODO: BusinessService should update location on its own ( delete this function )
     public void updateLocation(Double latitude, Double longitude) {
         Bundle data = new Bundle();
         data.putInt(Constants.BROADCAST_BUSINESS_SERVICE, Constants.BROADCAST_UPDATE_LOCATION);

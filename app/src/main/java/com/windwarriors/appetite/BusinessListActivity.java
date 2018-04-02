@@ -1,11 +1,8 @@
 package com.windwarriors.appetite;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -33,7 +30,7 @@ import static com.windwarriors.appetite.utils.Helper.OpenFilterDialog;
 import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
 
 
-public class BusinessListActivity extends AppCompatActivity implements LocationListener {
+public class BusinessListActivity extends AppCompatActivity {
     private RecyclerView businessRecyclerView;
     private RecyclerView.Adapter businessAdapter;
     private RecyclerView.LayoutManager businessLayoutManager;
@@ -99,7 +96,6 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
         businessServiceClient.refreshBusinessList();
     }
 
-    // TODO: remove LocationListener from this class
     public void handleLocationPermissions() {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -115,13 +111,16 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
 
             handleLocationPermissions();
 
-        } else {
+        }
+        /*
+        else {
 
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
             locationManager.requestLocationUpdates("gps", 1000, 1, this);
 
         }
+        */
     }
 
     @Override
@@ -191,34 +190,6 @@ public class BusinessListActivity extends AppCompatActivity implements LocationL
         businessServiceClient.destroy();
         super.onDestroy();
         unregisterReceiver(businessListReadyReceiver);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        //Toast.makeText(this,  location.getLatitude()+",\n"+location.getLongitude(),
-        //        Toast.LENGTH_SHORT).show();
-
-        currentLat = location.getLatitude();
-        currentLong = location.getLongitude();
-
-        businessServiceClient.updateLocation(currentLat, currentLong);
-        //businessServiceClient.refreshBusinessList();
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
     }
 
     /*

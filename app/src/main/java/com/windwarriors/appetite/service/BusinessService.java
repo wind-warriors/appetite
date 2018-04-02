@@ -1,11 +1,18 @@
 package com.windwarriors.appetite.service;
 
+import android.Manifest;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -22,31 +29,15 @@ import java.util.Arrays;
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_FILTER_PRICE;
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SORTBY;
 
-public class BusinessService extends Service { //implements LocationListener {
+public class BusinessService extends Service implements LocationListener {
 
     private final String TAG = "AppetiteBusinessService";
 
-    //private Context context;
     private YelpService yelpService;
     ArrayList<Business> businessList;
     private SharedPreferencesService spService;
     private BusinessListReadyBroadcaster businessListReadyBroadcaster;
     private BusinessReadyBroadcaster businessReadyBroadcaster;
-    //private LocationManager locationManager;
-
-    /*
-    public BusinessService(Context context, ArrayList<Business> businessList) {
-        this.yelpService = new YelpService();
-        //this.context = context;
-        this.businessList = businessList;
-        this.spService = new SharedPreferencesService(context);
-        this.businessListReadyBroadcaster = new BusinessListReadyBroadcaster(context);
-        this.businessReadyBroadcaster = new BusinessReadyBroadcaster(context);
-    }
-
-    public BusinessService() {
-    }
-    */
 
     @Override
     public void onCreate() {
@@ -54,22 +45,12 @@ public class BusinessService extends Service { //implements LocationListener {
         super.onCreate();
 
         this.yelpService = new YelpService();
-        //this.context = context;
         this.businessList = new ArrayList<>();
         this.spService = new SharedPreferencesService(this);
         this.businessListReadyBroadcaster = new BusinessListReadyBroadcaster(this);
         this.businessReadyBroadcaster = new BusinessReadyBroadcaster(this);
 
-        //handleLocationPermissions();
-
-        //notificationMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        //NotificationDecorator notificationDecorator = new NotificationDecorator(this, notificationMgr);
-        //ChatEventHandler chatEventHandler = new ChatEventHandler(new BroadcastSender(this),
-        //        new ChatMessageStore(this), notificationDecorator);
-        //connectionManager = new ConnectionManager(this, chatEventHandler);
-
-        //PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-        //wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+        handleLocationPermissions();
     }
 
     @Override
@@ -79,10 +60,6 @@ public class BusinessService extends Service { //implements LocationListener {
         if (intent != null) {
             Bundle data = intent.getExtras();
             handleData(data);
-            //if (!wakeLock.isHeld()) {
-            //    Log.v(TAG, "acquiring wake lock");
-            //    wakeLock.acquire();
-            //}
         }
         return START_NOT_STICKY;
     }
@@ -90,9 +67,6 @@ public class BusinessService extends Service { //implements LocationListener {
     @Override
     public void onDestroy() {
         Log.v(TAG, "onDestroy()");
-        //notificationMgr.cancelAll();
-        //Log.v(TAG, "releasing wake lock");
-        //wakeLock.release();
         super.onDestroy();
     }
 
@@ -117,19 +91,6 @@ public class BusinessService extends Service { //implements LocationListener {
         Log.d(TAG, "command=" + command);
         if (command == Constants.BROADCAST_REFRESH_BUSINESS_LIST) {
             loadBusinessList();
-        /*
-            if(connectionManager.isConnected()){ // reconnect if already connected
-                connectionManager.disconnectFromServer();
-            }
-            connectionManager.connectToServer(serverUri, myName);
-        } else if (command == CMD_LEAVE_CHAT) {
-            connectionManager.leaveChat(myName);
-            connectionManager.disconnectFromServer();
-            stopSelf();
-        } else if (command == CMD_SEND_MESSAGE) {
-            String message = (String) data.get(KEY_MESSAGE_TEXT);
-            connectionManager.attemptSend(myName, message);
-        */
         } else if (command == Constants.BROADCAST_UPDATE_TERM) {
             String term = (String) data.get(Constants.BROADCAST_TERM);
             this.term(term);
@@ -192,37 +153,20 @@ public class BusinessService extends Service { //implements LocationListener {
 
     // Location Listener related functions
 
-    /*
     public void handleLocationPermissions() {
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    Constants.MY_PERMISSIONS_ACCESS_FINE_LOCATION);
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    Constants.MY_PERMISSIONS_ACCESS_COARSE_LOCATION);
-
-            handleLocationPermissions();
-
+            Log.e(TAG, " ERROR: Locations permission not set. Please set them on the first/main activity");
         } else {
-
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            assert locationManager != null;
             locationManager.requestLocationUpdates("gps", 1000, 1, this);
-
         }
     }
 
     @Override
     public void onLocationChanged(Location location) {
-
-        //Toast.makeText(this,  location.getLatitude()+",\n"+location.getLongitude(),
-        //        Toast.LENGTH_SHORT).show();
-
+        Log.v(TAG, "onLocationChanged [" + location.getLatitude() + ", " + location.getLongitude() + "]");
         this.latitude(location.getLatitude());
         this.longitude(location.getLongitude());
         this.search();
@@ -242,7 +186,6 @@ public class BusinessService extends Service { //implements LocationListener {
     public void onProviderDisabled(String s) {
 
     }
-    */
 
     // YelpService-related functions
 
@@ -325,33 +268,4 @@ public class BusinessService extends Service { //implements LocationListener {
     public void attributes(String attributes) {
         yelpService.attributes(attributes);
     }
-
-    /*
-    public ArrayList mockBusinesses() {
-        ArrayList<Business> list = new ArrayList<>();
-
-        String mockImageLink = "http://del.h-cdn.co/assets/15/37/640x552/gallery-1441895894-weeknight-dinner-squash-salad.jpg";
-        String mockImageLink2 = "https://images.unsplash.com/photo-1503764654157-72d979d9af2f?ixlib=rb-0.3.5&s=004ac76e65f0b5708b0f04523ea9c6de&auto=format&fit=crop&w=1953&q=80";
-        String mockImageLink3 = "https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a98ac47048f530b6d587279d52c13ab7&auto=format&fit=crop&w=1868&q=80";
-        String mockImageLink4 = "https://static.independent.co.uk/s3fs-public/styles/story_large/public/thumbnails/image/2018/01/12/12/healthy-avo-food.jpg";
-
-        list.add(new Business(1, "Hey Noodles", "20 Reviews", "Noodles, Chinese",
-                "5306 Yonge Street, Willowdale", "12", mockImageLink));
-        list.add(new Business(2, "Scott Carribean", "43 Reviews", "Caribbean",
-                "1943 Avenue Road, Toronto", "23", mockImageLink2));
-        list.add(new Business(3, "Fat Ninja Bite", "51 Reviews", "Japanese, Burgers, Korean",
-                "3517 Kennedy Road, Milliken", "18", mockImageLink3));
-        list.add(new Business(4, "Saravanaa Bhavan", "26 Reviews", "Vegetarian, Indian",
-                "1571 Sandhurst Circle, Scarborough", "2", mockImageLink4));
-        list.add(new Business(1, "Hey Noodles", "20 Reviews", "Noodles, Chinese",
-                "5306 Yonge Street, Willowdale", "12", mockImageLink));
-        list.add(new Business(2, "Scott Carribean", "43 Reviews", "Caribbean",
-                "1943 Avenue Road, Toronto", "23", mockImageLink2));
-        list.add(new Business(3, "Fat Ninja Bite", "51 Reviews", "Japanese, Burgers, Korean",
-                "3517 Kennedy Road, Milliken", "18", mockImageLink3));
-        list.add(new Business(4, "Saravanaa Bhavan", "26 Reviews", "Vegetarian, Indian",
-                "1571 Sandhurst Circle, Scarborough", "2", mockImageLink4));
-
-        return list;
-    }*/
 }
