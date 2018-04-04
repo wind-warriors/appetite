@@ -54,7 +54,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
                     // check if item still exists
                     if(position != RecyclerView.NO_POSITION){
                         String businessId = businessList.get(position).getId();
-                        String businessDistance = businessList.get(position).getDistance();
+                        String businessDistance = businessList.get(position).getFormattedDistance();
                         //Toast.makeText(v.getContext(), "You clicked "+position+":"+businessId, Toast.LENGTH_SHORT).show();
                         Intent next = new Intent( context, BusinessDetailsActivity.class);
                         next.putExtra(BUSINESS_ID, businessId);
@@ -71,7 +71,6 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
 
     public BusinessAdapter(Context context) {
         BusinessAdapter.context = context;
-        // TODO: work-around works?
         this.businessList = new ArrayList<>();
     }
 
@@ -99,8 +98,8 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         new DownloadImageTask(holder.foodImage).execute(currentBusiness.getImageLink());
 
         holder.businessName.setText(currentBusiness.getName());
-        holder.totalReviews.setText(currentBusiness.getTotalReviews());
-        holder.distance.setText(currentBusiness.getDistance());
+        holder.totalReviews.setText(currentBusiness.getTotalReviews().toString());
+        holder.distance.setText(currentBusiness.getFormattedDistance());
 
         String priceAndCategory;
         if (currentBusiness.getPrice() == null)

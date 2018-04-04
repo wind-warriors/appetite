@@ -23,12 +23,9 @@ import com.windwarriors.appetite.service.BusinessServiceClient;
 import com.windwarriors.appetite.utils.DownloadImageTask;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_DISTANCE;
 import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
-import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LATITUDE;
-import static com.windwarriors.appetite.utils.Constants.MOCK_DETAIL_LONGITUDE;
 import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
 
 public class BusinessDetailsActivity extends AppCompatActivity implements OnMapReadyCallback{
@@ -161,7 +158,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
 //        rating.setText(String.valueOf(currentBusiness.getRating()));
 
         reviews = findViewById(R.id.details_total_reviews);
-        reviews.setText( currentBusiness.getTotalReviews());
+        reviews.setText( currentBusiness.getTotalReviews().toString());
 
         address = findViewById(R.id.details_address);
         address.setText(currentBusiness.getAddress());
@@ -200,11 +197,12 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         new DownloadImageTask(foodImage).execute(currentBusiness.getImageLink());
     }
 
+    /*
     // Method to Mock data from a specific business
     private Business mockBusinessDetails(String businessId) {
         Business mock = new Business();
         mock.setName("The Real McCoy Burgers and Pizza!");
-        mock.setDistance("11 Km");
+        mock.setDistance(11.0);
         mock.setAddress("11033 Markham Road, Scarborough, ON M1H 2Y5, Canada");
         mock.setFoodCategory(new String[]{"Chinese, Noodles"});
         mock.setRating(4.3);
@@ -224,5 +222,5 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
                 "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/lead-restaurants-1508259029.jpg?crop=1.00xw:1.00xh;0,0&resize=1600:*",
                 "http://www.appareilarchitecture.com/wp-content/uploads/z_APPAREILarchitecture_Restaurant-BATTUTO_Qu%C3%A9bec_2016_%C2%A9F%C3%A9lix-Michaud_HR_006-2cover.jpg");
     }
-
+    */
 }

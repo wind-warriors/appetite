@@ -209,7 +209,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         googleMap
                 .addMarker(markerOptions)
-                .setTag(business.getId() + ";" + business.getDistance());
+                .setTag(business.getId() + ";" + business.getFormattedDistance());
 
         googleMap.setOnInfoWindowClickListener(this);
     }
