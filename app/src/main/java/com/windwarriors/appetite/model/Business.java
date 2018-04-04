@@ -10,6 +10,8 @@ import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Business implements Parcelable {
         private String id;
@@ -341,5 +343,50 @@ public class Business implements Parcelable {
             }
         }
         return name;
+    }
+
+    private int compareByRating(Business b2) {
+        if (this.rating < b2.rating) return  1;
+        if (this.rating > b2.rating) return -1;
+        return 0;
+    }
+
+    private int compareByMostReviewed(Business b2) {
+        if (this.totalReviews < b2.totalReviews) return  1;
+        if (this.totalReviews > b2.totalReviews) return -1;
+        return 0;
+    }
+
+    private int compareByDistance(Business b2) {
+        if (this.distance < b2.distance) return  1;
+        if (this.distance > b2.distance) return -1;
+        return 0;
+    }
+
+    public static void sortByRating(ArrayList<Business> businessList) {
+        Collections.sort(businessList, new Comparator<Business>() {
+            @Override
+            public int compare(Business b1, Business b2) {
+                return b1.compareByRating(b2);
+            }
+        });
+    }
+
+    public static void sortByMostReviewed(ArrayList<Business> businessList) {
+        Collections.sort(businessList, new Comparator<Business>() {
+            @Override
+            public int compare(Business b1, Business b2) {
+                return b1.compareByMostReviewed(b2);
+            }
+        });
+    }
+
+    public static void sortByDistance(ArrayList<Business> businessList) {
+        Collections.sort(businessList, new Comparator<Business>() {
+            @Override
+            public int compare(Business b1, Business b2) {
+                return b1.compareByDistance(b2);
+            }
+        });
     }
 }
