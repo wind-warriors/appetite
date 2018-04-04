@@ -25,6 +25,8 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         String urldisplay = urls[0];
         Bitmap mIcon11 = null;
         InputStream in = null;
+
+        System.out.println("DownloadImageTask: " + urldisplay);
         try {
             in = new java.net.URL(urldisplay).openStream();
             mIcon11 = BitmapFactory.decodeStream(in, null, options);
@@ -35,6 +37,10 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             try {
                 in.close();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NullPointerException e) {
+                //TODO: Display some kind of image when we could not fetch an image
+                System.out.println("NO IMAGE for " + urldisplay);
                 e.printStackTrace();
             }
         }

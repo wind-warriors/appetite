@@ -32,7 +32,7 @@ import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
 
 public class BusinessListActivity extends AppCompatActivity {
     private RecyclerView businessRecyclerView;
-    private RecyclerView.Adapter businessAdapter;
+    private BusinessAdapter businessAdapter;
     private RecyclerView.LayoutManager businessLayoutManager;
 
     private final String TAG = "Appetite.ListActivity";
@@ -65,16 +65,15 @@ public class BusinessListActivity extends AppCompatActivity {
         businessRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         businessServiceClient = new BusinessServiceClient(this);
+        businessAdapter = new BusinessAdapter(BusinessListActivity.this);
+        businessRecyclerView.setAdapter(businessAdapter);
+
         businessListReadyReceiver = new BusinessListReadyReceiver(new BusinessListReadyReceiver.OnReceive() {
             @Override
             public void onReceive(ArrayList<Business> updatedBusinessList) {
-                Log.v(TAG, "ListReadyReceiver" + updatedBusinessList.size() + " " + businessAdapter);
-                if (businessAdapter == null) {
-                    //businessList = updatedBusinessList;
-                    businessAdapter = new BusinessAdapter(BusinessListActivity.this, updatedBusinessList);
-                    businessRecyclerView.setAdapter(businessAdapter);
-                }
-                businessAdapter.notifyDataSetChanged();
+            Log.v(TAG, "ListReadyReceiver " + updatedBusinessList.size() + " " + businessAdapter);
+            businessAdapter.refreshBusinessList(updatedBusinessList);
+            businessAdapter.notifyDataSetChanged();
             }
         });
 
@@ -148,6 +147,7 @@ public class BusinessListActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String term) {
                 //Toast.makeText(getApplicationContext(), "onQueryTextChange: "+s, Toast.LENGTH_SHORT).show();
 
+                // REMOVE HERE IF MAXIMUM NUMBER OF YELP CALLS IS BEING REACHED
                 businessServiceClient.updateTerm(term);
                 businessServiceClient.refreshBusinessList();
                 //mockBusinessServiceloadSearchByTermResult(term);

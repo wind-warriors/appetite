@@ -3,6 +3,7 @@ package com.windwarriors.appetite.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,9 +68,21 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
 
     }
 
-    public BusinessAdapter(Context context, ArrayList<Business> businessList) {
+
+    public BusinessAdapter(Context context) {
+        BusinessAdapter.context = context;
+        // TODO: work-around works?
+        this.businessList = new ArrayList<>();
+    }
+
+    private BusinessAdapter(Context context, ArrayList<Business> businessList) {
         this.businessList = businessList;
-        this.context = context;
+        BusinessAdapter.context = context;
+    }
+
+    public void refreshBusinessList(ArrayList<Business> businessList) {
+        this.businessList.clear();
+        this.businessList.addAll(businessList);
     }
 
     @Override
@@ -82,7 +95,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
     public void onBindViewHolder(BusinessViewHolder holder, final int position) {
         final Business currentBusiness = businessList.get(position);
 
-
+        Log.v("BusinessAdapter: ", currentBusiness.toString());
         new DownloadImageTask(holder.foodImage).execute(currentBusiness.getImageLink());
 
         holder.businessName.setText(currentBusiness.getName());
