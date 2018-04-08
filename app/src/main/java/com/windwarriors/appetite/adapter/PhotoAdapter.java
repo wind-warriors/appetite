@@ -2,6 +2,7 @@ package com.windwarriors.appetite.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -43,6 +44,9 @@ public class PhotoAdapter extends PagerAdapter {
         //imageView.setImageResource(mImageUrls[position]);
         new DownloadImageTask(imageView).execute(mImageUrls.get(position));
         container.addView(imageView, 0);
+
+        Log.d("IMG", String.valueOf(position) + " " + String.valueOf(getCount()));
+
         return  imageView;
     }
 

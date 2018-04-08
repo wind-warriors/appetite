@@ -3,7 +3,12 @@ package com.windwarriors.appetite.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,8 +17,14 @@ import java.io.InputStream;
 // in the constructor
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
+    ProgressBar _progressBar;
+
     public DownloadImageTask(ImageView bmImage) {
         this.bmImage = bmImage;
+    }
+    public DownloadImageTask(ImageView bmImage, ProgressBar progressBar) {
+        this.bmImage = bmImage;
+        this._progressBar = progressBar;
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -31,7 +42,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        finally{
+        finally {
             try {
                 in.close();
             } catch (IOException e) {
@@ -43,5 +54,8 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         bmImage.setImageBitmap(result);
+
+        if(_progressBar != null)
+            _progressBar.setVisibility(View.GONE);
     }
 }

@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.windwarriors.appetite.adapter.BusinessAdapter;
@@ -46,11 +48,13 @@ public class BusinessListActivity extends AppCompatActivity {
     private double currentLong = Constants.CENTENNIAL_LONGITUDE;
     private double currentLat = Constants.CENTENNIAL_LATITUDE;
     private SharedPreferencesService sharedPreferences;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_list);
+        progressBar = (ProgressBar)findViewById(R.id.loadingProgress);
 
         sharedPreferences = new SharedPreferencesService(this);
 
@@ -75,6 +79,8 @@ public class BusinessListActivity extends AppCompatActivity {
                     businessRecyclerView.setAdapter(businessAdapter);
                 }
                 businessAdapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+
             }
         });
 

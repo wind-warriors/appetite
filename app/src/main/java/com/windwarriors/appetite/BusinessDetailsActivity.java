@@ -4,9 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -48,13 +52,15 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
     TextView distance;
     ImageView foodImage;
     ImageView ratingStar;
-
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_details);
         Bundle data = getIntent().getExtras();
+        progressBar = (ProgressBar)findViewById(R.id.loadingProgress);
+
         if( data != null ){
             String businessId = data.getString(BUSINESS_ID);
             businessDistance = data.getString(BUSINESS_DISTANCE);
@@ -192,12 +198,24 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
             ratingStar.setImageResource(R.drawable.stars_regular_0);}
 
         // Set photos from Photo adapter to the viewPager so we can scroll horizontally photos
-        ViewPager viewPager = findViewById(R.id.photos_viewpager);
-        PhotoAdapter adapter = new PhotoAdapter(this, Arrays.asList(currentBusiness.getPhotos()) );//mockBusinessPhotos());
+        final ViewPager viewPager = findViewById(R.id.photos_viewpager);
+        final PhotoAdapter adapter = new PhotoAdapter(this, Arrays.asList(currentBusiness.getPhotos()) );//mockBusinessPhotos());
         viewPager.setAdapter(adapter);
+//
+//
+//        viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                //At this point the layout is complete and the
+//                adapter.getCount();
+//                Log.d("ACT", "Loaded");
+//                progressBar.setVisibility(View.GONE);
+//            }
+//        });
 
         foodImage = findViewById(R.id.details_image);
-        new DownloadImageTask(foodImage).execute(currentBusiness.getImageLink());
+        DownloadImageTask dmi = new DownloadImageTask(foodImage, progressBar);
+        dmi.execute(currentBusiness.getImageLink());
     }
 
     // Method to Mock data from a specific business
@@ -224,5 +242,4 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
                 "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/lead-restaurants-1508259029.jpg?crop=1.00xw:1.00xh;0,0&resize=1600:*",
                 "http://www.appareilarchitecture.com/wp-content/uploads/z_APPAREILarchitecture_Restaurant-BATTUTO_Qu%C3%A9bec_2016_%C2%A9F%C3%A9lix-Michaud_HR_006-2cover.jpg");
     }
-
 }
