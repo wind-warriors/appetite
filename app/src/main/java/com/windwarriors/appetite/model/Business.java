@@ -10,14 +10,16 @@ import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Business implements Parcelable {
         private String id;
         private String name;
-        private String totalReviews;
+        private Integer totalReviews;
         private String[] foodCategory;
         private String address;
-        private String distance;
+        private Double distance;
         private String imageLink;
         private Double rating;
         private Double latitude;
@@ -29,8 +31,8 @@ public class Business implements Parcelable {
     public Business(){
     }
 
-    public Business(String id, String name, String review, String[] foodCategory, String address,
-                    String distance, String imageLink
+    public Business(String id, String name, Integer review, String[] foodCategory, String address,
+                    Double distance, String imageLink
             , Double rating, Double latitude, Double longitude, String price, String[] photos) {
         this.id = id;
         this.name = name;
@@ -50,7 +52,7 @@ public class Business implements Parcelable {
         this.id = yelpBusiness.getId();
         this.price = yelpBusiness.getPrice();
         this.name = yelpBusiness.getName();
-        this.totalReviews = String.valueOf(yelpBusiness.getReviewCount());
+        this.totalReviews = yelpBusiness.getReviewCount();
 
         //FoodCategories
         ArrayList<Category> yelpCategories = yelpBusiness.getCategories();
@@ -64,10 +66,9 @@ public class Business implements Parcelable {
         if (yelpBusiness.getDistance() == 0.0) {
             System.out.println("Appetite.Business: WARNING: distance 0 for " + this.name);
         }
-
         this.address = locationToAddress(yelpBusiness.getLocation());
         DecimalFormat f = new DecimalFormat("0.00");
-        this.distance = (f.format(yelpBusiness.getDistance() / 1000.0)) + " km";
+        this.distance = Double.valueOf(f.format(yelpBusiness.getDistance() / 1000.0));
         this.imageLink = yelpBusiness.getImageUrl();
 
         ArrayList<String> yelpPhotos = yelpBusiness.getPhotos();
@@ -88,10 +89,18 @@ public class Business implements Parcelable {
     protected Business(Parcel in) {
         id = in.readString();
         name = in.readString();
-        totalReviews = in.readString();
+        if (in.readByte() == 0) {
+            totalReviews = null;
+        } else {
+            totalReviews = in.readInt();
+        }
         foodCategory = in.createStringArray();
         address = in.readString();
-        distance = in.readString();
+        if (in.readByte() == 0) {
+            distance = null;
+        } else {
+            distance = in.readDouble();
+        }
         imageLink = in.readString();
         if (in.readByte() == 0) {
             rating = null;
@@ -116,10 +125,20 @@ public class Business implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
-        dest.writeString(totalReviews);
+        if (totalReviews == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(totalReviews);
+        }
         dest.writeStringArray(foodCategory);
         dest.writeString(address);
-        dest.writeString(distance);
+        if (distance == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(distance);
+        }
         dest.writeString(imageLink);
         if (rating == null) {
             dest.writeByte((byte) 0);
@@ -209,11 +228,11 @@ public class Business implements Parcelable {
         this.price = price;
     }
 
-    public String getTotalReviews() {
+    public Integer getTotalReviews() {
         return totalReviews;
     }
 
-    public void setTotalReviews(String totalReviews) {
+    public void setTotalReviews(Integer totalReviews) {
         this.totalReviews = totalReviews;
     }
 
@@ -233,12 +252,16 @@ public class Business implements Parcelable {
         this.address = address;
     }
 
-    public String getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
+    }
+
+    public String getFormattedDistance() {
+        return this.distance.toString() + " km";
     }
 
     public String getImageLink() {
@@ -248,7 +271,6 @@ public class Business implements Parcelable {
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
     }
-
 
     public Double getRating() {
         return rating;
@@ -293,17 +315,17 @@ public class Business implements Parcelable {
 
         Business b2 = (Business) obj;
         return this.id.equals(b2.id) &&
-               this.name.equals(b2.name) &&
-                this.price.equals(b2.price) &&
+           this.name.equals(b2.name) &&
+           this.price.equals(b2.price) &&
 
-                this.totalReviews.equals(b2.totalReviews) &&
-               Arrays.equals(this.foodCategory, b2.foodCategory) &&
-               this.address.equals(b2.address) &&
-               this.distance.equals(b2.distance) &&
-               this.imageLink.equals(b2.imageLink) &&
-                this.rating.equals(b2.rating) &&
-               this.latitude.equals(b2.latitude) &&
-               this.longitude.equals(b2.longitude);
+           this.totalReviews.equals(b2.totalReviews) &&
+           Arrays.equals(this.foodCategory, b2.foodCategory) &&
+           this.address.equals(b2.address) &&
+           this.distance.equals(b2.distance) &&
+           this.imageLink.equals(b2.imageLink) &&
+           this.rating.equals(b2.rating) &&
+           this.latitude.equals(b2.latitude) &&
+           this.longitude.equals(b2.longitude);
     }
 
     @Override
@@ -321,5 +343,50 @@ public class Business implements Parcelable {
             }
         }
         return name;
+    }
+
+    private int compareByRating(Business b2) {
+        if (this.rating < b2.rating) return  1;
+        if (this.rating > b2.rating) return -1;
+        return 0;
+    }
+
+    private int compareByMostReviewed(Business b2) {
+        if (this.totalReviews < b2.totalReviews) return  1;
+        if (this.totalReviews > b2.totalReviews) return -1;
+        return 0;
+    }
+
+    private int compareByDistance(Business b2) {
+        if (this.distance < b2.distance) return  1;
+        if (this.distance > b2.distance) return -1;
+        return 0;
+    }
+
+    public static void sortByRating(ArrayList<Business> businessList) {
+        Collections.sort(businessList, new Comparator<Business>() {
+            @Override
+            public int compare(Business b1, Business b2) {
+                return b1.compareByRating(b2);
+            }
+        });
+    }
+
+    public static void sortByMostReviewed(ArrayList<Business> businessList) {
+        Collections.sort(businessList, new Comparator<Business>() {
+            @Override
+            public int compare(Business b1, Business b2) {
+                return b1.compareByMostReviewed(b2);
+            }
+        });
+    }
+
+    public static void sortByDistance(ArrayList<Business> businessList) {
+        Collections.sort(businessList, new Comparator<Business>() {
+            @Override
+            public int compare(Business b1, Business b2) {
+                return b1.compareByDistance(b2);
+            }
+        });
     }
 }

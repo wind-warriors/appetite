@@ -135,11 +135,13 @@ public class BusinessService extends Service implements LocationListener {
     }
 
     private void search() {
+        final String sortBy = spService.getFromSharedPreferences(SHARED_PREFERENCES_SORTBY);
         yelpService.search(new YelpService.Callback<SearchResponse>() {
             @Override
             public void onResponse(SearchResponse response) {
                 businessList.clear();
                 businessList.addAll(yelpService.getSearchResults());
+                sort(sortBy);
                 businessListReadyBroadcaster.sendBroadcastBusinessListReady(businessList);
             }
 
@@ -267,5 +269,14 @@ public class BusinessService extends Service implements LocationListener {
 
     public void attributes(String attributes) {
         yelpService.attributes(attributes);
+    }
+
+    private void sort(String sortBy) {
+        if (!sortBy.equals("")) {
+            if (sortBy.toLowerCase().contains("review")) Business.sortByMostReviewed(businessList);
+            else if (sortBy.toLowerCase().contains("rating")) Business.sortByRating(businessList);
+            else if (sortBy.toLowerCase().contains("distance")) Business.sortByDistance(businessList);
+            else Log.w(TAG, "unknown sorting method. Skipping sorting!");
+        }
     }
 }

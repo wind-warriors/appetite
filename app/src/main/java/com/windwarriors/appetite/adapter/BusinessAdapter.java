@@ -3,6 +3,7 @@ package com.windwarriors.appetite.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
                     // check if item still exists
                     if(position != RecyclerView.NO_POSITION){
                         String businessId = businessList.get(position).getId();
-                        String businessDistance = businessList.get(position).getDistance();
+                        String businessDistance = businessList.get(position).getFormattedDistance();
                         //Toast.makeText(v.getContext(), "You clicked "+position+":"+businessId, Toast.LENGTH_SHORT).show();
                         Intent next = new Intent( context, BusinessDetailsActivity.class);
                         next.putExtra(BUSINESS_ID, businessId);
@@ -67,9 +68,20 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
 
     }
 
-    public BusinessAdapter(Context context, ArrayList<Business> businessList) {
+
+    public BusinessAdapter(Context context) {
+        BusinessAdapter.context = context;
+        this.businessList = new ArrayList<>();
+    }
+
+    private BusinessAdapter(Context context, ArrayList<Business> businessList) {
         this.businessList = businessList;
-        this.context = context;
+        BusinessAdapter.context = context;
+    }
+
+    public void refreshBusinessList(ArrayList<Business> businessList) {
+        this.businessList.clear();
+        this.businessList.addAll(businessList);
     }
 
     @Override
@@ -82,12 +94,12 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
     public void onBindViewHolder(BusinessViewHolder holder, final int position) {
         final Business currentBusiness = businessList.get(position);
 
-
+        Log.v("BusinessAdapter: ", currentBusiness.toString());
         new DownloadImageTask(holder.foodImage).execute(currentBusiness.getImageLink());
 
         holder.businessName.setText(currentBusiness.getName());
-        holder.totalReviews.setText(currentBusiness.getTotalReviews());
-        holder.distance.setText(currentBusiness.getDistance());
+        holder.totalReviews.setText(currentBusiness.getTotalReviews().toString());
+        holder.distance.setText(currentBusiness.getFormattedDistance());
 
         String priceAndCategory;
         if (currentBusiness.getPrice() == null)
