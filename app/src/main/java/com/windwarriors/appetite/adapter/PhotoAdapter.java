@@ -40,7 +40,7 @@ public class PhotoAdapter extends PagerAdapter {
         ImageView imageView = new ImageView(mContext);
         imageView.setMaxHeight(60);
         imageView.setMaxWidth(60);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setScaleType( ImageView.ScaleType.CENTER_CROP );
         //imageView.setImageResource(mImageUrls[position]);
         new DownloadImageTask(imageView).execute(mImageUrls.get(position));
         container.addView(imageView, 0);

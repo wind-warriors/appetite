@@ -229,7 +229,7 @@ public class Business implements Parcelable {
     }
 
     public Integer getTotalReviews() {
-        return totalReviews;
+            return totalReviews;
     }
 
     public void setTotalReviews(Integer totalReviews) {
