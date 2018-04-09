@@ -74,7 +74,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         this.businessList = new ArrayList<>();
     }
 
-    private BusinessAdapter(Context context, ArrayList<Business> businessList) {
+    public BusinessAdapter(Context context, ArrayList<Business> businessList) {
         this.businessList = businessList;
         BusinessAdapter.context = context;
     }
