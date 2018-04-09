@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,12 +50,15 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
     ImageView foodImage;
     ImageView ratingStar;
 
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_details);
         Bundle data = getIntent().getExtras();
+        progressBar = findViewById(R.id.loadingProgress);
+
         if( data != null ){
             String businessId = data.getString(BUSINESS_ID);
             businessDistance = data.getString(BUSINESS_DISTANCE);
@@ -197,14 +201,14 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         viewPager.setAdapter(adapter);
 
         foodImage = findViewById(R.id.details_image);
-        new DownloadImageTask(foodImage).execute(currentBusiness.getImageLink());
+        new DownloadImageTask(foodImage, progressBar).execute(currentBusiness.getImageLink());
     }
 
     // Method to Mock data from a specific business
     private Business mockBusinessDetails(String businessId) {
         Business mock = new Business();
         mock.setName("The Real McCoy Burgers and Pizza!");
-        mock.setDistance("11 Km");
+        //mock.setDistance("11 Km");
         mock.setAddress("11033 Markham Road, Scarborough, ON M1H 2Y5, Canada");
         mock.setFoodCategory(new String[]{"Chinese, Noodles"});
         mock.setRating(4.3);
