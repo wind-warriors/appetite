@@ -4,8 +4,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <!-- <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item> -->
     </style>
 
     <style name="Greeting">
@@ -15,19 +15,17 @@
         <item name="android:layout_marginTop">@dimen/text_margin</item>
         <item name="android:layout_marginBottom">@dimen/text_margin</item>
         <item name="android:text">@string/hello_user_sample_text</item>
-
     </style>
-
 
     <style name="productImage">
         <item name="android:layout_width">110dp</item>
-        <item name="android:layout_height">115dp</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginLeft">3dp</item>
         <item name="android:layout_marginRight">3dp</item>
         <item name="android:layout_marginTop">3dp</item>
         <item name="android:layout_marginBottom">3dp</item>
         <item name="android:padding">1dp</item>
-
+        <item name="android:src">@drawable/food_example</item>
         <item name="android:contentDescription">@string/food_image_sample_text</item>
 
     </style>
@@ -37,8 +35,9 @@
         <item name="android:textSize">@dimen/businessNameTextSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
         <item name="android:textStyle">bold</item>
-
+        <item name="android:text">@string/defaultBusinessName</item>
     </style>
 
     <style name="details_businessName">
@@ -48,90 +47,95 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:padding">5dp</item>
-
+        <item name="android:text">@string/defaultBusinessName</item>
     </style>
 
 
     <style name="totalReviews">
-        <item name="android:textColor">@color/productDescriptionTextColor</item>
+        <item name="android:textColor">@color/tertiaryText</item>
         <item name="android:textSize">@dimen/businessTotalReviewsTextSize</item>
-
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">left</item>
-        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_toRightOf">@id/imageStar</item>
+        <item name="android:layout_below">@id/business_name</item>
+        <item name="android:layout_alignBaseline">@id/imageStar</item>
+        <item name="android:text">@string/defaultTotalReviews</item>
+    </style>
+
+    <style name="reviewsPostfixText" parent="totalReviews">
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_toRightOf">@id/total_reviews</item>
+        <item name="android:text">reviews</item>
     </style>
 
     <style name="foodCategory">
         <item name="android:textColor">@color/foodCategoryTextColor</item>
-        <item name="android:textSize">@dimen/foodCategoryTextSize</item>
-
-        <item name="android:layout_width">160dp</item>
+        <item name="android:layout_width">150dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_below">@id/imageStar</item>
+        <item name="android:textSize">@dimen/foodCategoryTextSize</item>
+        <item name="android:text">@string/defaultFoodCategory</item>
     </style>
 
     <style name="address">
-        <item name="android:textColor">@color/addressTextColor</item>
+        <item name="android:textColor">@color/secondaryText</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">5dp</item>
-
+        <item name="android:layout_below">@id/food_category</item>
+        <item name="android:layout_alignParentBottom">true</item>
         <item name="android:textSize">@dimen/addressTextSize</item>
+        <item name="android:text">@string/defaultAddress</item>
+
     </style>
 
     <style name="details_address">
-        <item name="android:textColor">@color/addressTextColor</item>
+        <item name="android:textColor">@color/secondaryText</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">5dp</item>
-
+        <item name="android:text">@string/defaultAddress</item>
         <item name="android:textSize">15sp</item>
     </style>
 
     <style name="productCurrency">
-        <item name="android:textColor">@color/addressTextColor</item>
+        <item name="android:textColor">@color/green</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">5dp</item>
-
+        <item name="android:text">@string/defaultCurrency</item>
         <item name="android:textSize">@dimen/addressTextSize</item>
     </style>
 
     <style name="distance">
-        <item name="android:textColor">@color/productAvailableTextColor</item>
+        <item name="android:textColor">@color/normalText</item>
         <item name="android:textSize">@dimen/distanceTextSize</item>
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">right</item>
+        <item name="android:layout_toRightOf">@id/food_category</item>
+        <item name="android:layout_alignBaseline">@id/food_category</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_marginRight">7dp</item>
-
+        <item name="android:text">@string/defaultDistance</item>
     </style>
 
 
     <style name="open">
-        <item name="android:textColor">@color/productAvailableTextColor</item>
+        <item name="android:textColor">@color/green</item>
         <item name="android:textSize">@dimen/distanceTextSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">right</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_marginRight">7dp</item>
-
-
+        <item name="android:text">Open</item>
     </style>
 
-
-    <style name="reviewsPostfixText">
-        <item name="android:textColor">@color/productDescriptionTextColor</item>
-        <item name="android:textSize">@dimen/distanceTextSize</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-
-
-        <item name="android:layout_marginLeft">5dp</item>
+    <!-- spinning Wheel style not being used -->
+    <style name="spinningWheel" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:progressBarStyle">?android:attr/progressBarStyle</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -142,5 +146,4 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 </resources>
