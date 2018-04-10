@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.windwarriors.appetite.BusinessDetailsActivity;
@@ -33,6 +34,8 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         TextView foodCategory;
         TextView address;
         ImageView ratingStar;
+        ProgressBar listProgressBar;
+
 
         BusinessViewHolder(View itemView) {
             super(itemView);
@@ -43,6 +46,8 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             foodCategory = itemView.findViewById(R.id.food_category);
             address = itemView.findViewById(R.id.address);
             ratingStar = itemView.findViewById(R.id.imageStar);
+            listProgressBar = itemView.findViewById(R.id.listProgress);
+
 
             // on item click
             itemView.setOnClickListener(new View.OnClickListener(){
@@ -98,7 +103,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         new DownloadImageTask(holder.foodImage).execute(currentBusiness.getImageLink());
 
         holder.businessName.setText(currentBusiness.getName());
-        holder.totalReviews.setText(currentBusiness.getTotalReviews().toString());
+        holder.totalReviews.setText(currentBusiness.getTotalReviews().toString() + " reviews");
         holder.distance.setText(currentBusiness.getFormattedDistance());
 
         String priceAndCategory;

@@ -165,7 +165,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
 //        rating.setText(String.valueOf(currentBusiness.getRating()));
 
         reviews = findViewById(R.id.details_total_reviews);
-        reviews.setText( String.valueOf(currentBusiness.getTotalReviews()));
+        reviews.setText( String.valueOf(currentBusiness.getTotalReviews()) + " reviews");
 
         address = findViewById(R.id.details_address);
         address.setText(currentBusiness.getAddress());
