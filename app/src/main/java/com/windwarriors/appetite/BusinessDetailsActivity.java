@@ -179,10 +179,10 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
 //        rating.setText(String.valueOf(currentBusiness.getRating()));
 
         reviews = findViewById(R.id.details_total_reviews);
-        reviews.setText( String.valueOf(currentBusiness.getTotalReviews()) + " reviews");
+        reviews.setText( String.valueOf(currentBusiness.getTotalReviews()));
 
         address = findViewById(R.id.details_address);
-        address.setText(currentBusiness.getAddress());
+        address.setText(currentBusiness.getFullAddress());
 
         distance = findViewById(R.id.details_distance);
         distance.setText(businessDistance);
@@ -218,6 +218,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         new DownloadImageTask(foodImage, progressBar).execute(currentBusiness.getImageLink());
     }
 
+    /*
     // Method to Mock data from a specific business
     private Business mockBusinessDetails(String businessId) {
         Business mock = new Business();
@@ -242,5 +243,5 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
                 "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/lead-restaurants-1508259029.jpg?crop=1.00xw:1.00xh;0,0&resize=1600:*",
                 "http://www.appareilarchitecture.com/wp-content/uploads/z_APPAREILarchitecture_Restaurant-BATTUTO_Qu%C3%A9bec_2016_%C2%A9F%C3%A9lix-Michaud_HR_006-2cover.jpg");
     }
-
+    */
 }

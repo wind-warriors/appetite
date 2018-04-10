@@ -14,12 +14,10 @@
     <string name="product_name_sample_text">Product Name</string>
     <string name="product_image_sample_text">Product Image</string>
     <string name="category_sample_text">Category</string>
-    <string name="address_sample_text">1033 Markham Road, Scarborough, ON M1H 2Y5, Canada</string>
 
     <string name="description_sample_text">description</string>
     <string name="currency">$ </string>
 
-    <string name="available_sample_text">25</string>
     <string name="available_prefix">Available: </string>
     <string name="title_activity_maps">Map</string>
     <string name="error_connect_to_services">Map Services are now available</string>
@@ -115,6 +113,15 @@
     </string>
     <string name="action_settings">Settings</string>
 
+    <!-- Default strings shown while loading -->
+    <string name="defaultBusinessName">Restaurant Name</string>
+    <string name="defaultDistance">Distance</string>
+    <string name="defaultAddress">Address</string>
+    <string name="defaultTotalReviews">Number of</string>
+    <string name="defaultFoodCategory">Price and category</string>
+    <string name="defaultCurrency">Price</string> <!-- not really used -->
+
+    <!-- Sorting arrays -->
     <string-array name="sortby_options_array">
         <item>BestMatch</item>
         <item>Distance</item>

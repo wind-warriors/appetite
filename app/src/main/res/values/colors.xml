@@ -4,26 +4,65 @@
     <!--<color name="colorPrimaryDark">#303F9F</color>-->
     <!--<color name="colorAccent">#FF4081</color>-->
 
-    <color name="colorPrimary">#03A9F4</color>
-    <color name="colorPrimaryDark">#0288D1</color>
-    <color name="primary_light">#B3E5FC</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">@color/darkRed</color>
+    <!-- <color name="colorPrimaryDark">#b71c1c</color> -->
+    <color name="colorPrimaryLight">@color/red</color>
+    <color name="colorSecondary">@color/darkBlue</color>
+    <color name="primaryText">@color/normalText</color>
+    <color name="secondaryText">@color/midText</color>
+    <color name="tertiaryText">@color/ghostText</color>
 
+    <color name="backgroundColor">@color/white</color>
+    <color name="mediumBackgroundColor">@color/darkWhite</color>
 
-    <color name="menu_text_color">#AABBDD</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#757575</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="divider">#DDDDDD</color>
-    <color name="colorWhite">#FFFFFF</color>
-    <color name="black">#000</color>
-    <color name="photos_background">#DDDDDD</color>
-    <color name="white">#fff</color>
-    <color name="addressTextColor">#888888</color>
-    <color name="productNameTextColor">#757575</color>
-    <color name="productDescriptionTextColor">#757575</color>
-    <color name="foodCategoryTextColor">#3F51B5</color>
-    <color name="productAvailableTextColor">#000000</color>
+    <color name="errorText">@color/darkRed</color>
+    <color name="normalText">@color/lightBlack</color>
+    <color name="midText">#666666</color>
+    <color name="ghostText">#999999</color>
+    <color name="eliteText">@color/darkOrange</color>
+    <color name="linkColor">@color/darkBlue</color>
+    <color name="greenText">@color/green</color>
+
+    <color name="divider">@color/lightGray</color>
+    <color name="productNameTextColor">@color/secondaryText</color>
+
+    <color name="foodCategoryTextColor">@color/colorSecondary</color>
     <color name="loginTextColor">#372c24</color>
 
+    <!-- Color Palette -->
+
+    <color name="white">#f5f5f5</color>
+    <color name="darkWhite">#e6e6e6</color>
+
+    <color name="black">#050505</color>
+    <color name="lightBlack">#333333</color>
+    <color name="darkGray">#4d4d4d</color>
+    <color name="gray">#666666</color>
+    <color name="lightGray">#cccccc</color>
+
+    <color name="darkRed">#d32323</color>
+    <color name="red">#F15C4F</color>
+    <color name="lightRed">#F8ADA8</color>
+
+    <color name="darkYellow">#fec011</color>
+    <color name="yellow">#f3dd30</color>
+    <color name="lightYellow">#ffee98</color>
+
+    <color name="darkGreen">#308941</color>
+    <color name="green">#41a700</color>
+    <color name="lightGreen">#b6dba6</color>
+
+    <color name="darkOrange">#f15c00</color>
+    <color name="orange">#ff9242</color>
+
+    <color name="darkBlue">#0073bb</color>
+    <color name="blue">#0097ec</color>
+    <color name="lightBlue">#a5d8f5</color>
+
+    <color name="darkSlate">#092d4b</color>
+    <color name="slate">#336a8b</color>
+    <color name="lightSlate">#9ab5c5</color>
+
+    <!-- Deprecated -->
+    <color name="primary_text">@color/black</color>
 </resources>

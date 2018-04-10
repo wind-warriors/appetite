@@ -103,7 +103,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         new DownloadImageTask(holder.foodImage).execute(currentBusiness.getImageLink());
 
         holder.businessName.setText(currentBusiness.getName());
-        holder.totalReviews.setText(currentBusiness.getTotalReviews().toString() + " reviews");
+        holder.totalReviews.setText(currentBusiness.getTotalReviews().toString());
         holder.distance.setText(currentBusiness.getFormattedDistance());
 
         String priceAndCategory;
