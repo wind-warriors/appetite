@@ -44,8 +44,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".BusinessDetailsActivity" />
-        <activity android:name=".BusinessListFilterDialog" />
+        <activity android:name=".BusinessDetailsActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <!--<activity android:name=".BusinessListFilterDialog" />-->
 
         <service android:name=".service.BusinessService" />
     </application>
