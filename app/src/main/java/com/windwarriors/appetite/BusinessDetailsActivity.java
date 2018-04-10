@@ -67,7 +67,9 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
         // Set action bar and status bar transparent
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getWindow().setStatusBarColor(getResources().getColor(android.R.color.transparent));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(android.R.color.transparent));
+        }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         Bundle data = getIntent().getExtras();
