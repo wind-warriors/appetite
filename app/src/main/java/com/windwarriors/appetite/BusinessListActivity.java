@@ -146,6 +146,8 @@ public class BusinessListActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "onQueryTextSubmit: "+s, Toast.LENGTH_SHORT).show();
 
                 businessServiceClient.updateTerm(term);
+
+                progressBar.setVisibility(View.VISIBLE);
                 businessServiceClient.refreshBusinessList();
                 //mockBusinessServiceloadSearchByTermResult(term);
                 return true;
@@ -157,10 +159,15 @@ public class BusinessListActivity extends AppCompatActivity {
 
                 // REMOVE HERE IF MAXIMUM NUMBER OF YELP CALLS IS BEING REACHED
                 businessServiceClient.updateTerm(term);
+
+                progressBar.setVisibility(View.VISIBLE);
                 businessServiceClient.refreshBusinessList();
                 //mockBusinessServiceloadSearchByTermResult(term);
                 return false;
             }
+
+
+
         });
         return true;
     }
