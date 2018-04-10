@@ -19,6 +19,7 @@ public class Business implements Parcelable {
         private Integer totalReviews;
         private String[] foodCategory;
         private String address;
+        private String fullAddress;
         private Double distance;
         private String imageLink;
         private Double rating;
@@ -32,13 +33,14 @@ public class Business implements Parcelable {
     }
 
     public Business(String id, String name, Integer review, String[] foodCategory, String address,
-                    Double distance, String imageLink
-            , Double rating, Double latitude, Double longitude, String price, String[] photos) {
+                    String fullAddress, Double distance, String imageLink,
+                    Double rating, Double latitude, Double longitude, String price, String[] photos) {
         this.id = id;
         this.name = name;
         this.totalReviews = review;
         this.foodCategory = foodCategory;
         this.address = address;
+        this.fullAddress = fullAddress;
         this.distance = distance;
         this.imageLink = imageLink;
         this.rating = rating;
@@ -67,6 +69,7 @@ public class Business implements Parcelable {
             System.out.println("Appetite.Business: WARNING: distance 0 for " + this.name);
         }
         this.address = locationToAddress(yelpBusiness.getLocation());
+        this.fullAddress = locationToFullAddress(yelpBusiness.getLocation());
         DecimalFormat f = new DecimalFormat("0.00");
         this.distance = Double.valueOf(f.format(yelpBusiness.getDistance() / 1000.0));
         this.imageLink = yelpBusiness.getImageUrl();
@@ -96,6 +99,7 @@ public class Business implements Parcelable {
         }
         foodCategory = in.createStringArray();
         address = in.readString();
+        fullAddress = in.readString();
         if (in.readByte() == 0) {
             distance = null;
         } else {
@@ -133,6 +137,7 @@ public class Business implements Parcelable {
         }
         dest.writeStringArray(foodCategory);
         dest.writeString(address);
+        dest.writeString(fullAddress);
         if (distance == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -174,7 +179,7 @@ public class Business implements Parcelable {
         }
     };
 
-    private String locationToAddress(Location l) {
+    private String locationToFullAddress(Location l) {
         StringBuilder address;
         ArrayList<String> displayAddress = l.getDisplayAddress();
 
@@ -185,6 +190,19 @@ public class Business implements Parcelable {
         for (String line: l.getDisplayAddress()) {
             address.append(", ").append(line);
         }
+        return address.toString();
+    }
+
+    private String locationToAddress(Location l) {
+        StringBuilder address;
+
+        address = new StringBuilder(l.getAddress1());
+        if (l.getAddress2() != null && !l.getAddress2().isEmpty()) {
+            address.append(", ");
+            address.append(l.getAddress2());
+        }
+        address.append(", ");
+        address.append(l.getCity());
         return address.toString();
     }
 
@@ -250,6 +268,14 @@ public class Business implements Parcelable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getFullAddress() {
+        return fullAddress;
+    }
+
+    public void setFullAddress(String fullAddress) {
+        this.fullAddress = fullAddress;
     }
 
     public Double getDistance() {
