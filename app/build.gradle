@@ -45,4 +45,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.8.0'
     compile 'com.google.android.gms:play-services-location:11.8.0'
     compile 'com.nex3z:toggle-button-group:1.1.2'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.4'
 }
