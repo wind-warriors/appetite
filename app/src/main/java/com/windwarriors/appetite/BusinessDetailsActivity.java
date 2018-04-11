@@ -74,7 +74,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements OnMapR
 
         Bundle data = getIntent().getExtras();
         progressBar = findViewById(R.id.loadingProgress);
-
+        progressBar.bringToFront();
         if( data != null ){
             String businessId = data.getString(BUSINESS_ID);
             businessDistance = data.getString(BUSINESS_DISTANCE);
