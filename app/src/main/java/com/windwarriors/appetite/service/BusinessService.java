@@ -279,4 +279,5 @@ public class BusinessService extends Service implements LocationListener {
             else Log.w(TAG, "unknown sorting method. Skipping sorting!");
         }
     }
+
 }

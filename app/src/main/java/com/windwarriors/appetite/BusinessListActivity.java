@@ -20,6 +20,7 @@ import android.widget.SearchView;
 import com.windwarriors.appetite.adapter.BusinessAdapter;
 import com.windwarriors.appetite.adapter.SimpleDividerItemDecoration;
 import com.windwarriors.appetite.broadcast.BusinessListReadyReceiver;
+import com.windwarriors.appetite.broadcast.RangeUpdateReceiver;
 import com.windwarriors.appetite.model.Business;
 import com.windwarriors.appetite.service.BusinessServiceClient;
 import com.windwarriors.appetite.service.SharedPreferencesService;
@@ -40,6 +41,7 @@ public class BusinessListActivity extends AppCompatActivity {
     private final String TAG = "Appetite.ListActivity";
 
     //private ArrayList<Business> businessList;
+    private RangeUpdateReceiver rangeUpdateReceiver;
     private BusinessListReadyReceiver businessListReadyReceiver;
     private BusinessServiceClient businessServiceClient;
 
@@ -77,19 +79,31 @@ public class BusinessListActivity extends AppCompatActivity {
         businessListReadyReceiver = new BusinessListReadyReceiver(new BusinessListReadyReceiver.OnReceive() {
             @Override
             public void onReceive(ArrayList<Business> updatedBusinessList) {
-            Log.v(TAG, "ListReadyReceiver " + updatedBusinessList.size() + " " + businessAdapter);
-            businessAdapter.refreshBusinessList(updatedBusinessList);
-            businessAdapter.notifyDataSetChanged();
+                Log.v(TAG, "ListReadyReceiver " + updatedBusinessList.size() + " " + businessAdapter);
+                businessAdapter.refreshBusinessList(updatedBusinessList);
+                businessAdapter.notifyDataSetChanged();
 
-            progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
         });
 
+        rangeUpdateReceiver = new RangeUpdateReceiver(new RangeUpdateReceiver.OnReceive() {
+
+            @Override
+            public void onReceive(int range) {
+
+                businessServiceClient.updateRange(range);
+
+                progressBar.setVisibility(View.VISIBLE);
+                businessServiceClient.refreshBusinessList();
+            }
+        });
 //
 //        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(myToolbar);
 
         registerBusinessListReadyBroadcastReceiver();
+        registerRangeUpdateBroadcastReceiver();
 
         handleLocationPermissions();
 
@@ -198,6 +212,10 @@ public class BusinessListActivity extends AppCompatActivity {
 
     private void registerBusinessListReadyBroadcastReceiver() {
         registerReceiver(businessListReadyReceiver, businessListReadyReceiver.getIntentFilter());
+    }
+
+    private void registerRangeUpdateBroadcastReceiver() {
+        registerReceiver(rangeUpdateReceiver, rangeUpdateReceiver.getIntentFilter());
     }
 
     @Override

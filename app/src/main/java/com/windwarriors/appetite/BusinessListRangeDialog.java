@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -13,7 +14,9 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.windwarriors.appetite.service.BusinessService;
 import com.windwarriors.appetite.service.SharedPreferencesService;
+import com.windwarriors.appetite.utils.Constants;
 
 import org.w3c.dom.Text;
 
@@ -50,6 +53,13 @@ public class BusinessListRangeDialog extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         spService.saveToSharedPreferences(SHARED_PREFERENCES_SEARCH_RANGE, String.valueOf(selectedRange));
+
+                        Intent rangeIntent = new Intent();
+                        rangeIntent.setAction(Constants.BROADCAST_RANGE_UPDATE);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(Constants.FILTER_RANGE, selectedRange);
+                        rangeIntent.putExtras(bundle);
+                        getContext().sendBroadcast(rangeIntent);
                     }
                 });
 
