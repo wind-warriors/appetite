@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.windwarriors.appetite.broadcast.BusinessListReadyReceiver;
+import com.windwarriors.appetite.broadcast.RangeUpdateReceiver;
 import com.windwarriors.appetite.model.Business;
 import com.windwarriors.appetite.service.BusinessServiceClient;
 import com.windwarriors.appetite.utils.Constants;
@@ -42,6 +44,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int DIALOG_REQUEST = 9001;
     private GoogleMap mMap;
     private BusinessListReadyReceiver businessListReadyReceiver;
+    private RangeUpdateReceiver rangeUpdateReceiver;
+
     private BusinessServiceClient businessServiceClient;
     //private ArrayList<Business> businessList;
     private LocationManager locationManager;
@@ -61,6 +65,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (mapServicesAvailable() ) {
             initMap();
         }
+
+        rangeUpdateReceiver = new RangeUpdateReceiver(new RangeUpdateReceiver.OnReceive() {
+
+            @Override
+            public void onReceive(int range) {
+
+                mMap.clear();
+
+                businessServiceClient.updateRange(range);
+
+                loadRestaurants(mMap);
+            }
+        });
+
+        registerRangeUpdateBroadcastReceiver();
     }
 
     public void handleLocationPermissions() {
@@ -256,6 +275,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         detailsIntent.putExtra(BUSINESS_DISTANCE, tags[1]);
 
         startActivity(detailsIntent);
+    }
+
+    private void registerRangeUpdateBroadcastReceiver() {
+        registerReceiver(rangeUpdateReceiver, rangeUpdateReceiver.getIntentFilter());
     }
 
     /*
