@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.nex3z.togglebuttongroup.MultiSelectToggleGroup;
 import com.windwarriors.appetite.service.SharedPreferencesService;
+import com.windwarriors.appetite.utils.Constants;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -62,8 +63,14 @@ public class BusinessListFilterDialog extends AppCompatDialogFragment {
                 .setPositiveButton("ok", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        SavePrice();
-                        saveSortByCriteria();
+                        String price = SavePrice();
+                        String sortByCriteria = saveSortByCriteria();
+
+                        Intent filtersIntent = new Intent();
+                        filtersIntent.setAction(Constants.BROADCAST_FILTER_UPDATE);
+                        Bundle bundle = new Bundle();
+                        filtersIntent.putExtras(bundle);
+                        getContext().sendBroadcast(filtersIntent);
                     }
                 });
 
@@ -100,7 +107,7 @@ public class BusinessListFilterDialog extends AppCompatDialogFragment {
 
     }
 
-    public void SavePrice() {
+    public String SavePrice() {
 
         String price = "";
 
@@ -126,11 +133,15 @@ public class BusinessListFilterDialog extends AppCompatDialogFragment {
         //Toast.makeText(getContext(),price,Toast.LENGTH_LONG).show();
 
         spService.saveToSharedPreferences(SHARED_PREFERENCES_FILTER_PRICE, price);
+
+        return price;
     }
 
-    public void saveSortByCriteria() {
+    public String saveSortByCriteria() {
 
         String sortByCriteria = sortByAdapter.getItem(sorbySpinner.getSelectedItemPosition());
         spService.saveToSharedPreferences(SHARED_PREFERENCES_SORTBY, sortByCriteria);
+
+        return sortByCriteria;
     }
 }

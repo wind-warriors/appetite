@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.windwarriors.appetite.broadcast.BusinessListReadyReceiver;
+import com.windwarriors.appetite.broadcast.FiltersUpdateReceiver;
 import com.windwarriors.appetite.broadcast.RangeUpdateReceiver;
 import com.windwarriors.appetite.model.Business;
 import com.windwarriors.appetite.service.BusinessServiceClient;
@@ -45,6 +46,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private BusinessListReadyReceiver businessListReadyReceiver;
     private RangeUpdateReceiver rangeUpdateReceiver;
+    private FiltersUpdateReceiver filtersUpdateReceiver;
 
     private BusinessServiceClient businessServiceClient;
     //private ArrayList<Business> businessList;
@@ -69,17 +71,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         rangeUpdateReceiver = new RangeUpdateReceiver(new RangeUpdateReceiver.OnReceive() {
 
             @Override
-            public void onReceive(int range) {
+            public void onReceive() {
 
                 mMap.clear();
 
-                businessServiceClient.updateRange(range);
+                //businessServiceClient.updateRange(range);
 
                 loadRestaurants(mMap);
             }
         });
 
+        filtersUpdateReceiver = new FiltersUpdateReceiver(new FiltersUpdateReceiver.OnReceive() {
+            @Override
+            public void onReceive() {
+                mMap.clear();
+
+                businessServiceClient.refreshBusinessList();
+            }
+        });
+
         registerRangeUpdateBroadcastReceiver();
+        registerFilterUpdateBroadcastReceiver();
+
     }
 
     public void handleLocationPermissions() {
@@ -279,6 +292,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void registerRangeUpdateBroadcastReceiver() {
         registerReceiver(rangeUpdateReceiver, rangeUpdateReceiver.getIntentFilter());
+    }
+
+    private void registerFilterUpdateBroadcastReceiver() {
+        registerReceiver(filtersUpdateReceiver, filtersUpdateReceiver.getIntentFilter());
     }
 
     /*

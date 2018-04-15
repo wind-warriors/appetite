@@ -8,15 +8,16 @@ import android.os.Bundle;
 
 import com.windwarriors.appetite.utils.Constants;
 
-public class RangeUpdateReceiver extends BroadcastReceiver {
-    private String TAG = "Appetite.RangeUpdateReceiver";
-    private RangeUpdateReceiver.OnReceive customOnReceive;
+public class FiltersUpdateReceiver extends BroadcastReceiver {
+
+    private String TAG = "Appetite.FiltersUpdateReceiver";
+    private FiltersUpdateReceiver.OnReceive customOnReceive;
 
     public interface OnReceive {
         void onReceive();
     }
 
-    public RangeUpdateReceiver( RangeUpdateReceiver.OnReceive customOnReceive ){
+    public FiltersUpdateReceiver( FiltersUpdateReceiver.OnReceive customOnReceive ){
         this.customOnReceive = customOnReceive;
     }
 
@@ -25,21 +26,19 @@ public class RangeUpdateReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         Bundle data = intent.getExtras();
 
-        if (Constants.BROADCAST_RANGE_UPDATE.equals(action)) {
+        if (Constants.BROADCAST_FILTER_UPDATE.equals(action)) {
             if (this.customOnReceive != null) {
                 this.customOnReceive.onReceive();
             }
-
         } else {
             System.out.println(TAG + " Nothing to do for action " + action);
         }
-
     }
 
     public IntentFilter getIntentFilter() {
         System.out.println(TAG + " registering service state change receiver...");
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constants.BROADCAST_RANGE_UPDATE);
+        intentFilter.addAction(Constants.BROADCAST_FILTER_UPDATE);
         return intentFilter;
     }
 }

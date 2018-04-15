@@ -57,14 +57,24 @@ public class BusinessServiceClient {
         context.startService(intent);
     }
 
-    public void updateRange(int range) {
+    /*public void updateRange(int range) {
         Bundle data = new Bundle();
         data.putInt(Constants.BROADCAST_BUSINESS_SERVICE, Constants.BROADCAST_UPDATE_RANGE);
         data.putInt(Constants.BROADCAST_RANGE_UPDATE, range);
         Intent intent = new Intent(context, BusinessService.class);
         intent.putExtras(data);
         context.startService(intent);
-    }
+    }*/
+
+    /*public void updateFilter(String price, String sort) {
+        Bundle data = new Bundle();
+        data.putInt(Constants.BROADCAST_BUSINESS_SERVICE, Constants.BROADCAST_UPDATE_FILTER);
+        data.putString(Constants.FILTER_PRICE, price);
+        data.putString(Constants.FILTER_SORT, sort);
+        Intent intent = new Intent(context, BusinessService.class);
+        intent.putExtras(data);
+        context.startService(intent);
+    }*/
 
     public void destroy() {
         Bundle data = new Bundle();

@@ -57,7 +57,6 @@ public class BusinessListRangeDialog extends AppCompatDialogFragment {
                         Intent rangeIntent = new Intent();
                         rangeIntent.setAction(Constants.BROADCAST_RANGE_UPDATE);
                         Bundle bundle = new Bundle();
-                        bundle.putInt(Constants.FILTER_RANGE, selectedRange);
                         rangeIntent.putExtras(bundle);
                         getContext().sendBroadcast(rangeIntent);
                     }

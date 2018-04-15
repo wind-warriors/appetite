@@ -20,6 +20,7 @@ import android.widget.SearchView;
 import com.windwarriors.appetite.adapter.BusinessAdapter;
 import com.windwarriors.appetite.adapter.SimpleDividerItemDecoration;
 import com.windwarriors.appetite.broadcast.BusinessListReadyReceiver;
+import com.windwarriors.appetite.broadcast.FiltersUpdateReceiver;
 import com.windwarriors.appetite.broadcast.RangeUpdateReceiver;
 import com.windwarriors.appetite.model.Business;
 import com.windwarriors.appetite.service.BusinessServiceClient;
@@ -42,6 +43,7 @@ public class BusinessListActivity extends AppCompatActivity {
 
     //private ArrayList<Business> businessList;
     private RangeUpdateReceiver rangeUpdateReceiver;
+    private FiltersUpdateReceiver filtersUpdateReceiver;
     private BusinessListReadyReceiver businessListReadyReceiver;
     private BusinessServiceClient businessServiceClient;
 
@@ -90,20 +92,30 @@ public class BusinessListActivity extends AppCompatActivity {
         rangeUpdateReceiver = new RangeUpdateReceiver(new RangeUpdateReceiver.OnReceive() {
 
             @Override
-            public void onReceive(int range) {
+            public void onReceive() {
 
-                businessServiceClient.updateRange(range);
+                // businessServiceClient.updateRange(range);
 
                 progressBar.setVisibility(View.VISIBLE);
                 businessServiceClient.refreshBusinessList();
             }
         });
-//
+
+        filtersUpdateReceiver = new FiltersUpdateReceiver(new FiltersUpdateReceiver.OnReceive() {
+            @Override
+            public void onReceive() {
+
+                progressBar.setVisibility(View.VISIBLE);
+                businessServiceClient.refreshBusinessList();
+            }
+        });
+
 //        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(myToolbar);
 
         registerBusinessListReadyBroadcastReceiver();
         registerRangeUpdateBroadcastReceiver();
+        registerFilterUpdateBroadcastReceiver();
 
         handleLocationPermissions();
 
@@ -216,6 +228,10 @@ public class BusinessListActivity extends AppCompatActivity {
 
     private void registerRangeUpdateBroadcastReceiver() {
         registerReceiver(rangeUpdateReceiver, rangeUpdateReceiver.getIntentFilter());
+    }
+
+    private void registerFilterUpdateBroadcastReceiver() {
+        registerReceiver(filtersUpdateReceiver, filtersUpdateReceiver.getIntentFilter());
     }
 
     @Override

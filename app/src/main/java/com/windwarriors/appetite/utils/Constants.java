@@ -40,6 +40,7 @@ public final class Constants {
     public static final String BROADCAST_LONGITUDE                = "BROADCAST_LONGITUDE";
     public static final String BROADCAST_ID                       = "BROADCAST_ID";
     public static final String BROADCAST_RANGE_UPDATE             = "BROADCAST_RANGE_UPDATE";
+    public static final String BROADCAST_FILTER_UPDATE             = "BROADCAST_FILTER_UPDATE";
 
     // BUSINESS SERVICE CMDS
     public static final int    BROADCAST_DESTROY_BUSINESS_SERVICE = 99;
@@ -49,13 +50,11 @@ public final class Constants {
     public static final int    BROADCAST_UPDATE_TERM              = 103;
     public static final int    BROADCAST_LOAD_BUSINESS            = 104;
     public static final int    BROADCAST_UPDATE_RANGE             = 105;
+    public static final int    BROADCAST_UPDATE_FILTER            = 106;
 
     // Used on BusinessListReadyBroadcaster intents
     public static final String BUSINESS_LIST = "businessList";
     public static final String BUSINESS = "business";
-
-    // Filters
-    public static final String FILTER_RANGE = "FILTER_RANGE";
 
     public static final Double CENTENNIAL_LATITUDE = 43.7844571;
     public static final Double CENTENNIAL_LONGITUDE = -79.2287377;
