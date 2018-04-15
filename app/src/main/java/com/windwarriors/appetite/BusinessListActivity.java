@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.windwarriors.appetite.adapter.BusinessAdapter;
 import com.windwarriors.appetite.adapter.SimpleDividerItemDecoration;
@@ -55,12 +56,20 @@ public class BusinessListActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
 
+    // to manage paging
+    private int currentPage;
+    private int pageSize;
+    private int currentPagingListSize;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_list);
 
         progressBar = findViewById(R.id.loadingProgress);
+        currentPage = 1;
+        pageSize = Constants.PAGE_SIZE;
+        currentPagingListSize = 0;
 
         sharedPreferences = new SharedPreferencesService(this);
 
@@ -76,13 +85,37 @@ public class BusinessListActivity extends AppCompatActivity {
 
         businessServiceClient = new BusinessServiceClient(this);
         businessAdapter = new BusinessAdapter(BusinessListActivity.this);
+        businessAdapter.setLoadMoreClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(), "HEY", Toast.LENGTH_SHORT).show();
+                v.setVisibility(View.GONE);
+                if( currentPage * pageSize == currentPagingListSize){
+                    currentPage++;
+                    progressBar.setVisibility(View.VISIBLE);
+                    businessServiceClient.refreshBusinessList();
+                }
+            }
+        });
+
         businessRecyclerView.setAdapter(businessAdapter);
 
         businessListReadyReceiver = new BusinessListReadyReceiver(new BusinessListReadyReceiver.OnReceive() {
             @Override
             public void onReceive(ArrayList<Business> updatedBusinessList) {
                 Log.v(TAG, "ListReadyReceiver " + updatedBusinessList.size() + " " + businessAdapter);
-                businessAdapter.refreshBusinessList(updatedBusinessList);
+
+                ArrayList<Business> pagingBusinessList = updatedBusinessList;
+                currentPagingListSize = Constants.DEFAULT_YELP_SERVICE_LIST_SIZE;
+                if( updatedBusinessList.size() > pageSize)
+                {
+                    // Set paging list according to current page
+                   pagingBusinessList = new ArrayList<Business>(updatedBusinessList.subList(0, currentPage * pageSize));
+                   currentPagingListSize = pagingBusinessList.size();
+                }
+
+                businessAdapter.refreshBusinessList(pagingBusinessList, updatedBusinessList.size());
+                //businessAdapter.refreshBusinessList(updatedBusinessList);
                 businessAdapter.notifyDataSetChanged();
 
                 progressBar.setVisibility(View.GONE);
@@ -93,9 +126,8 @@ public class BusinessListActivity extends AppCompatActivity {
 
             @Override
             public void onReceive() {
-
                 // businessServiceClient.updateRange(range);
-
+                currentPage = 1;
                 progressBar.setVisibility(View.VISIBLE);
                 businessServiceClient.refreshBusinessList();
             }
@@ -104,7 +136,7 @@ public class BusinessListActivity extends AppCompatActivity {
         filtersUpdateReceiver = new FiltersUpdateReceiver(new FiltersUpdateReceiver.OnReceive() {
             @Override
             public void onReceive() {
-
+                currentPage = 1;
                 progressBar.setVisibility(View.VISIBLE);
                 businessServiceClient.refreshBusinessList();
             }
@@ -170,7 +202,7 @@ public class BusinessListActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String term) {
                 //Toast.makeText(getApplicationContext(), "onQueryTextSubmit: "+s, Toast.LENGTH_SHORT).show();
-
+                currentPage = 1;
                 businessServiceClient.updateTerm(term);
 
                 progressBar.setVisibility(View.VISIBLE);
@@ -182,7 +214,7 @@ public class BusinessListActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String term) {
                 //Toast.makeText(getApplicationContext(), "onQueryTextChange: "+s, Toast.LENGTH_SHORT).show();
-
+                currentPage = 1;
                 // REMOVE HERE IF MAXIMUM NUMBER OF YELP CALLS IS BEING REACHED
                 businessServiceClient.updateTerm(term);
 

@@ -56,6 +56,10 @@ public final class Constants {
     public static final String BUSINESS_LIST = "businessList";
     public static final String BUSINESS = "business";
 
+    // Used for paging
+    public static final int PAGE_SIZE = 5;
+    public static final int DEFAULT_YELP_SERVICE_LIST_SIZE = 20;
+
     public static final Double CENTENNIAL_LATITUDE = 43.7844571;
     public static final Double CENTENNIAL_LONGITUDE = -79.2287377;
 

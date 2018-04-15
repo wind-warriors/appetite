@@ -7,13 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.windwarriors.appetite.BusinessDetailsActivity;
 import com.windwarriors.appetite.R;
 import com.windwarriors.appetite.model.Business;
+import com.windwarriors.appetite.utils.Constants;
 import com.windwarriors.appetite.utils.DownloadImageTask;
 
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
 
     private ArrayList<Business> businessList;
     private static Context context;
+    private View.OnClickListener loadMoreClickListener;
+    private int businessListSizeWithoutPaging;
 
     class BusinessViewHolder extends RecyclerView.ViewHolder {
         ImageView foodImage;
@@ -35,6 +40,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         TextView address;
         ImageView ratingStar;
         ProgressBar listProgressBar;
+        Button loadMoreButton;
 
 
         BusinessViewHolder(View itemView) {
@@ -47,6 +53,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             address = itemView.findViewById(R.id.address);
             ratingStar = itemView.findViewById(R.id.imageStar);
             listProgressBar = itemView.findViewById(R.id.listProgress);
+            loadMoreButton = itemView.findViewById(R.id.load_more);
 
 
             // on item click
@@ -84,9 +91,10 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         BusinessAdapter.context = context;
     }
 
-    public void refreshBusinessList(ArrayList<Business> businessList) {
+    public void refreshBusinessList(ArrayList<Business> businessList, int businessListSizeWithoutPaging) {
         this.businessList.clear();
         this.businessList.addAll(businessList);
+        this.businessListSizeWithoutPaging = businessListSizeWithoutPaging;
     }
 
     @Override
@@ -138,7 +146,13 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
         } else {
             holder.ratingStar.setImageResource(R.drawable.stars_regular_0);}
 
-
+        // Last item in recycle view, then show "Load More" button
+        if(businessListSizeWithoutPaging > Constants.PAGE_SIZE && position == businessList.size()-1 && position != Constants.DEFAULT_YELP_SERVICE_LIST_SIZE-1){
+            holder.loadMoreButton.setVisibility(View.VISIBLE);
+            // Setup the listener for "Load More" button
+            if( this.loadMoreClickListener != null )
+                holder.loadMoreButton.setOnClickListener(this.loadMoreClickListener);
+        }
 
 //        holder.foodImage.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -152,9 +166,19 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
 //        });
     }
 
+    public void setLoadMoreClickListener(View.OnClickListener loadMoreClickListener) {
+        this.loadMoreClickListener = loadMoreClickListener;
+    }
+
     @Override
     public int getItemCount() {
         return businessList.size();
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
 }

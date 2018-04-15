@@ -18,11 +18,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
         android:id="@+id/image"
         style="@style/productImage"
+        android:layout_height="110dp"
         android:scaleType="centerCrop"/>
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -67,9 +73,16 @@
             <TextView
                 android:id="@+id/address"
                 style="@style/address" />
+
+
         </RelativeLayout>
 
     </LinearLayout>
-
-
+    <Button
+        android:id="@+id/load_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="load more"
+        android:visibility="gone"/>
+    </LinearLayout>
 </RelativeLayout>
