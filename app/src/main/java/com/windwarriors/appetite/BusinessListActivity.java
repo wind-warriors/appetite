@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import static com.windwarriors.appetite.utils.Constants.SHARED_PREFERENCES_SEARCH_RANGE;
 import static com.windwarriors.appetite.utils.Helper.OpenFilterDialog;
 import static com.windwarriors.appetite.utils.Helper.OpenRangeDialog;
+import static java.lang.Thread.sleep;
 
 
 public class BusinessListActivity extends AppCompatActivity {
@@ -59,6 +60,9 @@ public class BusinessListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_list);
 
