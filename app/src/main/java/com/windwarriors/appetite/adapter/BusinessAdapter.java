@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.windwarriors.appetite.BusinessDetailsActivity;
 import com.windwarriors.appetite.R;
 import com.windwarriors.appetite.model.Business;
+import com.windwarriors.appetite.utils.Constants;
 import com.windwarriors.appetite.utils.DownloadImageTask;
 
 import java.util.ArrayList;
@@ -140,7 +141,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
 
         // Last item in recycle view, then show "Load More" button
         if(//businessListSizeWithoutPaging > Constants.PAGE_SIZE &&
-            position == businessList.size()-1
+            position == Constants.PAGE_SIZE-1
             //&& position != Constants.DEFAULT_YELP_SERVICE_LIST_SIZE-1
         ){
             holder.loadMoreButton.setText( context.getString( R.string.next ) );
