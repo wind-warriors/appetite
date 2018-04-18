@@ -170,6 +170,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(businessListReadyReceiver);
+        unregisterReceiver(filtersUpdateReceiver);
+        unregisterReceiver(rangeUpdateReceiver);
     }
 
     // PRIVATE METHODS
