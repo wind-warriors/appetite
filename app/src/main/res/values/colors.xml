@@ -15,6 +15,9 @@
     <color name="backgroundColor">@color/white</color>
     <color name="mediumBackgroundColor">@color/darkWhite</color>
 
+    <color name="buttonBackground">@color/darkBlue</color>
+    <color name="disabledButtonBackground">@color/lightBlue</color>
+
     <color name="errorText">@color/darkRed</color>
     <color name="normalText">@color/lightBlack</color>
     <color name="midText">#666666</color>

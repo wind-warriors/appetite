@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +15,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.windwarriors.appetite.adapter.BusinessAdapter;
 import com.windwarriors.appetite.adapter.SimpleDividerItemDecoration;
@@ -81,7 +82,15 @@ public class BusinessListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             //Toast.makeText(getApplicationContext(), "HEY", Toast.LENGTH_SHORT).show();
-            v.setVisibility(View.GONE);
+            v.setEnabled(false);
+            ((Button) v).setText( getString(R.string.loading) );
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                v.setBackgroundColor( getColor(R.color.disabledButtonBackground));
+            else
+                v.setBackgroundColor( getResources().getColor(R.color.disabledButtonBackground));
+                //v.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.disabledButtonBackground));
+
             progressBar.setVisibility(View.VISIBLE);
             businessServiceClient.nextPage();
             businessRecyclerView.smoothScrollToPosition(0);

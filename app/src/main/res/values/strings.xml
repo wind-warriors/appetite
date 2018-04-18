@@ -120,7 +120,8 @@
     <string name="defaultTotalReviews">Number of</string>
     <string name="defaultFoodCategory">Price and category</string>
     <string name="defaultCurrency">Price</string>
-    <string name="next">Load More</string> <!-- not really used -->
+    <string name="next">Load More</string>
+    <string name="loading">Loading…</string>
 
     <!-- Sorting arrays -->
     <string-array name="sortby_options_array">

@@ -2,6 +2,7 @@ package com.windwarriors.appetite.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,12 +12,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.windwarriors.appetite.BusinessDetailsActivity;
 import com.windwarriors.appetite.R;
 import com.windwarriors.appetite.model.Business;
-import com.windwarriors.appetite.utils.Constants;
 import com.windwarriors.appetite.utils.DownloadImageTask;
 
 import java.util.ArrayList;
@@ -144,6 +143,14 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             position == businessList.size()-1
             //&& position != Constants.DEFAULT_YELP_SERVICE_LIST_SIZE-1
         ){
+            holder.loadMoreButton.setText( context.getString( R.string.next ) );
+            holder.loadMoreButton.setEnabled(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                holder.loadMoreButton.setBackgroundColor( context.getColor( R.color.buttonBackground) );
+            else
+                holder.loadMoreButton.setBackgroundColor(context.getResources().getColor(R.color.buttonBackground));
+                //holder.loadMoreButton.setBackgroundColor(ContextCompat.getColor(context, R.color.buttonBackground));
+
             holder.loadMoreButton.setVisibility(View.VISIBLE);
             // Setup the listener for "Load More" button
             if( this.loadMoreClickListener != null )
