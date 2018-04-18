@@ -13,7 +13,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -32,6 +31,7 @@ import com.windwarriors.appetite.broadcast.FiltersUpdateReceiver;
 import com.windwarriors.appetite.broadcast.RangeUpdateReceiver;
 import com.windwarriors.appetite.model.Business;
 import com.windwarriors.appetite.service.BusinessServiceClient;
+import com.windwarriors.appetite.service.CustomizedPinService;
 import com.windwarriors.appetite.utils.Constants;
 
 import java.util.ArrayList;
@@ -189,14 +189,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return false;
     }
 
-    private boolean initMap() {
+    private void initMap() {
         if (mMap == null) {
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
         }
-        return (mMap != null);
+        //return (mMap != null);
     }
 
     public void OpenRangeDialog() {
@@ -220,7 +220,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Add an initial marker in Centennial College and move camera to that point
         LatLng currentLatLong = new LatLng(currentLat, currentLong);
-        BitmapDescriptor bluePin = BitmapDescriptorFactory.fromResource(R.drawable.pin_fork_spoon_cross_blue);
+        BitmapDescriptor bluePin = CustomizedPinService.herePin();
         mMap.addMarker(new MarkerOptions().position(currentLatLong).icon(bluePin)); //.title("Centennial College"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLong));
     }
@@ -232,8 +232,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void drawRestaurant(GoogleMap googleMap, Business business) {
+        CustomizedPinService customizedPinService = new CustomizedPinService(business);
         LatLng latLng = new LatLng(business.getLatitude(), business.getLongitude());
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.pin_fork_spoon_cross);
+        BitmapDescriptor icon = customizedPinService.getCustomMapPin(); //BitmapDescriptorFactory.fromResource(R.drawable.pin_fork_spoon_cross);
         MarkerOptions markerOptions = new MarkerOptions()
                 .position( latLng )
                 .title(business.getName())
