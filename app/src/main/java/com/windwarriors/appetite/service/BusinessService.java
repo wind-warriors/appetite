@@ -38,6 +38,7 @@ public class BusinessService extends Service implements LocationListener {
     private SharedPreferencesService spService;
     private BusinessListReadyBroadcaster businessListReadyBroadcaster;
     private BusinessReadyBroadcaster businessReadyBroadcaster;
+    private int page = 0;
 
     @Override
     public void onCreate() {
@@ -49,7 +50,7 @@ public class BusinessService extends Service implements LocationListener {
         this.spService = new SharedPreferencesService(this);
         this.businessListReadyBroadcaster = new BusinessListReadyBroadcaster(this);
         this.businessReadyBroadcaster = new BusinessReadyBroadcaster(this);
-
+        this.page = 0;
         handleLocationPermissions();
     }
 
@@ -103,6 +104,8 @@ public class BusinessService extends Service implements LocationListener {
         } else if (command == Constants.BROADCAST_LOAD_BUSINESS) {
             String id = (String) data.get(Constants.BROADCAST_ID);
             this.loadBusiness(id);
+        } else if (command == Constants.BROADCAST_NEXT_PAGE) {
+            this.nextPage();
         } else if (command == Constants.BROADCAST_DESTROY_BUSINESS_SERVICE) {
             stopSelf();
         } else {
@@ -110,10 +113,22 @@ public class BusinessService extends Service implements LocationListener {
         }
     }
 
-    public void loadBusinessList() {
+    private void nextPage() {
+        this.page++;
+        this.offset( this.page * Constants.PAGE_SIZE );
+        this.search();
+    }
+
+    private void resetPage() {
+        this.page = 0;
+        this.offset( 0 );
+    }
+
+    private void loadBusinessList() {
         //yelpService.mockParameters();
         //this.latitude(latitude);
         //this.longitude(longitude);
+        this.resetPage();
         this.radius();
         this.price();
         this.sort_by();
@@ -234,8 +249,8 @@ public class BusinessService extends Service implements LocationListener {
         yelpService.limit(limit);
     }
 
-    public void offset(String offset) {
-        yelpService.offset(offset);
+    public void offset(int offset) {
+        yelpService.offset(String.valueOf(offset));
     }
 
     private void sort_by() {

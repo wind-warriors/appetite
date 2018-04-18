@@ -51,14 +51,14 @@ public final class Constants {
     public static final int    BROADCAST_LOAD_BUSINESS            = 104;
     public static final int    BROADCAST_UPDATE_RANGE             = 105;
     public static final int    BROADCAST_UPDATE_FILTER            = 106;
+    public static final int    BROADCAST_NEXT_PAGE                = 110;
 
     // Used on BusinessListReadyBroadcaster intents
     public static final String BUSINESS_LIST = "businessList";
     public static final String BUSINESS = "business";
 
     // Used for paging
-    public static final int PAGE_SIZE = 5;
-    public static final int DEFAULT_YELP_SERVICE_LIST_SIZE = 20;
+    public static final int PAGE_SIZE = 20;
 
     public static final Double CENTENNIAL_LATITUDE = 43.7844571;
     public static final Double CENTENNIAL_LONGITUDE = -79.2287377;

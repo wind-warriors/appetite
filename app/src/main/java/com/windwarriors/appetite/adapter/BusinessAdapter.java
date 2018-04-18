@@ -27,9 +27,8 @@ import static com.windwarriors.appetite.utils.Constants.BUSINESS_ID;
 public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.BusinessViewHolder> {
 
     private ArrayList<Business> businessList;
-    private static Context context;
+    private Context context;
     private View.OnClickListener loadMoreClickListener;
-    private int businessListSizeWithoutPaging;
 
     class BusinessViewHolder extends RecyclerView.ViewHolder {
         ImageView foodImage;
@@ -82,19 +81,13 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
 
 
     public BusinessAdapter(Context context) {
-        BusinessAdapter.context = context;
+        this.context = context;
         this.businessList = new ArrayList<>();
     }
 
-    public BusinessAdapter(Context context, ArrayList<Business> businessList) {
-        this.businessList = businessList;
-        BusinessAdapter.context = context;
-    }
-
-    public void refreshBusinessList(ArrayList<Business> businessList, int businessListSizeWithoutPaging) {
+    public void refreshBusinessList(ArrayList<Business> businessList) {
         this.businessList.clear();
         this.businessList.addAll(businessList);
-        this.businessListSizeWithoutPaging = businessListSizeWithoutPaging;
     }
 
     @Override
@@ -147,7 +140,10 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             holder.ratingStar.setImageResource(R.drawable.stars_regular_0);}
 
         // Last item in recycle view, then show "Load More" button
-        if(businessListSizeWithoutPaging > Constants.PAGE_SIZE && position == businessList.size()-1 && position != Constants.DEFAULT_YELP_SERVICE_LIST_SIZE-1){
+        if(//businessListSizeWithoutPaging > Constants.PAGE_SIZE &&
+            position == businessList.size()-1
+            //&& position != Constants.DEFAULT_YELP_SERVICE_LIST_SIZE-1
+        ){
             holder.loadMoreButton.setVisibility(View.VISIBLE);
             // Setup the listener for "Load More" button
             if( this.loadMoreClickListener != null )

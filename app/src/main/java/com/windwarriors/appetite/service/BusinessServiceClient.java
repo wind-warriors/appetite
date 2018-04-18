@@ -57,6 +57,14 @@ public class BusinessServiceClient {
         context.startService(intent);
     }
 
+    public void nextPage() {
+        Bundle data = new Bundle();
+        data.putInt(Constants.BROADCAST_BUSINESS_SERVICE, Constants.BROADCAST_NEXT_PAGE);
+        Intent intent = new Intent(context, BusinessService.class);
+        intent.putExtras(data);
+        context.startService(intent);
+    }
+
     /*public void updateRange(int range) {
         Bundle data = new Bundle();
         data.putInt(Constants.BROADCAST_BUSINESS_SERVICE, Constants.BROADCAST_UPDATE_RANGE);

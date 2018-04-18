@@ -82,7 +82,7 @@
         android:id="@+id/load_more"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="load more"
+        android:text="@string/next"
         android:visibility="gone"/>
     </LinearLayout>
 </RelativeLayout>
