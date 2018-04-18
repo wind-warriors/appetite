@@ -17,6 +17,13 @@
         <item name="android:text">@string/hello_user_sample_text</item>
     </style>
 
+    <style name="button">
+        <item name="android:background">@color/colorSecondary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">@dimen/buttonMargin</item>
+    </style>
+
     <style name="productImage">
         <item name="android:layout_width">110dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -147,4 +154,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <dimen name="buttonMargin">5dp</dimen>
 </resources>

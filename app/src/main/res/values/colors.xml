@@ -7,7 +7,7 @@
     <color name="colorPrimary">@color/darkRed</color>
     <!-- <color name="colorPrimaryDark">#b71c1c</color> -->
     <color name="colorPrimaryLight">@color/red</color>
-    <color name="colorSecondary">@color/darkBlue</color>
+    <color name="colorSecondary">@color/blue</color>
     <color name="primaryText">@color/normalText</color>
     <color name="secondaryText">@color/midText</color>
     <color name="tertiaryText">@color/ghostText</color>
@@ -26,7 +26,7 @@
     <color name="divider">@color/lightGray</color>
     <color name="productNameTextColor">@color/secondaryText</color>
 
-    <color name="foodCategoryTextColor">@color/colorSecondary</color>
+    <color name="foodCategoryTextColor">@color/darkBlue</color>
     <color name="loginTextColor">#372c24</color>
 
     <!-- Color Palette -->
