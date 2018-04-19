@@ -53,6 +53,7 @@
         android:fitsSystemWindows="true"
         android:focusableInTouchMode="true"
         android:clipToPadding="false"
+        android:id="@+id/detailsScrollView"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout

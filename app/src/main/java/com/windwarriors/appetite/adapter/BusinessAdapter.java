@@ -52,7 +52,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessAdapter.Busine
             address = itemView.findViewById(R.id.address);
             ratingStar = itemView.findViewById(R.id.imageStar);
             listProgressBar = itemView.findViewById(R.id.listProgress);
-            loadMoreButton = itemView.findViewById(R.id.load_more);
+            loadMoreButton = itemView.findViewById(R.id.load_more_button);
 
 
             // on item click

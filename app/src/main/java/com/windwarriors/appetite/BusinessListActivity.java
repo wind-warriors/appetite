@@ -202,10 +202,10 @@ public class BusinessListActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String term) {
                 //Toast.makeText(getApplicationContext(), "onQueryTextChange: "+s, Toast.LENGTH_SHORT).show();
                 // REMOVE HERE IF MAXIMUM NUMBER OF YELP CALLS IS BEING REACHED
-                businessServiceClient.updateTerm(term);
+                //businessServiceClient.updateTerm(term);
 
-                progressBar.setVisibility(View.VISIBLE);
-                businessServiceClient.refreshBusinessList();
+                //progressBar.setVisibility(View.VISIBLE);
+                //businessServiceClient.refreshBusinessList();
                 //mockBusinessServiceloadSearchByTermResult(term);
                 return false;
             }

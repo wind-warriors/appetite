@@ -31,19 +31,20 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
     testImplementation 'junit:junit:4.12'
-    testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.9.5"
-    testCompile "org.robolectric:robolectric:2.4"
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:1.9.5"
+    testImplementation "org.robolectric:robolectric:2.4"
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.1'
 
     implementation 'com.android.support:design:26.1.0'
 
-    compile 'io.github.ranga543:yelp-fusion-client:0.1.2'
+    api 'io.github.ranga543:yelp-fusion-client:0.1.2'
     implementation files('libs/gson-2.8.2.jar')
-    //compile 'com.google.code.gson:gson:2.8.2'
-    compile 'com.google.android.gms:play-services-maps:11.8.0'
-    compile 'com.google.android.gms:play-services-location:11.8.0'
-    compile 'com.nex3z:toggle-button-group:1.1.2'
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.4'
+    //api 'com.google.code.gson:gson:2.8.2'
+    api 'com.google.android.gms:play-services-maps:11.8.0'
+    api 'com.google.android.gms:play-services-location:11.8.0'
+    api 'com.nex3z:toggle-button-group:1.1.2'
+    api 'pl.droidsonroids.gif:android-gif-drawable:1.2.4'
 }
