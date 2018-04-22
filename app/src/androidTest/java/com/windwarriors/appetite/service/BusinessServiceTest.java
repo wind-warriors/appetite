@@ -12,13 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class BusinessServiceTest {
 
     private BusinessServiceClient businessServiceClient;
+    private BusinessListReadyReceiver businessListReadyReceiver;
     private SharedPreferencesService sp;
     private Context context;
     private String TAG = "Appetite.BusinessServiceTest";
@@ -28,6 +28,7 @@ public class BusinessServiceTest {
         context = InstrumentationRegistry.getTargetContext();
         businessServiceClient = new BusinessServiceClient(context);
         sp = new SharedPreferencesService(context);
+
     }
 
     @After
@@ -35,7 +36,7 @@ public class BusinessServiceTest {
         businessServiceClient.destroy();
     }
 
-    /*
+
     @Test
     public void test_onReceive() throws Exception {
         BusinessListReadyReceiver businessListReadyReceiver;
@@ -46,17 +47,14 @@ public class BusinessServiceTest {
             @Override
             public void onReceive(ArrayList<Business> businessList) {
 
-            assertTrue("businessList returned empty",businessList.size() > 0);
-            assertEquals(businessService.businessList , businessList);
-            synchronized(syncObject) {
-                syncObject.notify();
-            }
+                assertTrue("businessList returned empty",businessList.size() > 0);
+                synchronized(syncObject) {
+                    syncObject.notify();
+                }
             }
         });
         this.context.registerReceiver(businessListReadyReceiver, businessListReadyReceiver.getIntentFilter());
-
-        sp.saveToSharedPreferences(Constants.SHARED_PREFERENCES_SEARCH_RANGE, "2");
-        businessService.loadBusinessList(Constants.CENTENNIAL_LATITUDE, Constants.CENTENNIAL_LONGITUDE);
+        businessServiceClient.refreshBusinessList();
 
         synchronized (syncObject) {
             syncObject.wait();
@@ -95,15 +93,15 @@ public class BusinessServiceTest {
 
         System.out.println(TAG + "test_spRange:");
         sp.saveToSharedPreferences(Constants.SHARED_PREFERENCES_SEARCH_RANGE, "1");
-        businessService.loadBusinessList(Constants.CENTENNIAL_LATITUDE, Constants.CENTENNIAL_LONGITUDE);
+        businessServiceClient.refreshBusinessList();
 
         sp.saveToSharedPreferences(Constants.SHARED_PREFERENCES_SEARCH_RANGE, "40");
-        businessService.loadBusinessList(Constants.CENTENNIAL_LATITUDE, Constants.CENTENNIAL_LONGITUDE);
+        businessServiceClient.refreshBusinessList();
 
         synchronized (syncObject) {
             syncObject.wait();
             this.context.unregisterReceiver(businessListReadyReceiver);
         }
     }
-    */
+
 }

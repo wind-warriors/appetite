@@ -12,10 +12,10 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
 
 class YelpServiceTest {
-    val CITY_HALL_LATITUDE: Double = 43.652568
-    val CITY_HALL_LONGITUDE: Double = -79.3835223
-    val ISLINGTON_STATION_LATITUDE: Double = 43.6450701
-    val ISLINGTON_STATION_LONGITUDE: Double = -79.5267515
+    private val CITY_HALL_LATITUDE: Double = 43.652568
+    private val CITY_HALL_LONGITUDE: Double = -79.3835223
+    private val ISLINGTON_STATION_LATITUDE: Double = 43.6450701
+    private val ISLINGTON_STATION_LONGITUDE: Double = -79.5267515
 
     var yelpService: YelpService = YelpService()
     val q: BlockingQueue<SearchResponse> = LinkedBlockingQueue(1)
@@ -34,7 +34,6 @@ class YelpServiceTest {
     @Test
     fun search() {
         println("====== business search on Centennial College ======")
-        yelpService.mockParameters()
         val response = runSearch()
         response?.let {
             assertTrue("Empty Yelp.search response", it.total > 0)
@@ -47,8 +46,8 @@ class YelpServiceTest {
         yelpService.term("Tim Hortons")
         val response = runSearch()
         response?.let {
-            assertTrue("No Tim Hortons on response",
-                it.businesses[0].id.contains("tim-hortons"))
+            assertTrue("No Tim Hortons on response:" + it.businesses[0].name,
+                it.businesses[0].name.contains("Tim Hortons"))
         }
     }
 
@@ -117,13 +116,12 @@ class YelpServiceTest {
             syncObject.wait()
             //System.out.println("business:")
             //yelpService.business.toString()
-            val responseBusinessId = yelpService.business.id
-            assertEquals(businessId, responseBusinessId)
+            assertTrue(yelpService.business.name.toLowerCase().contains("mccoy") )
         }
     }
 
     @Test
-    fun test_isClosed() {
+    fun testIsClosed() {
         yelpService.open_now(false)
         val response = runSearch()
         response?.let {
