@@ -257,6 +257,8 @@ public class BusinessListActivity extends AppCompatActivity {
         businessServiceClient.destroy();
         super.onDestroy();
         unregisterReceiver(businessListReadyReceiver);
+        unregisterReceiver(rangeUpdateReceiver);
+        unregisterReceiver(filtersUpdateReceiver);
     }
 
     /*
