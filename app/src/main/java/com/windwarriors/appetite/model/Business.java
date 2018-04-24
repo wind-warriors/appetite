@@ -411,7 +411,7 @@ public class Business implements Parcelable {
         Collections.sort(businessList, new Comparator<Business>() {
             @Override
             public int compare(Business b1, Business b2) {
-                return b1.compareByDistance(b2);
+                return b2.compareByDistance(b1);
             }
         });
     }
