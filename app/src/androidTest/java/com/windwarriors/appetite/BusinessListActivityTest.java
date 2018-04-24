@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static android.support.test.espresso.Espresso.closeSoftKeyboard;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
@@ -49,6 +50,36 @@ public class BusinessListActivityTest {
     }
 
     @Test
+    public void loadMore() throws Exception {
+        int nextPosition = Constants.PAGE_SIZE - 1;
+
+        Thread.sleep(2000);
+        onView(withId(R.id.recycler_view_business_list))
+            .perform(RecyclerViewActions.scrollToPosition(nextPosition));
+
+        Thread.sleep(800);
+        onView(withId(R.id.recycler_view_business_list))
+            .check(matches(hasDescendant(withText(R.string.next))));
+
+        onView(allOf(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
+            withId(R.id.load_more_button)))
+            .perform(click());
+
+        onView(withId(R.id.recycler_view_business_list))
+            .perform(RecyclerViewActions.scrollToPosition(10));
+
+        Thread.sleep(800);
+        onView(withId(R.id.recycler_view_business_list))
+                .perform(RecyclerViewActions.scrollToPosition(nextPosition));
+
+        onView(allOf(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
+                withId(R.id.load_more_button)))
+                .perform(click());
+
+        Thread.sleep(2000);
+    }
+
+    @Test
     public void timHortonsSearch() throws InterruptedException {
         String timHortons = "Tim Hortons";
         int nextPosition = Constants.PAGE_SIZE - 1;
@@ -68,24 +99,21 @@ public class BusinessListActivityTest {
         onView(withId(R.id.menu_search))
             .perform(typeText(timHortons), pressKey(KeyEvent.KEYCODE_ENTER));
             //.perform(pressImeActionButton());
-        Thread.sleep(2000);
+        closeSoftKeyboard();
+        Thread.sleep(1000);
+
         onView(withId(R.id.recycler_view_business_list))
             .check(matches(hasDescendant(withText(timHortons))))
             .perform(RecyclerViewActions.scrollToPosition(nextPosition));
 
-
-        onView(withId(R.id.recycler_view_business_list))
-            .check(matches(hasDescendant(withText(R.string.next))));
-
-        onView(allOf(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
-                     withId(R.id.load_more_button)))
-            .perform(click());
-
+        Thread.sleep(1000);
         //go to details activity
-        onView(withId(R.id.recycler_view_business_list))
-            .perform(RecyclerViewActions.actionOnItemAtPosition(nextPosition, click()));
 
-        Thread.sleep(3000);
+
+        onView(withId(R.id.recycler_view_business_list))
+            .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        Thread.sleep(1500);
         onView(withId(R.id.details_business_name))
             .check(matches(withText(timHortons)));
 
@@ -99,7 +127,7 @@ public class BusinessListActivityTest {
             .perform(swipeLeft(), swipeLeft(), swipeRight(), swipeRight(), swipeDown(),
             pressBack());
 
-        //Thread.sleep(2000);
+        Thread.sleep(2000);
         /*
         onData(instanceOf(BusinessAdapter.class))
             .inAdapterView(withId(R.id.recycler_view_business_list))
@@ -109,10 +137,4 @@ public class BusinessListActivityTest {
             //.check(matches(withText(R.string.next)));
         */
     }
-
-    /*
-    onView(withId(R.id.name_field)).perform(typeText("Steve"));
-    onView(withId(R.id.greet_button)).perform(click());
-    onView(withText("Hello Steve!")).check(matches(isDisplayed()));
-     */
 }
