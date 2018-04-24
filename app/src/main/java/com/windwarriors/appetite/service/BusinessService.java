@@ -259,11 +259,21 @@ public class BusinessService extends Service implements LocationListener {
         if (!sortBy.equals("")) {
             String[] appetiteSortBy  = getResources().getStringArray(R.array.sortby_options_array);
             String[] yelpSortBy = getResources().getStringArray(R.array.sortby_options_array_yelp);
+
+            //sortBy = mapSortBy(sortBy);
+
             Integer idx = Arrays.asList(appetiteSortBy).indexOf(sortBy);
             String yelp_sort_by = yelpSortBy[idx];
 
             yelpService.sort_by(yelp_sort_by);
         }
+    }
+
+    private String mapSortBy(String sortBy) {
+        if (sortBy.equals("Best Match")) return "BestMatch";
+        if (sortBy.equals("Most Reviewed")) return "MostReviewed";
+
+        return sortBy;
     }
 
     private void price() {

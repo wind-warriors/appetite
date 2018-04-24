@@ -125,10 +125,10 @@
 
     <!-- Sorting arrays -->
     <string-array name="sortby_options_array">
-        <item>Best Match</item>
+        <item>BestMatch</item>
         <item>Distance</item>
         <item>Rating</item>
-        <item>Most Reviewed</item>
+        <item>MostReviewed</item>
     </string-array>
 
     <string-array name="sortby_options_array_yelp">
